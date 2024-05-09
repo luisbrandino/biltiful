@@ -20,7 +20,7 @@
         /**
          *  Construtor para criar o objeto com as propriedades diretamente 
          */
-        public Produto(string codigoBarras, string nome, int valorVenda, DateOnly ultimaVenda, DateOnly dataCadastro, )
+        public Produto(string codigoBarras, string nome, int valorVenda, DateOnly ultimaVenda, DateOnly dataCadastro)
         {
 
         }
