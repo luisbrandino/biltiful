@@ -47,9 +47,14 @@
         /**
          *  Esse construtor cria o objeto com suas informações sendo passadas diretamente
          */
-        public Cliente(string cpf, string nome, string sexo, DateOnly dataCadastro)
+        public Cliente(string cpf, string nome, char sexo)
         {
-
+            CPF = cpf;
+            Nome = nome;
+            Sexo = sexo;
+            UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
+            DataCadastro = DateOnly.FromDateTime(DateTime.Now);
+            Situacao = 'A';
         }
 
         /**
