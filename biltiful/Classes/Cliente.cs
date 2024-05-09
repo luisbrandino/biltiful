@@ -49,6 +49,9 @@
          */
         public Cliente(string cpf, string nome, char sexo)
         {
+            if (!ValidarCPF(cpf))
+                throw new Exception("CPF informado é inválido");
+
             CPF = cpf;
             Nome = nome;
             Sexo = sexo;
@@ -60,9 +63,37 @@
         /**
          *  Esse método verifica se o CPF é válido
          */
-        public bool ValidarCPF(string cpf)
+        public static bool ValidarCPF(string cpf)
         {
-            return true;
+            if (cpf.Length != 11)
+                return false;
+
+            foreach (char caracter in cpf)
+                if (!char.IsDigit(caracter))
+                    return false;
+
+            int[] multiplicadoresPrimeiroDigito = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicadoresSegundoDigito = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            string tempCpf = cpf.Substring(0, 9);
+            int soma = 0;
+
+            for (int i = 0; i < 9; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicadoresPrimeiroDigito[i];
+
+            int resto = soma % 11;
+            int primeiroDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+
+            tempCpf += primeiroDigitoVerificador;
+
+            soma = 0;
+            for (int i = 0; i < 10; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicadoresSegundoDigito[i];
+
+            resto = soma % 11;
+            int segundoDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+
+            return cpf.EndsWith(primeiroDigitoVerificador.ToString() + segundoDigitoVerificador.ToString());
         }
 
         /**
