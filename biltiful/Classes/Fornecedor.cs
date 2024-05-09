@@ -42,7 +42,7 @@
         }
 
         /**
-         *  Esse método verifica se o código de barras é válido de acordo com o padrão EAN-13
+         *  Esse método transforma o objeto atual em uma linha que pode ser escrita
          */
         public string FormatarParaArquivo()
         {
