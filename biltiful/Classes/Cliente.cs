@@ -15,18 +15,33 @@
          */
         public Cliente(string dados)
         {
-            if (dados.Length < 87)
+            if (dados.Length != 87)
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
 
-            CPF = dados.Take(10).ToString();
-            Nome = dados.Skip(10).Take(49).ToString();
+            CPF = dados.Substring(0, 10);
+            Nome = dados.Substring(11, 50);
 
-            int dia = int.Parse(dados.Skip(60).Take(1).ToString());
-            int mes = int.Parse(dados.Skip(61).Take(1).ToString());
-            int ano = int.Parse(dados.Skip(62).Take(3).ToString());
+            int dia = int.Parse(dados.Substring(61, 2));
+            int mes = int.Parse(dados.Substring(63, 2));
+            int ano = int.Parse(dados.Substring(65, 4));
 
             DataNascimento = new DateOnly(ano, mes, dia);
 
+            Sexo = dados.Substring(69, 1).First();
+
+            dia = int.Parse(dados.Substring(70, 2));
+            mes = int.Parse(dados.Substring(72, 2));
+            ano = int.Parse(dados.Substring(74, 4));
+
+            UltimaCompra = new DateOnly(ano, mes, dia);
+
+            dia = int.Parse(dados.Substring(78, 2));
+            mes = int.Parse(dados.Substring(80, 2));
+            ano = int.Parse(dados.Substring(82, 4));
+
+            DataCadastro = new DateOnly(ano, mes, dia);
+
+            Situacao = dados.Substring(86, 1).First();
         }
 
         /**
