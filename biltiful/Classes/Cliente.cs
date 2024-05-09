@@ -15,6 +15,17 @@
          */
         public Cliente(string dados)
         {
+            if (dados.Length < 87)
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
+
+            CPF = dados.Take(10).ToString();
+            Nome = dados.Skip(10).Take(49).ToString();
+
+            int dia = int.Parse(dados.Skip(60).Take(1).ToString());
+            int mes = int.Parse(dados.Skip(61).Take(1).ToString());
+            int ano = int.Parse(dados.Skip(62).Take(3).ToString());
+
+            DataNascimento = new DateOnly(ano, mes, dia);
 
         }
 
