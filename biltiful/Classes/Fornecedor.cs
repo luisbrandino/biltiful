@@ -20,9 +20,17 @@
         /**
          *  Construtor para criar o objeto com as propriedades diretamente 
          */
-        public Fornecedor(string CNPJ, string RazaoSocial, DateOnly dataAbertura, DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
+        public Fornecedor(string CNPJ, string razaoSocial, DateOnly dataAbertura, DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
         {
 
+        }
+
+        /**
+         *  Verifica se a data de abertura é no passado
+         */
+        public static bool VerificarDataAbertura(DateOnly dataAbertura)
+        {
+            return true;
         }
 
         /**
