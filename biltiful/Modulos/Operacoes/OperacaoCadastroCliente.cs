@@ -5,48 +5,62 @@ namespace biltiful.Modulos.Operacoes
 {
     internal class OperacaoCadastroCliente
     {
-        public string EntradaCpf()
+        Arquivo<Cliente> arquivo;
+
+        public OperacaoCadastroCliente()
+        {
+            arquivo = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
+        }
+
+        string EntradaCpf()
         {
             Entrada<string> entrada = new();
 
-            entrada.DefinirMensagemDeErro("CPF inválido");
+            entrada.AdicionarRegra(
+                (string cpf) => Cliente.VerificarCPF(cpf),
+                "CPF inválido"
+            );
 
-            entrada.AdicionarRegra((string cpf) => Cliente.VerificarCPF(cpf));
+            entrada.AdicionarRegra(
+                (string cpf) => arquivo.Ler().Find(c => c.CPF == cpf) == null,
+                "CPF já registrado"
+            );
 
             return entrada.Pegar();
         }
 
-        public string EntradaNome()
+        string EntradaNome()
         {
             Entrada<string> entrada = new();
 
-            entrada.DefinirMensagemDeErro("Nome precisa ter entre 1 e 50 caracteres");
-
-            entrada.AdicionarRegra((string nome) => nome.Length >= 1 && nome.Length <= 50);
+            entrada.AdicionarRegra(
+                (string nome) => nome.Length >= 1 && nome.Length <= 50,
+                "Nome precisa ter entre 1 e 50 caracteres"
+            );
 
             return entrada.Pegar();
         }
 
-        public DateOnly EntradaDataNascimento()
+        DateOnly EntradaDataNascimento()
         {
-            Entrada<DateOnly> entrada = new();
+            EntradaData entrada = new();
 
-            entrada.DefinirMensagemDeErro("Data inválida.");
-            entrada.DefinirMensagemDeUso("Uso: dd/mm/aaaa");
-
-            entrada.AdicionarRegra((DateOnly data) => Cliente.VerificarDataDeNascimento(data));
+            entrada.AdicionarRegra(
+                (DateOnly data) => Cliente.VerificarDataDeNascimento(data),
+                "Data não pode ser posterior à data atual"
+            );
 
             return entrada.Pegar();
         }
 
-        public char EntradaSexo()
+        char EntradaSexo()
         {
             Entrada<char> entrada = new();
 
-            entrada.DefinirMensagemDeErro("Sexo inválida.");
-            entrada.DefinirMensagemDeUso("Uso: M/F");
-
-            entrada.AdicionarRegra((char sexo) => Cliente.VerificarSexo(sexo));
+            entrada.AdicionarRegra(
+                (char sexo) => Cliente.VerificarSexo(sexo),
+                "Sexo inválido. Uso: M/F"    
+            );
 
             return entrada.Pegar();
         }
@@ -54,10 +68,6 @@ namespace biltiful.Modulos.Operacoes
         public void Executar()
         {
             Console.Clear();
-
-            DateOnly? date = (DateOnly?)Convert.ChangeType(Console.ReadLine(), typeof(DateOnly));
-
-            Console.WriteLine(date);
 
             Console.Write("Informe o CPF: ");
             string cpf = EntradaCpf();
@@ -71,9 +81,11 @@ namespace biltiful.Modulos.Operacoes
             Console.Write("Informe o sexo: ");
             char sexo = EntradaSexo();
 
-            Arquivo<Cliente> arquivo = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
-
             arquivo.Inserir(new Cliente(cpf, nome, dataNascimento, sexo));
+
+            Console.WriteLine("Usuário cadastrado!");
+
+            Console.ReadKey();
         }
 
     }

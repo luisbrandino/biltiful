@@ -1,39 +1,53 @@
 ﻿namespace biltiful.Modulos.Operacoes.Entradas
 {
+    internal class Regra<T>
+    {
+        Func<T, bool> validacao;
+        string? mensagemDeErro;
+
+        public Regra(Func<T, bool> validacao, string mensagemDeErro)
+        {
+            this.validacao = validacao;
+            this.mensagemDeErro = mensagemDeErro;
+        }
+
+        public Regra(Func<T, bool> validacao)
+        {
+            this.validacao = validacao;
+        }
+
+        public void MostrarMensagemDeErro()
+        {
+            Console.WriteLine(mensagemDeErro);
+        }
+
+        public bool Verificar(T valor) => validacao.Invoke(valor);
+    }
+
     internal class Entrada<T>
     {
-        protected List<Func<T?, bool>> regras = new List<Func<T?, bool>>();
-        protected string mensagemDeErro;
-        protected string? mensagemDeUso;
+        protected List<Regra<T>> regras = new List<Regra<T>>();
 
-        public Entrada()
+        public void AdicionarRegra(Func<T?, bool> validacao)
         {
+            regras.Add(new(validacao));
         }
 
-        public Entrada(params Func<T?, bool>[] regras)
+        public void AdicionarRegra(Func<T?, bool> validacao, string mensagemDeErro)
         {
-            this.regras = new List<Func<T?, bool>>(regras);
+            regras.Add(new(validacao, mensagemDeErro));
         }
 
-        public void DefinirMensagemDeUso(string mensagem)
+        protected bool ValidarRegras(T valor)
         {
-            mensagemDeUso = mensagem;
-        }
+            foreach (Regra<T> regra in regras)
+                if (!regra.Verificar(valor))
+                {
+                    regra.MostrarMensagemDeErro();
+                    return false;
+                }
 
-        public void DefinirMensagemDeErro(string mensagem)
-        {
-            mensagemDeErro = mensagem;
-        }
-
-        public void AdicionarRegra(Func<T?, bool> regra)
-        {
-            regras.Add(regra);
-        }
-
-        protected void MostrarMensagemDeErro()
-        {
-            Console.Write(mensagemDeErro != null ? mensagemDeErro + ". " : "");
-            Console.Write(mensagemDeUso != null ? mensagemDeUso + ". " : "");
+            return true;
         }
 
         public T? Pegar()
@@ -48,26 +62,13 @@
                 }
                 catch (Exception) 
                 {
-                    MostrarMensagemDeErro();
-                    Console.Write("Tente novamente: ");
+                    Console.Write("Valor inválido, tente novamente: ");
                     continue;
                 }
 
-                bool invalid = false;
-
-                foreach (Func<T?, bool> regra in regras)
-                {
-                    if (!regra(entrada))
-                    {
-                        invalid = true;
-                        break;
-                    }
-                }
-
-                if (!invalid)
+                if (ValidarRegras(entrada))
                     return entrada;
 
-                MostrarMensagemDeErro();
                 Console.Write("Tente novamente: ");
             }
         }

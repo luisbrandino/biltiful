@@ -17,26 +17,14 @@
                 }
                 catch (Exception)
                 {
-                    MostrarMensagemDeErro();
+                    Console.Write($"Data inválida. Formato: dd/mm/aaaa.\n");
                     Console.Write("Tente novamente: ");
                     continue;
                 }
 
-                bool invalid = false;
-
-                foreach (Func<DateOnly?, bool> regra in regras)
-                {
-                    if (!regra(data))
-                    {
-                        invalid = true;
-                        break;
-                    }
-                }
-
-                if (!invalid)
+                if (ValidarRegras(data))
                     return data;
 
-                MostrarMensagemDeErro();
                 Console.Write("Tente novamente: ");
             }
         }
