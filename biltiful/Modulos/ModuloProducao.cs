@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml;
 
 namespace biltiful.Modulos
 {
@@ -18,7 +19,6 @@ namespace biltiful.Modulos
             string arquivoItemProducao = "ItemProducao.dat";
             #endregion
 
-            int idAtual;
 
             #region Preenchendo Listas
             List<string> listaCodigoBarrasCosmetico = LerChavesAquivo(caminho, arquivoCosmetico, 13);
@@ -41,7 +41,7 @@ namespace biltiful.Modulos
                     if (!File.Exists(caminho + arquivo))
                     {
                         File.Create(caminho + arquivo).Close();
-                        
+
                     }
                 }
                 catch (DirectoryNotFoundException)
@@ -86,18 +86,16 @@ namespace biltiful.Modulos
 
                     foreach (var item in File.ReadAllLines(caminho + arquivoProducao))
                     {
-                        idAtual = id = int.Parse(item.Substring(0, 5));
+                        id = int.Parse(item.Substring(0, 5));
                         dia = item.Substring(5, 2);
                         mes = item.Substring(7, 2);
                         ano = item.Substring(9, 4);
                         dataProducao = DateOnly.Parse($"{dia}/{mes}/{ano}");
                         produto = item.Substring(13, 13);
                         quantidade = double.Parse(item.Substring(26, 5).Insert(3, ","));
-                        Console.WriteLine();
-
                         lista.Add(new(id, dataProducao, produto, quantidade));
                     }
-                    
+
                 }
                 return lista;
             }
@@ -115,9 +113,9 @@ namespace biltiful.Modulos
                     foreach (var item in File.ReadAllLines(caminho + arquivoItemProducao))
                     {
                         id = int.Parse(item.Substring(0, 5));
-                        dia = int.Parse (item.Substring(5, 2));
-                        mes = int.Parse (item.Substring(7, 2));
-                        ano = int.Parse (item.Substring(9, 4));
+                        dia = int.Parse(item.Substring(5, 2));
+                        mes = int.Parse(item.Substring(7, 2));
+                        ano = int.Parse(item.Substring(9, 4));
                         dataProducao = new(ano, mes, dia);
                         materiaPrima = item.Substring(13, 6);
                         quantidadeMateriaPrima = double.Parse(item.Substring(19, 5).Insert(3, ","));
@@ -128,8 +126,69 @@ namespace biltiful.Modulos
                 return lista;
             }
 
+            string RemoverCasasDecimaisDesnecessarias(string str)
+            {
+                try
+                {
+                    int indiceVirgula = str.IndexOf(',');
+                    str = str.Remove(indiceVirgula + 3);
+                }catch(Exception ex)
+                {
+
+                }
+                return str;
+            }
+            string RemoverVirgula(string s)
+            {
+                s = RemoverCasasDecimaisDesnecessarias(s);
+                s = s.Replace(",", "");
+
+                return s;
+            }
+
+            void CadastrarProducao()
+            {
+                int id = listaProducao.Last().Id + 1;
+                string produto, quantidade;
+                DateOnly dataProducao = DateOnly.FromDateTime(DateTime.Now);
+
+                do
+                {
+                    Console.WriteLine("Insira o código de barras do produto a ser produzido: ");
+                    produto = Console.ReadLine();
+                    if (!listaCodigoBarrasCosmetico.Contains(produto))
+                    {
+                        Console.WriteLine("Cosmetico não encontrado...\nInsira novamente por favor.");
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                } while (true);
+
+                do
+                {
+                    Console.WriteLine("Insira a quantidade a ser produzida");
+                    Console.WriteLine("Maximo de caracteres: 6");
+                    quantidade = Console.ReadLine();
+                    if (quantidade.Length > 6 || quantidade == "")
+                    {
+                        Console.WriteLine("Valor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
+                    }
+                    else
+                        break;
+                } while (true);
+
+                quantidade = RemoverCasasDecimaisDesnecessarias(quantidade);
+
+                listaProducao.Add(new(id, dataProducao, produto, double.Parse(quantidade)));
+            }
 
             #endregion
+
+
+            CadastrarProducao();
 
             Console.WriteLine();
         }
