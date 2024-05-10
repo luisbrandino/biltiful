@@ -4,7 +4,7 @@
     {
         public string CodigoBarras {  get; set; }
         public string Nome { get; set; }
-        public double ValorVenda { get; set; }
+        public float ValorVenda { get; set; }
         public DateOnly UltimaVenda { get; set; }
         public DateOnly DataCadastro { get; set; }
         public char Situacao { get; set; }
@@ -14,7 +14,18 @@
          */
         public Produto(string dados)
         {
+            if (dados.Length != 55)
+                throw new Exception("Linha não possui o tamanho padrão para a entidade Produto");
 
+            CodigoBarras = dados.Substring(0, 13);
+            Nome = dados.Substring(13, 20).Trim();
+            ValorVenda = float.Parse(dados.Substring(33, 5)) / 100;
+
+            UltimaVenda = DateOnly.ParseExact(dados.Substring(38, 8), "ddMMyyyy", null);
+
+            DataCadastro = DataCadastro = DateOnly.ParseExact(dados.Substring(46, 8), "ddMMyyyy", null);
+
+            Situacao = dados.Substring(54, 1).First();
         }
 
         /**
@@ -32,13 +43,17 @@
         {
             return true;
         }
+        public string FormatarData(DateOnly data)
+        {
+            return $"{data.Day.ToString("00")}{data.Month.ToString("00")}{data.Year.ToString("0000")}";
+        }
 
         /**
          *  Esse método transforma o objeto atual em uma linha que pode ser escrita
          */
         public string FormatarParaArquivo()
         {
-            return string.Empty;
+            return $"{CodigoBarras}{Nome.PadRight(20)}{ValorVenda * 100}{FormatarData(UltimaVenda)}{FormatarData(DataCadastro)}{Situacao}"; ;
         }
     }
 }

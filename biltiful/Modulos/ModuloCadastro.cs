@@ -3,7 +3,7 @@
     internal class ModuloCadastro
     {
 
-        public void Executar()
+        public void Main()
         {
             // Código do módulo aqui
         }
