@@ -20,6 +20,9 @@ namespace biltiful
             CriarCaminhoSeNaoExistir();
         }
 
+        /**
+         *  Verifica se o caminho e o arquivo existem, caso não, cria eles
+         */
         void CriarCaminhoSeNaoExistir()
         {
             if (!Directory.Exists(Caminho))
