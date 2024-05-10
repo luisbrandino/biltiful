@@ -3,9 +3,13 @@
     internal class ModuloCadastro
     {
 
-        public void Main()
+        public void Executar()
         {
-            // Código do módulo aqui
+            Menu menu = new Menu("Clientes", "Produtos", "Matérias-prima", "Fornecedores", "Inadimplentes", "Bloqueados");
+
+            menu.DefinirTitulo("MENU DE CADASTROS");
+
+            menu.Perguntar();
         }
 
     }
