@@ -66,11 +66,19 @@
         }
 
         /**
+         *  Formata o tipo de data (não pertence aqui)
+         */
+        public string FormatarData(DateOnly data)
+        {
+            return $"{data.Day.ToString("00")}{data.Month.ToString("00")}{data.Year.ToString("0000")}";
+        }
+
+        /**
          *  Esse método transforma o objeto atual em uma linha que pode ser escrita
          */
         public string FormatarParaArquivo()
         {
-            return string.Empty;
+            return $"{CNPJ}{RazaoSocial.PadRight(50)}{FormatarData(DataAbertura)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
         }
 
     }
