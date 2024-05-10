@@ -86,6 +86,9 @@
             return digitoVerificador == int.Parse(codigoDeBarras[12].ToString());
         }
 
+        /**
+         *  Formata o tipo de data (não pertence aqui)
+         */
         public string FormatarData(DateOnly data)
         {
             return $"{data.Day.ToString("00")}{data.Month.ToString("00")}{data.Year.ToString("0000")}";
