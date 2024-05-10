@@ -10,12 +10,20 @@ namespace biltiful.Classes
     {
         public int Id { get; set; }
         public DateOnly DataProducao { get; set; }
-        public int MateriaPrima { get; set; }
-        public int QuantidadeMateriaPrima { get; set; }
+        public string MateriaPrima { get; set; }
+        public double QuantidadeMateriaPrima { get; set; }
 
         public ItemProducao()
         {
 
+        }
+
+        public ItemProducao(int id, DateOnly dataProducao, string materiaPrima, double quantidadeMateriaPrima)
+        {
+            Id = id;
+            DataProducao = dataProducao;
+            MateriaPrima = materiaPrima;
+            QuantidadeMateriaPrima = quantidadeMateriaPrima;
         }
     }
 }
