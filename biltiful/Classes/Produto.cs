@@ -12,7 +12,7 @@
         /**
          *  Construtor para criar o objeto a partir da linha vinda do arquivo
          */
-        public Produto(string dados)
+        public Produto(string dados, string v)
         {
             if (dados.Length != 55)
                 throw new Exception("Linha não possui o tamanho padrão para a entidade Produto");
@@ -31,9 +31,23 @@
         /**
          *  Construtor para criar o objeto com as propriedades diretamente 
          */
-        public Produto(string codigoBarras, string nome, int valorVenda, DateOnly ultimaVenda, DateOnly dataCadastro)
+        public Produto(string codigoBarras, string nome, float valorVenda)
         {
+            if (!VerificarValorDeVenda(valorVenda))
+                throw new Exception("Valor de venda deve ser menor ou igual à R$999,99");
 
+            CodigoBarras = codigoBarras;
+            Nome = nome;
+            ValorVenda = valorVenda;
+
+        }
+
+        /**
+         *  Esse método verifica se o valor de venda cumpre seus requerimentos
+         */
+        static bool VerificarValorDeVenda(float valorVenda)
+        {
+            return valorVenda < 1000;
         }
 
         /**
@@ -43,6 +57,7 @@
         {
             return true;
         }
+
         public string FormatarData(DateOnly data)
         {
             return $"{data.Day.ToString("00")}{data.Month.ToString("00")}{data.Year.ToString("0000")}";
