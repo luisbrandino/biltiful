@@ -1,4 +1,6 @@
-﻿namespace biltiful.Modulos
+﻿using biltiful.Modulos.Operacoes;
+
+namespace biltiful.Modulos
 {
     internal class ModuloCadastro
     {
@@ -6,7 +8,12 @@
         {
             Menu menu = CriarMenuDeOperacao("Clientes");
 
-            menu.Perguntar();
+            switch (menu.Perguntar())
+            {
+                case 1:
+                    new OperacaoCadastroCliente().Executar();
+                    break;
+            }
         }
 
         void Produtos()
