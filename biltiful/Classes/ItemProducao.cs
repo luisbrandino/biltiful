@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace biltiful.Classes
 {
-    internal class ItemProducao
+    internal class ItemProducao: IEntidade
     {
         public int Id { get; set; }
         public DateOnly DataProducao { get; set; }
@@ -24,6 +24,16 @@ namespace biltiful.Classes
             DataProducao = dataProducao;
             MateriaPrima = materiaPrima;
             QuantidadeMateriaPrima = quantidadeMateriaPrima;
+        }
+
+        public void LinhaParaObjeto(string linha)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string FormatarParaArquivo()
+        {
+            throw new NotImplementedException();
         }
     }
 }
