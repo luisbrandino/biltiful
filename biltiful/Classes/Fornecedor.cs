@@ -1,4 +1,6 @@
-﻿namespace biltiful.Classes
+﻿using System.Text.RegularExpressions;
+
+namespace biltiful.Classes
 {
     internal class Fornecedor
     {
@@ -62,7 +64,35 @@
          */
         public static bool VerificarCNPJ(string cnpj)
         {
-            return true;
+            if (cnpj.Length != 14)
+                return false;
+
+            foreach (char caracter in cnpj)
+                if (!char.IsDigit(caracter))
+                    return false;
+
+            int[] multiplicadoresPrimeiroDigito = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicadoresSegundoDigito = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            string tempCnpj = cnpj.Substring(0, 12);
+            int soma = 0;
+
+            for (int i = 0; i < 12; i++)
+                soma += int.Parse(tempCnpj[i].ToString()) * multiplicadoresPrimeiroDigito[i];
+
+            int resto = soma % 11;
+            int primeiroDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+
+            tempCnpj += primeiroDigitoVerificador;
+
+            soma = 0;
+            for (int i = 0; i < 13; i++)
+                soma += int.Parse(tempCnpj[i].ToString()) * multiplicadoresSegundoDigito[i];
+
+            resto = soma % 11;
+            int segundoDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+
+            return cnpj.EndsWith(primeiroDigitoVerificador.ToString() + segundoDigitoVerificador.ToString());
         }
 
         /**
