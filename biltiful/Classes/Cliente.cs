@@ -18,8 +18,8 @@
             if (dados.Length != 87)
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
 
-            CPF = dados.Substring(0, 10);
-            Nome = dados.Substring(11, 50);
+            CPF = dados.Substring(0, 11);
+            Nome = dados.Substring(11, 50).Trim();
 
             int dia = int.Parse(dados.Substring(61, 2));
             int mes = int.Parse(dados.Substring(63, 2));
@@ -47,17 +47,26 @@
         /**
          *  Esse construtor cria o objeto com suas informações sendo passadas diretamente
          */
-        public Cliente(string cpf, string nome, char sexo)
+        public Cliente(string cpf, string nome, DateOnly dataNascimento, char sexo)
         {
             if (!ValidarCPF(cpf))
                 throw new Exception("CPF informado é inválido");
 
+            if (!ValidarDataDeNascimento(dataNascimento))
+                throw new Exception("Data de nascimento não pode ser maior que data atual");
+
             CPF = cpf;
             Nome = nome;
             Sexo = sexo;
+            DataNascimento = dataNascimento;
             UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
             Situacao = 'A';
+        }
+
+        public static bool ValidarDataDeNascimento(DateOnly dataNascimento)
+        {
+            return dataNascimento <= DateOnly.FromDateTime(DateTime.Now);
         }
 
         /**
