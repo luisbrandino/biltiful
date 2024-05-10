@@ -10,11 +10,15 @@ namespace biltiful.Modulos
 
         public void Executar()
         {
+            #region Caminhos de arquivos
             string caminho = @"C:\Biltiful\";
             string arquivoProducao = "Producao.dat";
             string arquivoCosmetico = "Cosmetico.dat";
             string arquivoMateria = "Materia.dat";
             string arquivoItemProducao = "ItemProducao.dat";
+            #endregion
+
+            int idAtual;
 
             #region Preenchendo Listas
             List<string> listaCodigoBarrasCosmetico = LerChavesAquivo(caminho, arquivoCosmetico, 13);
@@ -82,7 +86,7 @@ namespace biltiful.Modulos
 
                     foreach (var item in File.ReadAllLines(caminho + arquivoProducao))
                     {
-                        id = int.Parse(item.Substring(0, 5));
+                        idAtual = id = int.Parse(item.Substring(0, 5));
                         dia = item.Substring(5, 2);
                         mes = item.Substring(7, 2);
                         ano = item.Substring(9, 4);
@@ -93,9 +97,11 @@ namespace biltiful.Modulos
 
                         lista.Add(new(id, dataProducao, produto, quantidade));
                     }
+                    
                 }
                 return lista;
             }
+
             List<ItemProducao> LerArquivoItemProducao()
             {
                 List<ItemProducao> lista = new();
@@ -113,8 +119,8 @@ namespace biltiful.Modulos
                         mes = int.Parse (item.Substring(7, 2));
                         ano = int.Parse (item.Substring(9, 4));
                         dataProducao = new(ano, mes, dia);
-                        materiaPrima = item.Substring(12, 4);
-                        quantidadeMateriaPrima = double.Parse(item.Substring(16, 5).Insert(3, ","));
+                        materiaPrima = item.Substring(13, 6);
+                        quantidadeMateriaPrima = double.Parse(item.Substring(19, 5).Insert(3, ","));
 
                         lista.Add(new ItemProducao(id, dataProducao, materiaPrima, quantidadeMateriaPrima));
                     }
