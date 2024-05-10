@@ -23,11 +23,11 @@ namespace biltiful
         }
 
         /**
-         *  Lê o arquivo retornando uma lista do tipo especificado, nulo se nada for encontrado no arquivo
+         *  Lê o arquivo retornando uma lista do tipo especificado
          */
-        public List<T>? Ler()
+        public List<T> Ler()
         {
-            List<T>? entidades = null;
+            List<T> entidades = new List<T>();
 
             string[] linhas = File.ReadAllLines(Caminho);
 
@@ -37,6 +37,7 @@ namespace biltiful
                 {
                     T entidade = new T();
                     entidade.LinhaParaObjeto(linha);
+
                     entidades.Add(entidade);
                 } catch (Exception)
                 {
@@ -51,14 +52,25 @@ namespace biltiful
          */
         public void Sobrescrever(List<T> entidades)
         {
+            StreamWriter escritor = new StreamWriter(Caminho);
 
+            foreach (T entidade in entidades)
+                escritor.WriteLine(entidade.FormatarParaArquivo());
+
+            escritor.Close();
         }
 
         /**
-         *  Insere uma nova entrada no arquivo, sem sobrescrever 
+         *  Insere uma nova entrada no arquivo. Essencialmente é apenas um atalho, já que utiliza os métodos
+         *  Ler e Sobrescrever.
          */
         public void Inserir(T entidade)
         {
+            List<T> entidades = Ler();
+
+            entidades.Add(entidade);
+
+            Sobrescrever(entidades);
         }
 
     }

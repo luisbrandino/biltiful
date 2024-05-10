@@ -8,5 +8,7 @@
         public const int TAMANHO_NOME_MPRIMA = 20;
 
         public const string DIRETORIO = "C:\\BILTIFUL\\";
+
+        public const string CLIENTE_ARQUIVO = "Clientes.dat";
     }
 }
