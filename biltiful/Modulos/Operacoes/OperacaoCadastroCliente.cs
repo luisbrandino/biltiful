@@ -1,64 +1,75 @@
-﻿using biltiful.Classes;
+﻿using biltiful.Modulos.Operacoes.Entradas;
+using biltiful.Classes;
 
 namespace biltiful.Modulos.Operacoes
 {
     internal class OperacaoCadastroCliente
     {
+        public string EntradaCpf()
+        {
+            Entrada<string> entrada = new();
+
+            entrada.DefinirMensagemDeErro("CPF inválido");
+
+            entrada.AdicionarRegra((string cpf) => Cliente.VerificarCPF(cpf));
+
+            return entrada.Pegar();
+        }
+
+        public string EntradaNome()
+        {
+            Entrada<string> entrada = new();
+
+            entrada.DefinirMensagemDeErro("Nome precisa ter entre 1 e 50 caracteres");
+
+            entrada.AdicionarRegra((string nome) => nome.Length >= 1 && nome.Length <= 50);
+
+            return entrada.Pegar();
+        }
+
+        public DateOnly EntradaDataNascimento()
+        {
+            Entrada<DateOnly> entrada = new();
+
+            entrada.DefinirMensagemDeErro("Data inválida.");
+            entrada.DefinirMensagemDeUso("Uso: dd/mm/aaaa");
+
+            entrada.AdicionarRegra((DateOnly data) => Cliente.VerificarDataDeNascimento(data));
+
+            return entrada.Pegar();
+        }
+
+        public char EntradaSexo()
+        {
+            Entrada<char> entrada = new();
+
+            entrada.DefinirMensagemDeErro("Sexo inválida.");
+            entrada.DefinirMensagemDeUso("Uso: M/F");
+
+            entrada.AdicionarRegra((char sexo) => Cliente.VerificarSexo(sexo));
+
+            return entrada.Pegar();
+        }
 
         public void Executar()
         {
             Console.Clear();
 
-            Console.Write("Informe o CPF: ");
-            string cpf = Console.ReadLine();
+            DateOnly? date = (DateOnly?)Convert.ChangeType(Console.ReadLine(), typeof(DateOnly));
 
-            while (!Cliente.VerificarCPF(cpf))
-            {
-                Console.Write("CPF inválido, por favor tente novamente: ");
-                cpf = Console.ReadLine();
-            }
+            Console.WriteLine(date);
+
+            Console.Write("Informe o CPF: ");
+            string cpf = EntradaCpf();
 
             Console.Write("Informe o nome: ");
-            string nome = Console.ReadLine().Trim().ToUpper();
-
-            if (nome.Length > 50)
-                nome = nome.Substring(0, Constantes.TAMANHO_NOME_CLIENTE);
+            string nome = EntradaNome();
 
             Console.Write("Digite a data de nascimento (dd/mm/aaaa): ");
-            DateOnly dataNascimento;
-
-            while (true)
-            {
-                try
-                {
-                    dataNascimento = DateOnly.Parse(Console.ReadLine());
-                }
-                catch (FormatException)
-                {
-                    Console.Write("Data de nascimento inválida, tente novamente: ");
-                    continue;
-                }
-
-                if (!Cliente.VerificarDataDeNascimento(dataNascimento))
-                {
-                    Console.Write("Data nascimento não pode ser posterior à data atual, tente novamente: ");
-                    continue;
-                }
-
-                break;
-            }
+            DateOnly dataNascimento = EntradaDataNascimento();
 
             Console.Write("Informe o sexo: ");
-            char sexo;
-            while (true)
-            {
-                sexo = Console.ReadLine().First();
-
-                if (Cliente.VerificarSexo(sexo))
-                    break;
-
-                Console.Write("Sexo inválido, tente novamente: ");
-            }
+            char sexo = EntradaSexo();
 
             Arquivo<Cliente> arquivo = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
 
