@@ -1,12 +1,12 @@
 ﻿
 namespace biltiful
 {
-    internal class EditorArquivo
+    public class EditarArquivo
     {
-        private readonly string CaminhoDiretorio = @"C:\Biltiful\";
-        private readonly string CaminhoArquivo = "Venda.dat";
+        private readonly string CaminhoDiretorio;
+        private readonly string CaminhoArquivo; 
 
-        protected EditorArquivo(string diretorio, string arquivo)
+        public EditarArquivo(string diretorio, string arquivo)
         {
             CaminhoDiretorio = diretorio;
             CaminhoArquivo = arquivo;
@@ -21,7 +21,7 @@ namespace biltiful
             }
         }
 
-        protected List<string> Ler()
+        public List<string> Ler()
         {
             List<string> conteudo = new();
 

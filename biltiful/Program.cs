@@ -4,7 +4,14 @@ class Program
 {
     static void Main(string[] args)
     {
-        Venda venda = new Venda();
-        venda.CadastrarVenda();
+
+        while (true)
+        {
+            Console.Clear();
+            Venda venda = new Venda(); //Objeto venda
+            venda.CadastrarVenda(); //Chama função |CadastrarVenda()| 
+            
+        }
     }
+
 }
