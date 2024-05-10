@@ -1,6 +1,6 @@
 ﻿namespace biltiful.Classes
 {
-    internal class Produto
+    internal class Produto : IEntidade
     {
         public string CodigoBarras {  get; set; }
         public string Nome { get; set; }
@@ -10,22 +10,19 @@
         public char Situacao { get; set; }
 
         /**
+         * Construtor vazio para permitir a população do objeto posteriormente com a linha vinda do arquivo
+         */
+        public Produto()
+        {
+
+        }
+
+        /**
          *  Construtor para criar o objeto a partir da linha vinda do arquivo
          */
         public Produto(string dados)
         {
-            if (dados.Length != 55)
-                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Produto");
-
-            CodigoBarras = dados.Substring(0, 13);
-            Nome = dados.Substring(13, Constantes.TAMANHO_NOME_PRODUTO).Trim();
-            ValorVenda = float.Parse(dados.Substring(33, 5)) / 100;
-
-            UltimaVenda = DateOnly.ParseExact(dados.Substring(38, 8), "ddMMyyyy", null);
-
-            DataCadastro = DataCadastro = DateOnly.ParseExact(dados.Substring(46, 8), "ddMMyyyy", null);
-
-            Situacao = dados.Substring(54, 1).First();
+            LinhaParaObjeto(dados);
         }
 
         /**
@@ -100,6 +97,22 @@
         public string FormatarParaArquivo()
         {
             return $"{CodigoBarras}{Nome.PadRight(20)}{ValorVenda * 100}{FormatarData(UltimaVenda)}{FormatarData(DataCadastro)}{Situacao}"; ;
+        }
+
+        public void LinhaParaObjeto(string linha)
+        {
+            if (linha.Length != 55)
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Produto");
+
+            CodigoBarras = linha.Substring(0, 13);
+            Nome = linha.Substring(13, Constantes.TAMANHO_NOME_PRODUTO).Trim();
+            ValorVenda = float.Parse(linha.Substring(33, 5)) / 100;
+
+            UltimaVenda = DateOnly.ParseExact(linha.Substring(38, 8), "ddMMyyyy", null);
+
+            DataCadastro = DataCadastro = DateOnly.ParseExact(linha.Substring(46, 8), "ddMMyyyy", null);
+
+            Situacao = linha.Substring(54, 1).First();
         }
     }
 }

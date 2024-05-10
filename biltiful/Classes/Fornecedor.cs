@@ -1,8 +1,6 @@
-﻿using System.Text.RegularExpressions;
-
-namespace biltiful.Classes
+﻿namespace biltiful.Classes
 {
-    internal class Fornecedor
+    internal class Fornecedor : IEntidade
     {
         public string CNPJ { get; set; }
         public string RazaoSocial { get; set; }
@@ -12,35 +10,19 @@ namespace biltiful.Classes
         public char Situacao { get; set; }
 
         /**
+         * Construtor vazio para que seja possível popular o objeto posteriormente com a linha vinda do arquivo
+         */
+        public Fornecedor()
+        {
+            
+        }
+
+        /**
          *  Construtor para criar o objeto a partir da linha vinda do arquivo
          */
         public Fornecedor(string dados)
         {
-            if (dados.Length != 89)
-                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Fornecedor");
-
-            CNPJ = dados.Substring(0, 14);
-            RazaoSocial = dados.Substring(14, Constantes.TAMANHO_NOME_FORNECEDOR).Trim();
-
-            int dia = int.Parse(dados.Substring(64, 2));
-            int mes = int.Parse(dados.Substring(66, 2));
-            int ano = int.Parse(dados.Substring(68, 4));
-
-            DataAbertura = new DateOnly(ano, mes, dia);
-
-            dia = int.Parse(dados.Substring(72, 2));
-            mes = int.Parse(dados.Substring(74, 2));
-            ano = int.Parse(dados.Substring(76, 4));
-
-            UltimaCompra = new DateOnly(ano, mes, dia);
-
-            dia = int.Parse(dados.Substring(80, 2));
-            mes = int.Parse(dados.Substring(82, 2));
-            ano = int.Parse(dados.Substring(84, 4));
-
-            DataCadastro = new DateOnly(ano, mes, dia);
-
-            Situacao = dados.Substring(88, 1).First();
+            LinhaParaObjeto(dados);
         }
 
         /**
@@ -120,6 +102,35 @@ namespace biltiful.Classes
         public string FormatarParaArquivo()
         {
             return $"{CNPJ}{RazaoSocial.PadRight(50)}{FormatarData(DataAbertura)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+        }
+
+        public void LinhaParaObjeto(string linha)
+        {
+            if (linha.Length != 89)
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Fornecedor");
+
+            CNPJ = linha.Substring(0, 14);
+            RazaoSocial = linha.Substring(14, Constantes.TAMANHO_NOME_FORNECEDOR).Trim();
+
+            int dia = int.Parse(linha.Substring(64, 2));
+            int mes = int.Parse(linha.Substring(66, 2));
+            int ano = int.Parse(linha.Substring(68, 4));
+
+            DataAbertura = new DateOnly(ano, mes, dia);
+
+            dia = int.Parse(linha.Substring(72, 2));
+            mes = int.Parse(linha.Substring(74, 2));
+            ano = int.Parse(linha.Substring(76, 4));
+
+            UltimaCompra = new DateOnly(ano, mes, dia);
+
+            dia = int.Parse(linha   .Substring(80, 2));
+            mes = int.Parse(linha.Substring(82, 2));
+            ano = int.Parse(linha.Substring(84, 4));
+
+            DataCadastro = new DateOnly(ano, mes, dia);
+
+            Situacao = linha.Substring(88, 1).First();
         }
 
     }

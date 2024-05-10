@@ -1,6 +1,8 @@
-﻿namespace biltiful
+﻿using biltiful.Classes;
+
+namespace biltiful
 {
-    internal class Arquivo<T> where T : class, new()
+    internal class Arquivo<T> where T : IEntidade, new()
     {
         public string Caminho { get; private set; }
 
@@ -10,8 +12,6 @@
         public Arquivo(string caminhoFinal)
         {
             Caminho = caminhoFinal;
-
-
         }
 
         /**
@@ -27,7 +27,23 @@
          */
         public List<T>? Ler()
         {
-            return null;
+            List<T>? entidades = null;
+
+            string[] linhas = File.ReadAllLines(Caminho);
+
+            foreach (string linha in linhas)
+            {
+                try
+                {
+                    T entidade = new T();
+                    entidade.LinhaParaObjeto(linha);
+                    entidades.Add(entidade);
+                } catch (Exception)
+                {
+                }
+            }
+
+            return entidades;
         }
 
         /**

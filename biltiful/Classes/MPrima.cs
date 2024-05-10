@@ -1,6 +1,6 @@
 ﻿namespace biltiful.Classes
 {
-    internal class MPrima
+    internal class MPrima : IEntidade
     {
         public string Id { get; private set; }
         public string Nome { get; set; }
@@ -9,18 +9,19 @@
         public char Situacao { get; set; }
 
         /**
+         *  Construtor vazio para que seja possível popular o objeto posteriormente com a linha vinda do arquivo
+         */
+        public MPrima()
+        {
+
+        }
+
+        /**
          *  Construtor para criar o objeto a partir da linha vinda do arquivo
          */
         public MPrima(string dados)
         {
-            if (dados.Length != 43)
-                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade MPrima");
-
-            Id = dados.Substring(0, 6);
-            Nome = dados.Substring(6, Constantes.TAMANHO_NOME_MPRIMA).Trim();
-            UltimaCompra = DateOnly.ParseExact(dados.Substring(26, 8), "ddMMyyyy");
-            DataCadastro = DateOnly.ParseExact(dados.Substring(34, 8), "ddMMyyyy");
-            Situacao = dados.Substring(42, 1).First();
+            LinhaParaObjeto(dados);
         }
 
         /**
@@ -65,6 +66,18 @@
         public string FormatarParaArquivo()
         {
             return $"{Id.ToUpper()}{Nome.PadRight(20)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+        }
+
+        public void LinhaParaObjeto(string linha)
+        {
+            if (linha.Length != 43)
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade MPrima");
+
+            Id = linha.Substring(0, 6);
+            Nome = linha.Substring(6, Constantes.TAMANHO_NOME_MPRIMA).Trim();
+            UltimaCompra = DateOnly.ParseExact(linha.Substring(26, 8), "ddMMyyyy");
+            DataCadastro = DateOnly.ParseExact(linha.Substring(34, 8), "ddMMyyyy");
+            Situacao = linha.Substring(42, 1).First();
         }
     }
 }
