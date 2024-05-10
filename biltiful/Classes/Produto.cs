@@ -12,7 +12,7 @@
         /**
          *  Construtor para criar o objeto a partir da linha vinda do arquivo
          */
-        public Produto(string dados, string v)
+        public Produto(string dados)
         {
             if (dados.Length != 55)
                 throw new Exception("Linha não possui o tamanho padrão para a entidade Produto");
@@ -33,13 +33,15 @@
          */
         public Produto(string codigoBarras, string nome, float valorVenda)
         {
+            if (!VerificarCodigoDeBarras(codigoBarras))
+                throw new Exception("Código de barras não segue o padrão EAN-13");
+
             if (!VerificarValorDeVenda(valorVenda))
                 throw new Exception("Valor de venda deve ser menor ou igual à R$999,99");
 
             CodigoBarras = codigoBarras;
             Nome = nome;
             ValorVenda = valorVenda;
-
         }
 
         /**
@@ -56,6 +58,9 @@
         public static bool VerificarCodigoDeBarras(string codigoDeBarras)
         {
             if (codigoDeBarras.Length != 13)
+                return false;
+
+            if (codigoDeBarras.Substring(0, 3) != "789")
                 return false;
 
             foreach (char caracter in codigoDeBarras)
