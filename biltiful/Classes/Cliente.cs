@@ -38,7 +38,7 @@
                 throw new ArgumentException("Data de nascimento não pode ser posterior à data atual");
 
             CPF = cpf;
-            Nome = nome;
+            Nome = nome.ToUpper();
             Sexo = sexo;
             DataNascimento = dataNascimento;
             UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
@@ -112,7 +112,7 @@
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
 
             CPF = linha.Substring(0, 11);
-            Nome = linha.Substring(11, 50).Trim();
+            Nome = linha.Substring(11, 50).Trim().ToUpper();
 
             int dia = int.Parse(linha.Substring(61, 2));
             int mes = int.Parse(linha.Substring(63, 2));

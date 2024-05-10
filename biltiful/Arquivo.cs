@@ -5,21 +5,31 @@ namespace biltiful
     internal class Arquivo<T> where T : IEntidade, new()
     {
         public string Caminho { get; private set; }
-
-        /**
-         *  Construtor recebe o caminho final apontado para o arquivo diretamente
-         */
-        public Arquivo(string caminhoFinal)
-        {
-            Caminho = caminhoFinal;
-        }
+        public string NomeDoArquivo { get; private set; }
+        public string CaminhoFinal { get; private set; }
 
         /**
          *  Construtor recebe o caminho junto do arquivo a ser apontado
          */
         public Arquivo(string caminho, string arquivo)
         {
-            Caminho = caminho + arquivo;
+            Caminho = caminho;
+            NomeDoArquivo = arquivo;
+            CaminhoFinal = caminho + arquivo;
+
+            CriarCaminhoSeNaoExistir();
+        }
+
+        void CriarCaminhoSeNaoExistir()
+        {
+            if (!Directory.Exists(Caminho))
+            {
+                Directory.CreateDirectory(Caminho);
+            }
+            if (!File.Exists(CaminhoFinal))
+            {
+                File.Create(CaminhoFinal).Close();
+            }
         }
 
         /**
@@ -29,7 +39,7 @@ namespace biltiful
         {
             List<T> entidades = new List<T>();
 
-            string[] linhas = File.ReadAllLines(Caminho);
+            string[] linhas = File.ReadAllLines(CaminhoFinal);
 
             foreach (string linha in linhas)
             {
@@ -52,7 +62,7 @@ namespace biltiful
          */
         public void Sobrescrever(List<T> entidades)
         {
-            StreamWriter escritor = new StreamWriter(Caminho);
+            StreamWriter escritor = new StreamWriter(CaminhoFinal);
 
             foreach (T entidade in entidades)
                 escritor.WriteLine(entidade.FormatarParaArquivo());

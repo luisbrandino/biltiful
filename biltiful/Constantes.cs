@@ -10,5 +10,6 @@
         public const string DIRETORIO = "C:\\BILTIFUL\\";
 
         public const string CLIENTE_ARQUIVO = "Clientes.dat";
+        public const string FORNECEDOR_ARQUIVO = "Fornecedor.dat";
     }
 }

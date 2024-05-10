@@ -37,7 +37,7 @@
                 throw new ArgumentException("Data de abertura não pode ser posterior à data atual");
 
             CNPJ = cnpj;
-            RazaoSocial = razaoSocial;
+            RazaoSocial = razaoSocial.ToUpper();
             DataAbertura = dataAbertura;
             UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
@@ -110,7 +110,7 @@
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Fornecedor");
 
             CNPJ = linha.Substring(0, 14);
-            RazaoSocial = linha.Substring(14, Constantes.TAMANHO_NOME_FORNECEDOR).Trim();
+            RazaoSocial = linha.Substring(14, Constantes.TAMANHO_NOME_FORNECEDOR).Trim().ToUpper();
 
             int dia = int.Parse(linha.Substring(64, 2));
             int mes = int.Parse(linha.Substring(66, 2));
