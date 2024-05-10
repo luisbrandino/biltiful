@@ -14,7 +14,31 @@
          */
         public Fornecedor(string dados)
         {
+            if (dados.Length != 89)
+                throw new Exception("Linha não possui o tamanho padrão para a entidade Fornecedor");
 
+            CNPJ = dados.Substring(0, 14);
+            RazaoSocial = dados.Substring(14, 50).Trim();
+
+            int dia = int.Parse(dados.Substring(64, 2));
+            int mes = int.Parse(dados.Substring(66, 2));
+            int ano = int.Parse(dados.Substring(68, 4));
+
+            DataAbertura = new DateOnly(ano, mes, dia);
+
+            dia = int.Parse(dados.Substring(72, 2));
+            mes = int.Parse(dados.Substring(74, 2));
+            ano = int.Parse(dados.Substring(76, 4));
+
+            UltimaCompra = new DateOnly(ano, mes, dia);
+
+            dia = int.Parse(dados.Substring(80, 2));
+            mes = int.Parse(dados.Substring(82, 2));
+            ano = int.Parse(dados.Substring(84, 4));
+
+            DataCadastro = new DateOnly(ano, mes, dia);
+
+            Situacao = dados.Substring(88, 1).First();
         }
 
         /**

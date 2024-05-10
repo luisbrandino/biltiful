@@ -49,10 +49,10 @@
          */
         public Cliente(string cpf, string nome, DateOnly dataNascimento, char sexo)
         {
-            if (!ValidarCPF(cpf))
+            if (!VerificarCPF(cpf))
                 throw new Exception("CPF informado é inválido");
 
-            if (!ValidarDataDeNascimento(dataNascimento))
+            if (!VerificarDataDeNascimento(dataNascimento))
                 throw new Exception("Data de nascimento não pode ser maior que data atual");
 
             CPF = cpf;
@@ -64,7 +64,10 @@
             Situacao = 'A';
         }
 
-        public static bool ValidarDataDeNascimento(DateOnly dataNascimento)
+        /**
+         *  Esse método verifica se a data de nascimento é superior à data atual
+         */
+        public static bool VerificarDataDeNascimento(DateOnly dataNascimento)
         {
             return dataNascimento <= DateOnly.FromDateTime(DateTime.Now);
         }
@@ -72,7 +75,7 @@
         /**
          *  Esse método verifica se o CPF é válido
          */
-        public static bool ValidarCPF(string cpf)
+        public static bool VerificarCPF(string cpf)
         {
             if (cpf.Length != 11)
                 return false;
