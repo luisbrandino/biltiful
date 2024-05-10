@@ -26,17 +26,27 @@
         /**
          *  Construtor para criar o objeto com as propriedades diretamente 
          */
-        public MPrima(string id, string nome, DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
+        public MPrima(string id, string nome)
         {
-            
+            if (!VerificarId(id))
+                throw new ArgumentException("ID informado inválido");
+
+            Id = id;
+            Nome = nome.Trim();
+            UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
+            DataCadastro = DateOnly.FromDateTime(DateTime.Now);
+            Situacao = 'A';
         }
 
         /**
          *  Verifica se o campo id cumpre os requisitos esperados
          */
-        static bool VerificarId(string id)
+        public static bool VerificarId(string id)
         {
-            return true;
+            if (id.Length != 6)
+                return false;
+
+            return id.StartsWith("MP");
         }
 
         /**
