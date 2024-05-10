@@ -1,6 +1,6 @@
 ﻿namespace biltiful
 {
-    internal class Arquivo<T> where T : class
+    internal class Arquivo<T> where T : class, new()
     {
         public string Caminho { get; private set; }
 
@@ -10,6 +10,8 @@
         public Arquivo(string caminhoFinal)
         {
             Caminho = caminhoFinal;
+
+
         }
 
         /**

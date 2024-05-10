@@ -17,7 +17,7 @@
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade MPrima");
 
             Id = dados.Substring(0, 6);
-            Nome = dados.Substring(6, 20).Trim();
+            Nome = dados.Substring(6, Constantes.TAMANHO_NOME_MPRIMA).Trim();
             UltimaCompra = DateOnly.ParseExact(dados.Substring(26, 8), "ddMMyyyy");
             DataCadastro = DateOnly.ParseExact(dados.Substring(34, 8), "ddMMyyyy");
             Situacao = dados.Substring(42, 1).First();

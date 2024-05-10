@@ -18,7 +18,7 @@
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Produto");
 
             CodigoBarras = dados.Substring(0, 13);
-            Nome = dados.Substring(13, 20).Trim();
+            Nome = dados.Substring(13, Constantes.TAMANHO_NOME_PRODUTO).Trim();
             ValorVenda = float.Parse(dados.Substring(33, 5)) / 100;
 
             UltimaVenda = DateOnly.ParseExact(dados.Substring(38, 8), "ddMMyyyy", null);

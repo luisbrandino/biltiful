@@ -20,7 +20,7 @@ namespace biltiful.Classes
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Fornecedor");
 
             CNPJ = dados.Substring(0, 14);
-            RazaoSocial = dados.Substring(14, 50).Trim();
+            RazaoSocial = dados.Substring(14, Constantes.TAMANHO_NOME_FORNECEDOR).Trim();
 
             int dia = int.Parse(dados.Substring(64, 2));
             int mes = int.Parse(dados.Substring(66, 2));
