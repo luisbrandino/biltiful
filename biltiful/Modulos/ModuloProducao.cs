@@ -36,7 +36,8 @@ namespace biltiful.Modulos
                     }
                     if (!File.Exists(caminho + arquivo))
                     {
-                        File.Create(caminho + arquivo);
+                        File.Create(caminho + arquivo).Close();
+                        
                     }
                 }
                 catch (DirectoryNotFoundException)
