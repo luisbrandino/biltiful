@@ -50,10 +50,10 @@
         public Cliente(string cpf, string nome, DateOnly dataNascimento, char sexo)
         {
             if (!VerificarCPF(cpf))
-                throw new Exception("CPF informado é inválido");
+                throw new ArgumentException("CPF informado é inválido");
 
             if (!VerificarDataDeNascimento(dataNascimento))
-                throw new Exception("Data de nascimento não pode ser posterior à data atual");
+                throw new ArgumentException("Data de nascimento não pode ser posterior à data atual");
 
             CPF = cpf;
             Nome = nome;

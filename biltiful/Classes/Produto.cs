@@ -15,7 +15,7 @@
         public Produto(string dados)
         {
             if (dados.Length != 55)
-                throw new Exception("Linha não possui o tamanho padrão para a entidade Produto");
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Produto");
 
             CodigoBarras = dados.Substring(0, 13);
             Nome = dados.Substring(13, 20).Trim();

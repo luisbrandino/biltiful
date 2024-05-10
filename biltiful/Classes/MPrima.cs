@@ -13,7 +13,14 @@
          */
         public MPrima(string dados)
         {
-            
+            if (dados.Length != 43)
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade MPrima");
+
+            Id = dados.Substring(0, 6);
+            Nome = dados.Substring(6, 20);
+            UltimaCompra = DateOnly.ParseExact(dados.Substring(26, 8), "ddMMyyyy");
+            DataCadastro = DateOnly.ParseExact(dados.Substring(34, 8), "ddMMyyyy");
+            Situacao = dados.Substring(42, 1).First();
         }
 
         /**
@@ -21,7 +28,7 @@
          */
         public MPrima(string id, string nome, DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
         {
-
+            
         }
 
         /**

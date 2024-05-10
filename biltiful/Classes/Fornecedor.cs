@@ -17,7 +17,7 @@ namespace biltiful.Classes
         public Fornecedor(string dados)
         {
             if (dados.Length != 89)
-                throw new Exception("Linha não possui o tamanho padrão para a entidade Fornecedor");
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Fornecedor");
 
             CNPJ = dados.Substring(0, 14);
             RazaoSocial = dados.Substring(14, 50).Trim();
@@ -49,10 +49,10 @@ namespace biltiful.Classes
         public Fornecedor(string cnpj, string razaoSocial, DateOnly dataAbertura)
         {
             if (!VerificarCNPJ(cnpj))
-                throw new Exception("CNPJ informado é inválido");
+                throw new ArgumentException("CNPJ informado é inválido");
 
             if (!VerificarDataAbertura(dataAbertura))
-                throw new Exception("Data de abertura não pode ser posterior à data atual");
+                throw new ArgumentException("Data de abertura não pode ser posterior à data atual");
 
             CNPJ = cnpj;
             RazaoSocial = razaoSocial;
