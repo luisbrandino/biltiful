@@ -14,5 +14,13 @@ namespace biltiful.Classes
         public double Quantidade { get; set; }
 
         public Producao() { }
+
+        public Producao(int id, DateOnly dataProducao, int produto, double quantidade)
+        {
+            Id = id;
+            DataProducao = dataProducao;
+            Produto = produto;
+            Quantidade = quantidade;
+        }
     }
 }
