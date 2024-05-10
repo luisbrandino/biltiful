@@ -46,9 +46,20 @@ namespace biltiful.Classes
         /**
          *  Construtor para criar o objeto com as propriedades diretamente 
          */
-        public Fornecedor(string CNPJ, string razaoSocial, DateOnly dataAbertura, DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
+        public Fornecedor(string cnpj, string razaoSocial, DateOnly dataAbertura)
         {
+            if (!VerificarCNPJ(cnpj))
+                throw new Exception("CNPJ informado é inválido");
 
+            if (!VerificarDataAbertura(dataAbertura))
+                throw new Exception("Data de abertura não pode ser posterior à data atual");
+
+            CNPJ = cnpj;
+            RazaoSocial = razaoSocial;
+            DataAbertura = dataAbertura;
+            UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
+            DataCadastro = DateOnly.FromDateTime(DateTime.Now);
+            Situacao = 'A';
         }
 
         /**
@@ -56,7 +67,7 @@ namespace biltiful.Classes
          */
         public static bool VerificarDataAbertura(DateOnly dataAbertura)
         {
-            return true;
+            return dataAbertura < DateOnly.FromDateTime(DateTime.Now);
         }
 
         /**

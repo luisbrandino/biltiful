@@ -53,7 +53,7 @@
                 throw new Exception("CPF informado é inválido");
 
             if (!VerificarDataDeNascimento(dataNascimento))
-                throw new Exception("Data de nascimento não pode ser maior que data atual");
+                throw new Exception("Data de nascimento não pode ser posterior à data atual");
 
             CPF = cpf;
             Nome = nome;
