@@ -1,6 +1,6 @@
 ﻿namespace biltiful.Classes
 {
-    internal class MPrima
+    internal class MPrima : IEntidade
     {
         public string Id { get; private set; }
         public string Nome { get; set; }
@@ -9,27 +9,55 @@
         public char Situacao { get; set; }
 
         /**
+         *  Construtor vazio para que seja possível popular o objeto posteriormente com a linha vinda do arquivo
+         */
+        public MPrima()
+        {
+
+        }
+
+        /**
          *  Construtor para criar o objeto a partir da linha vinda do arquivo
          */
         public MPrima(string dados)
         {
-            
+            LinhaParaObjeto(dados);
         }
 
         /**
          *  Construtor para criar o objeto com as propriedades diretamente 
          */
-        public MPrima(string id, string nome, DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
+        public MPrima(string id, string nome)
         {
+            id = id.ToUpper();
 
+            if (!VerificarId(id))
+                throw new ArgumentException("ID informado inválido");
+
+            Id = id;
+            Nome = nome;
+            UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
+            DataCadastro = DateOnly.FromDateTime(DateTime.Now);
+            Situacao = 'A';
         }
 
         /**
          *  Verifica se o campo id cumpre os requisitos esperados
          */
-        static bool VerificarId(string id)
+        public static bool VerificarId(string id)
         {
-            return true;
+            if (id.Length != 6)
+                return false;
+
+            return id.StartsWith("MP");
+        }
+
+        /**
+         *  Formata o tipo de data (não pertence aqui)
+         */
+        public string FormatarData(DateOnly data)
+        {
+            return $"{data.Day.ToString("00")}{data.Month.ToString("00")}{data.Year.ToString("0000")}";
         }
 
         /**
@@ -37,7 +65,19 @@
          */
         public string FormatarParaArquivo()
         {
-            return string.Empty;
+            return $"{Id.ToUpper()}{Nome.PadRight(20)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+        }
+
+        public void LinhaParaObjeto(string linha)
+        {
+            if (linha.Length != 43)
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade MPrima");
+
+            Id = linha.Substring(0, 6);
+            Nome = linha.Substring(6, Constantes.TAMANHO_NOME_MPRIMA).Trim();
+            UltimaCompra = DateOnly.ParseExact(linha.Substring(26, 8), "ddMMyyyy");
+            DataCadastro = DateOnly.ParseExact(linha.Substring(34, 8), "ddMMyyyy");
+            Situacao = linha.Substring(42, 1).First();
         }
     }
 }

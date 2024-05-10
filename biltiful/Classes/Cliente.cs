@@ -1,6 +1,6 @@
-﻿namespace biltiful.Entidades
+﻿namespace biltiful.Classes
 {
-    internal class Cliente
+    internal class Cliente : IEntidade
     {
         public string CPF { get; private set; }
         public string Nome { get; set; }
@@ -11,37 +11,19 @@
         public char Situacao { get; set; }
 
         /**
+         *  Esse construtor permite a criação de um objeto vazio para ser posteriormente populado com a linha vinda do arquivo
+         */
+        public Cliente()
+        {
+
+        }
+
+        /**
          *  Esse construtor serve para carregar um objeto Cliente com a linha vinda do arquivo referente
          */
-        public Cliente(string dados)
+        public Cliente(string linha)
         {
-            if (dados.Length != 87)
-                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
-
-            CPF = dados.Substring(0, 11);
-            Nome = dados.Substring(11, 50).Trim();
-
-            int dia = int.Parse(dados.Substring(61, 2));
-            int mes = int.Parse(dados.Substring(63, 2));
-            int ano = int.Parse(dados.Substring(65, 4));
-
-            DataNascimento = new DateOnly(ano, mes, dia);
-
-            Sexo = dados.Substring(69, 1).First();
-
-            dia = int.Parse(dados.Substring(70, 2));
-            mes = int.Parse(dados.Substring(72, 2));
-            ano = int.Parse(dados.Substring(74, 4));
-
-            UltimaCompra = new DateOnly(ano, mes, dia);
-
-            dia = int.Parse(dados.Substring(78, 2));
-            mes = int.Parse(dados.Substring(80, 2));
-            ano = int.Parse(dados.Substring(82, 4));
-
-            DataCadastro = new DateOnly(ano, mes, dia);
-
-            Situacao = dados.Substring(86, 1).First();
+            LinhaParaObjeto(linha);
         }
 
         /**
@@ -49,14 +31,14 @@
          */
         public Cliente(string cpf, string nome, DateOnly dataNascimento, char sexo)
         {
-            if (!ValidarCPF(cpf))
-                throw new Exception("CPF informado é inválido");
+            if (!VerificarCPF(cpf))
+                throw new ArgumentException("CPF informado é inválido");
 
-            if (!ValidarDataDeNascimento(dataNascimento))
-                throw new Exception("Data de nascimento não pode ser maior que data atual");
+            if (!VerificarDataDeNascimento(dataNascimento))
+                throw new ArgumentException("Data de nascimento não pode ser posterior à data atual");
 
             CPF = cpf;
-            Nome = nome;
+            Nome = nome.ToUpper();
             Sexo = sexo;
             DataNascimento = dataNascimento;
             UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
@@ -64,7 +46,10 @@
             Situacao = 'A';
         }
 
-        public static bool ValidarDataDeNascimento(DateOnly dataNascimento)
+        /**
+         *  Esse método verifica se a data de nascimento é superior à data atual
+         */
+        public static bool VerificarDataDeNascimento(DateOnly dataNascimento)
         {
             return dataNascimento <= DateOnly.FromDateTime(DateTime.Now);
         }
@@ -72,7 +57,7 @@
         /**
          *  Esse método verifica se o CPF é válido
          */
-        public static bool ValidarCPF(string cpf)
+        public static bool VerificarCPF(string cpf)
         {
             if (cpf.Length != 11)
                 return false;
@@ -119,6 +104,37 @@
         public string FormatarParaArquivo()
         {
             return $"{CPF}{Nome.PadRight(50)}{FormatarData(DataNascimento)}{Sexo}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+        }
+
+        public void LinhaParaObjeto(string linha)
+        {
+            if (linha.Length != 87)
+                throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
+
+            CPF = linha.Substring(0, 11);
+            Nome = linha.Substring(11, 50).Trim().ToUpper();
+
+            int dia = int.Parse(linha.Substring(61, 2));
+            int mes = int.Parse(linha.Substring(63, 2));
+            int ano = int.Parse(linha.Substring(65, 4));
+
+            DataNascimento = new DateOnly(ano, mes, dia);
+
+            Sexo = linha.Substring(69, 1).First();
+
+            dia = int.Parse(linha.Substring(70, 2));
+            mes = int.Parse(linha.Substring(72, 2));
+            ano = int.Parse(linha.Substring(74, 4));
+
+            UltimaCompra = new DateOnly(ano, mes, dia);
+
+            dia = int.Parse(linha.Substring(78, 2));
+            mes = int.Parse(linha.Substring(80, 2));
+            ano = int.Parse(linha.Substring(82, 4));
+
+            DataCadastro = new DateOnly(ano, mes, dia);
+
+            Situacao = linha.Substring(86, 1).First();
         }
     }
 }
