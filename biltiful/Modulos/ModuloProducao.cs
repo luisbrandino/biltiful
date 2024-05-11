@@ -140,12 +140,11 @@ namespace biltiful.Modulos
                     if (continua)
                         Console.WriteLine("\nMateria prima não encontrada ou inativa\nInsira novamente por favor.");
 
-
                 } while (continua);
 
                 do
                 {
-                    Console.WriteLine($"znInsira a quantidade de {materia.Nome} a ser utilizada");
+                    Console.WriteLine($"\nInsira a quantidade de {materia.Nome} a ser utilizada");
                     Console.WriteLine("Quantidade máxima: 999,99");
                     try
                     {
