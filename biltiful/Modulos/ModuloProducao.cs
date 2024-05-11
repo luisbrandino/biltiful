@@ -1,6 +1,7 @@
 ﻿using biltiful.Classes;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 
@@ -25,8 +26,8 @@ namespace biltiful.Modulos
             Arquivo<MPrima> arqMateria = new(caminho, arquivoMateria);
 
             #region Preenchendo Listas
-            List<string> listaCodigoBarrasCosmetico = LerChavesAquivo(caminho, arquivoCosmetico, 13);
-            List<string> listaIdMateriaCosmetico = LerChavesAquivo(caminho, arquivoMateria, 6);
+            List<Produto> listaCosmeticos = arqProduto.Ler();
+            List<MPrima> listaMaterias = arqMateria.Ler();
 
             List<Producao> listaProducao = arqProducao.Ler();
             List<ItemProducao> listaItemProducao = arqItemProducao.Ler();
@@ -34,19 +35,6 @@ namespace biltiful.Modulos
 
 
             #region Funcoes
-
-            List<string> LerChavesAquivo(string caminho, string arquivo, int tamanhoChave)
-            {
-                List<string> list = new List<string>();
-
-                foreach (var item in File.ReadAllLines(caminho + arquivo))
-                {
-                    list.Add(item.Substring(0, tamanhoChave));
-                }
-
-                return list;
-            }
-
 
             Producao CadastrarProducao()
             {
@@ -59,26 +47,34 @@ namespace biltiful.Modulos
                 string produto;
                 double quantidade;
                 DateOnly dataProducao = DateOnly.FromDateTime(DateTime.Now);
-
+                bool continua = true;
+                Produto p = new Produto();
                 do
                 {
                     Console.WriteLine("Insira o código de barras do produto a ser produzido: ");
                     produto = Console.ReadLine();
-                    if (!listaCodigoBarrasCosmetico.Contains(produto))
-                    {
-                        Console.WriteLine("Cosmetico não encontrado...\nInsira novamente por favor.");
-                    }
-                    else
-                    {
-                        break;
-                    }
 
-                } while (true);
+
+                    foreach (var item in listaCosmeticos)
+                    {
+                        if (item.CodigoBarras == produto && item.Situacao == 'A')
+                        {
+                            p = item;
+                            Console.WriteLine("Produto encontrado e disponível");
+
+                            continua = false;
+                            break;
+                        }
+
+                    }
+                    if (continua)
+                        Console.WriteLine("Cosmético não encontrado ou inativo\nInsira novamente por favor.");
+                } while (continua);
 
                 do
                 {
-                    Console.WriteLine("Insira a quantidade a ser produzida");
-                    Console.WriteLine("Maximo de caracteres: 6");
+                    Console.WriteLine($"Insira a quantidade de {p.Nome} a ser produzida");
+                    Console.WriteLine("Quantidade máxima: 999,99");
                     quantidade = double.Parse(Console.ReadLine());
                     if (quantidade > 999.99)
                     {
@@ -88,13 +84,73 @@ namespace biltiful.Modulos
                         break;
                 } while (true);
 
-                return new(id, dataProducao, produto, quantidade);
+                Producao producao = new(id, dataProducao, produto, quantidade);
+                int opcao;
+                do
+                {
+                    CadastrarItemProducao(id);
+                    Console.WriteLine("Deseja inserir outra matéria prima?");
+                    Console.WriteLine("1 - sim | 2 - não");
+                    opcao = int.Parse(Console.ReadLine());
+
+                    if (opcao == 1)
+                        continua = true;
+
+                    else
+                        break;
+
+
+                } while (continua);
+                return producao;
             }
 
-            #endregion
-            
-            arqProducao.Inserir(CadastrarProducao());
+            void CadastrarItemProducao(int id)
+            {
+                DateOnly dataProducao = DateOnly.FromDateTime(DateTime.Now);
+                string materiaPrima;
+                double quantidade;
+                bool continua = true;
+                MPrima materia = new();
+                do
+                {
+                    Console.WriteLine("Digite o identificador da matéria prima: ");
+                    materiaPrima = Console.ReadLine().ToUpper();
+                    foreach (var item in listaMaterias)
+                    {
+                        if (item.Id == materiaPrima && item.Situacao == 'A')
+                        {
+                            materia = item;
+                            Console.WriteLine("Materia prima encontrada e disponível");
+                            continua = false;
+                            break;
+                        }
+                    }
+                    if (continua)
+                        Console.WriteLine("Materia prima não encontrada ou inativa\nInsira novamente por favor.");
 
+
+                } while (continua);
+
+                do
+                {
+                    Console.WriteLine($"Insira a quantidade de {materia.Nome} a ser utilizada");
+                    Console.WriteLine("Quantidade máxima: 999,99");
+                    quantidade = double.Parse(Console.ReadLine());
+                    if (quantidade > 999.99)
+                    {
+                        Console.WriteLine("Valor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
+                    }
+                    else
+                        break;
+                } while (true);
+                ItemProducao itemProducao = new(id, dataProducao, materia.Id, quantidade);
+                arqItemProducao.Inserir(itemProducao);
+            }
+            #endregion
+
+
+
+            arqProducao.Inserir(CadastrarProducao());
             Console.WriteLine();
         }
 
