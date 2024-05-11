@@ -55,7 +55,7 @@ namespace biltiful.Modulos.Operacoes
 
         char EntradaSexo()
         {
-            Entrada<char> entrada = new();
+            EntradaChar entrada = new();
 
             entrada.AdicionarRegra(
                 (char sexo) => Cliente.VerificarSexo(sexo),
