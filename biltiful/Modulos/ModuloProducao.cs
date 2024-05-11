@@ -36,7 +36,7 @@ namespace biltiful.Modulos
 
             #region Funcoes
 
-            Producao CadastrarProducao()
+            bool CadastrarProducao()
             {
                 int id;
                 if (listaProducao.Count() == 0)
@@ -73,15 +73,22 @@ namespace biltiful.Modulos
 
                 do
                 {
-                    Console.WriteLine($"\nInsira a quantidade de {p.Nome} a ser produzida");
-                    Console.WriteLine("Quantidade máxima: 999,99");
-                    quantidade = double.Parse(Console.ReadLine());
-                    if (quantidade > 999.99)
+                    try
                     {
-                        Console.WriteLine("Valor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
+                        Console.WriteLine($"\nInsira a quantidade de {p.Nome} a ser produzida");
+                        Console.WriteLine("Quantidade máxima: 999,99");
+                        quantidade = double.Parse(Console.ReadLine());
+                        if (quantidade > 999.99)
+                        {
+                            Console.WriteLine("Valor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
+                        }
+                        else
+                            break;
                     }
-                    else
-                        break;
+                    catch (FormatException ex)
+                    {
+                        Console.WriteLine("O valor inserido não é válido...");
+                    }
                 } while (true);
 
                 Producao producao = new(id, dataProducao, produto, quantidade);
@@ -101,7 +108,12 @@ namespace biltiful.Modulos
 
 
                 } while (continua);
-                return producao;
+
+                arqProducao.Inserir(producao);
+                listaProducao = arqProducao.Ler();
+                listaItemProducao = arqItemProducao.Ler();
+
+                return true;
             }
 
             void CadastrarItemProducao(int id)
@@ -135,13 +147,20 @@ namespace biltiful.Modulos
                 {
                     Console.WriteLine($"znInsira a quantidade de {materia.Nome} a ser utilizada");
                     Console.WriteLine("Quantidade máxima: 999,99");
-                    quantidade = double.Parse(Console.ReadLine());
-                    if (quantidade > 999.99)
+                    try
                     {
-                        Console.WriteLine("\nValor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
+                        quantidade = double.Parse(Console.ReadLine());
+                        if (quantidade > 999.99)
+                        {
+                            Console.WriteLine("\nValor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
+                        }
+                        else
+                            break;
                     }
-                    else
-                        break;
+                    catch (FormatException ex)
+                    {
+                        Console.WriteLine("O valor inserido não é válido...");
+                    }
                 } while (true);
                 ItemProducao itemProducao = new(id, dataProducao, materia.Id, quantidade);
                 arqItemProducao.Inserir(itemProducao);
@@ -149,16 +168,22 @@ namespace biltiful.Modulos
 
             Producao Localicar()
             {
-                Console.Write("Informe o Id da produção: ");
-                int id = int.Parse(Console.ReadLine());
-
-                foreach (var item in listaProducao)
+                try
                 {
-                    if (item.Id == id)
-                        return item;
-                }
-                throw new Exception();
+                    Console.Write("Informe o Id da produção: ");
+                    int id = int.Parse(Console.ReadLine());
 
+                    foreach (var item in listaProducao)
+                    {
+                        if (item.Id == id)
+                            return item;
+                    }
+                    throw new Exception();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro: Não foi possível localizar a produção");
+                }
                 return new();
             }
 
@@ -196,7 +221,6 @@ namespace biltiful.Modulos
                 catch (Exception ex)
                 {
                     Console.WriteLine("Erro: Não foi possível localizar a produção");
-
                 }
             }
 
@@ -304,14 +328,41 @@ namespace biltiful.Modulos
 
             #endregion
 
+            int opcao;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine(">>> MENU DE PRODUÇÃO <<<");
+                Console.WriteLine("Escolha uma opção");
+                Console.WriteLine("1 - Cadastrar Produção");
+                Console.WriteLine("2 - Localizar Produção");
+                Console.WriteLine("3 - Navegar pelas Produções");
+                Console.WriteLine("4 - Excluir uma Produção");
+                Console.WriteLine("0 - Voltar\n");
+                opcao = int.Parse(Console.ReadLine());
 
+                switch (opcao)
+                {
+                    case 1:
+                        Console.WriteLine(CadastrarProducao()? "Produção cadastrada com sucesso" : "Algo deu errado ao cadastra a produção" );
+                        break;
+                    case 2:
+                        Imprimir(Localicar());
+                        break;
+                    case 3:
+                        Navegar();
+                        break;
+                    case 4:
+                        Console.WriteLine((ExcluirProducao() ? "Produção excluida com sucesso." : "Produção não excluída."));
+                        break;
+                    case 0:
+                        Console.WriteLine("Voltando...");
+                        break;
 
-            //arqProducao.Inserir(CadastrarProducao());
-            //Imprimir(Localicar());
-            Console.WriteLine((ExcluirProducao() ? "Produção excluida com sucesso." : "Produção não excluída."));
-            //Navegar();
-
-            Console.WriteLine();
+                }
+                Console.WriteLine("Pressione Enter para continuar...");
+                Console.ReadLine();
+            } while (opcao != 0);
         }
 
     }
