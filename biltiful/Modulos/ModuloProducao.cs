@@ -146,11 +146,67 @@ namespace biltiful.Modulos
                 ItemProducao itemProducao = new(id, dataProducao, materia.Id, quantidade);
                 arqItemProducao.Inserir(itemProducao);
             }
+
+            Producao Localicar()
+            {
+
+                Console.Write("Digite o Id da produção: ");
+                int id = int.Parse(Console.ReadLine());
+
+                foreach (var item in listaProducao)
+                {
+                    if (item.Id == id)
+                        return item;
+                }
+                throw new Exception();
+
+                return new();
+            }
+
+            void ImprimirLocalizado()
+            {
+                try
+                {
+                    Producao p = Localicar();
+
+                    foreach (var item in listaCosmeticos)
+                    {
+                        if (p.Produto == item.CodigoBarras)
+                        {
+                            Console.WriteLine($"Nome do produto: {item.Nome}");
+                            break;
+                        }
+                    }
+                    Console.Write(p.Imprimir());
+
+                    Console.WriteLine();
+                    Console.WriteLine("Itens utilizados: ");
+                    foreach (var item in listaItemProducao)
+                    {
+                        if (item.Id == p.Id)
+                        {
+                            Console.WriteLine();
+                            foreach (var materiaPrima in listaMaterias)
+                            {
+                                if (item.MateriaPrima == materiaPrima.Id)
+                                    Console.WriteLine("Nome: " + materiaPrima.Nome);
+                            }
+                            Console.Write(item.Imprimir());
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro: Não foi possível localizar a produção");
+
+                }
+            }
             #endregion
 
 
 
-            arqProducao.Inserir(CadastrarProducao());
+            //arqProducao.Inserir(CadastrarProducao());
+            ImprimirLocalizado();
             Console.WriteLine();
         }
 

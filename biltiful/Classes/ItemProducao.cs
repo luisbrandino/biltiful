@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace biltiful.Classes
 {
-    internal class ItemProducao: IEntidade
+    internal class ItemProducao : IEntidade
     {
         public int Id { get; set; }
         public DateOnly DataProducao { get; set; }
@@ -50,6 +51,11 @@ namespace biltiful.Classes
             quantidade = this.QuantidadeMateriaPrima.ToString("000.00").Replace(",", "").Substring(0, 5);
 
             return id + data + this.MateriaPrima + quantidade;
+        }
+        public string Imprimir()
+        {
+            string s = $"Id Produção: {this.Id} | Data: {this.DataProducao.ToString(CultureInfo.CurrentCulture)}\nMateria Prima: {this.MateriaPrima}\nQuantidade utilizada: {this.QuantidadeMateriaPrima}\n";
+            return s;
         }
     }
 }
