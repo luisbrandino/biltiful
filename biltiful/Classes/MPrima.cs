@@ -65,7 +65,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{Id.ToUpper()}{Nome.PadRight(20)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{Id.ToUpper()}{Nome.PadRight(Constantes.TAMANHO_NOME_MPRIMA)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
         }
 
         public void LinhaParaObjeto(string linha)

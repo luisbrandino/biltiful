@@ -114,7 +114,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CPF}{Nome.PadRight(50)}{FormatarData(DataNascimento)}{char.ToUpper(Sexo)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{CPF}{Nome.PadRight(Constantes.TAMANHO_NOME_CLIENTE)}{FormatarData(DataNascimento)}{char.ToUpper(Sexo)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
         }
 
         public void LinhaParaObjeto(string linha)
@@ -123,7 +123,7 @@
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
 
             CPF = linha.Substring(0, 11);
-            Nome = linha.Substring(11, 50).Trim().ToUpper();
+            Nome = linha.Substring(11, Constantes.TAMANHO_NOME_CLIENTE).Trim().ToUpper();
 
             int dia = int.Parse(linha.Substring(61, 2));
             int mes = int.Parse(linha.Substring(63, 2));

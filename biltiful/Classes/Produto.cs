@@ -96,7 +96,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CodigoBarras}{Nome.PadRight(20)}{ValorVenda * 100}{FormatarData(UltimaVenda)}{FormatarData(DataCadastro)}{Situacao}"; ;
+            return $"{CodigoBarras}{Nome.PadRight(Constantes.TAMANHO_NOME_PRODUTO)}{ValorVenda * 100}{FormatarData(UltimaVenda)}{FormatarData(DataCadastro)}{Situacao}"; ;
         }
 
         public void LinhaParaObjeto(string linha)
