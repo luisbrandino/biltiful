@@ -13,6 +13,9 @@ namespace biltiful.Modulos
                 case 1:
                     new OperacaoCadastroCliente().Executar();
                     break;
+                case 2:
+                    new OperacaoLocalizarCliente().Executar();
+                    break;
             }
         }
 
