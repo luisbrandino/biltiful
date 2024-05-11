@@ -117,6 +117,9 @@
             return $"{CPF}{Nome.PadRight(Constantes.TAMANHO_NOME_CLIENTE)}{FormatarData(DataNascimento)}{char.ToUpper(Sexo)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
         }
 
+        /**
+         *  Esse método constrói o objeto a partir da linha vinda do arquivo
+         */
         public void LinhaParaObjeto(string linha)
         {
             if (linha.Length != 87)
@@ -146,6 +149,11 @@
             DataCadastro = new DateOnly(ano, mes, dia);
 
             Situacao = linha.Substring(86, 1).First();
+        }
+
+        public override string ToString()
+        {
+            return $"CPF: {CPF}\nNome: {Nome}";
         }
     }
 }

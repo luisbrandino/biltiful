@@ -22,7 +22,7 @@ namespace biltiful.Modulos.Operacoes
             );
 
             entrada.AdicionarRegra(
-                (string cpf) => arquivo.Ler().Find(c => c.CPF == cpf) == null,
+                (string? cpf) => arquivo.Ler().Find(c => c.CPF == cpf) == null,
                 "CPF já registrado"
             );
 
@@ -34,7 +34,7 @@ namespace biltiful.Modulos.Operacoes
             Entrada<string> entrada = new();
 
             entrada.AdicionarRegra(
-                (string nome) => nome.Length >= 1 && nome.Length <= 50,
+                (string? nome) => nome?.Length >= 1 && nome?.Length <= Constantes.TAMANHO_NOME_CLIENTE,
                 "Nome precisa ter entre 1 e 50 caracteres"
             );
 

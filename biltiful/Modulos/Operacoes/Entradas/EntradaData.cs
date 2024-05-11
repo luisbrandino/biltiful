@@ -1,4 +1,6 @@
-﻿namespace biltiful.Modulos.Operacoes.Entradas
+﻿using System.Globalization;
+
+namespace biltiful.Modulos.Operacoes.Entradas
 {
     internal class EntradaData : Entrada<DateOnly>
     {
@@ -9,7 +11,7 @@
 
         protected override DateOnly Formatar(string valor)
         {
-            return DateOnly.Parse(valor);
+            return DateOnly.Parse(valor, new CultureInfo("pt-BR"));
         }
 
     }

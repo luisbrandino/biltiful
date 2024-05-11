@@ -24,7 +24,7 @@ namespace biltiful.Modulos.Operacoes
             /// Isso acaba por pesquisar o mesmo valor duas vezes no arquivo
             entrada.AdicionarRegra(
                 (string cpf) => arquivo.Ler().Find(c => c.CPF == cpf) != null,
-                "CPF já registrado"
+                "CPF não encontrado"
             );
 
             return entrada.Pegar();
