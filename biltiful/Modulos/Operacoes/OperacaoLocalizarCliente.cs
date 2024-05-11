@@ -39,6 +39,8 @@ namespace biltiful.Modulos.Operacoes
             Cliente? cliente = arquivo.Ler().Find(c => c.CPF == cpf);
 
             Console.WriteLine(cliente);
+
+            Console.ReadKey();
         }
     }
 }

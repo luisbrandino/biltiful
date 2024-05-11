@@ -69,30 +69,36 @@ namespace biltiful.Modulos
 
             menu.DefinirTitulo(">> MENU DE CADASTROS <<");
 
-            switch (menu.Perguntar())
-            {
-                case 1:
-                    Clientes();
-                    break;
-                case 2:
-                    Produtos();
-                    break;
-                case 3:
-                    MateriasPrima();
-                    break;
-                case 4:
-                    Fornecedores();
-                    break;
-                case 5:
-                    Inadimplentes();
-                    break;
-                case 6:
-                    Bloqueados();
-                    break;
-                default:
-                    return;
+            menu.LimparAposImpressao(true);
 
+            while (true)
+            {
+                switch (menu.Perguntar())
+                {
+                    case 1:
+                        Clientes();
+                        break;
+                    case 2:
+                        Produtos();
+                        break;
+                    case 3:
+                        MateriasPrima();
+                        break;
+                    case 4:
+                        Fornecedores();
+                        break;
+                    case 5:
+                        Inadimplentes();
+                        break;
+                    case 6:
+                        Bloqueados();
+                        break;
+                    default:
+                        return;
+
+                }
             }
+            
         }
 
     }
