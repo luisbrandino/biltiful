@@ -2,31 +2,14 @@
 {
     internal class EntradaData : Entrada<DateOnly>
     {
-
-        public DateOnly Pegar()
+        public EntradaData()
         {
-            DateOnly data;
+            mensagemValorInvalido = "Data inválida. Formato: dd/mm/aaaa. Tente novamente: ";
+        }
 
-            while (true)
-            {
-                string? entrada = Console.ReadLine();
-
-                try
-                {
-                    data = DateOnly.Parse(entrada);
-                }
-                catch (Exception)
-                {
-                    Console.Write($"Data inválida. Formato: dd/mm/aaaa.\n");
-                    Console.Write("Tente novamente: ");
-                    continue;
-                }
-
-                if (ValidarRegras(data))
-                    return data;
-
-                Console.Write("Tente novamente: ");
-            }
+        protected override DateOnly Formatar(string valor)
+        {
+            return DateOnly.Parse(valor);
         }
 
     }

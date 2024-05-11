@@ -18,7 +18,7 @@
 
         public void MostrarMensagemDeErro()
         {
-            Console.WriteLine(mensagemDeErro);
+            Console.Write(mensagemDeErro);
         }
 
         public bool Verificar(T valor) => validacao.Invoke(valor);
@@ -27,6 +27,7 @@
     internal class Entrada<T>
     {
         protected List<Regra<T>> regras = new List<Regra<T>>();
+        protected string mensagemValorInvalido = "Valor inválido, tente novamente: ";
 
         public void AdicionarRegra(Func<T?, bool> validacao)
         {
@@ -50,6 +51,16 @@
             return true;
         }
 
+        protected void MostrarValorInvalido()
+        {
+            Console.Write(mensagemValorInvalido);
+        }
+
+        protected virtual T Formatar(string valor)
+        {
+            return (T?)Convert.ChangeType(valor, typeof(T));
+        }
+
         public T? Pegar()
         {
             while (true)
@@ -58,18 +69,18 @@
 
                 try
                 {
-                    entrada = (T?) Convert.ChangeType(Console.ReadLine(), typeof(T));
+                    entrada = Formatar(Console.ReadLine());
                 }
                 catch (Exception) 
                 {
-                    Console.Write("Valor inválido, tente novamente: ");
+                    MostrarValorInvalido();
                     continue;
                 }
 
                 if (ValidarRegras(entrada))
                     return entrada;
 
-                Console.Write("Tente novamente: ");
+                Console.Write(". Tente novamente: ");
             }
         }
     }
