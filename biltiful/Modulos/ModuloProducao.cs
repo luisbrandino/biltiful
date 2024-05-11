@@ -149,8 +149,7 @@ namespace biltiful.Modulos
 
             Producao Localicar()
             {
-
-                Console.Write("Digite o Id da produção: ");
+                Console.Write("Informe o Id da produção: ");
                 int id = int.Parse(Console.ReadLine());
 
                 foreach (var item in listaProducao)
@@ -256,15 +255,61 @@ namespace biltiful.Modulos
                     Console.Clear();
                 } while (opc != 0);
             }
+
+            bool ExcluirProducao()
+            {
+                try
+                {
+                    Console.WriteLine("EXCLUIR");
+                    Producao p = Localicar();
+                    Imprimir(p);
+                    Console.WriteLine("\nDeseja excluir esta produção?");
+                    Console.WriteLine("1 - Sim | 2 - Não");
+                    int opc = int.Parse(Console.ReadLine());
+                    if (opc == 1)
+                    {
+
+                        List<ItemProducao> listaItensExluir = new();
+                        //add itens em uma lista para serem removidos da outra
+                        foreach (var item in listaItemProducao)
+                        {
+                            if (item.Id == p.Id)
+                                listaItensExluir.Add(item);
+                        }
+                        //remove os itens da lista itemprodução
+                        foreach (var item in listaItensExluir)
+                        {
+                            if (item.Id == p.Id)
+                                listaItemProducao.Remove(item);
+                        }
+
+                        //remove a produção com o id informado
+                        listaProducao.Remove(p);
+
+                        //salva no arquivo
+                        arqItemProducao.Sobrescrever(listaItemProducao);
+                        arqProducao.Sobrescrever(listaProducao);
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro: Não foi possível localizar a produção");
+
+                }
+                return false;
+            }
+
             #endregion
 
 
 
-            arqProducao.Inserir(CadastrarProducao());
+            //arqProducao.Inserir(CadastrarProducao());
             //Imprimir(Localicar());
-            Console.Clear();
-
-            Navegar();
+            Console.WriteLine((ExcluirProducao() ? "Produção excluida com sucesso." : "Produção não excluída."));
+            //Navegar();
 
             Console.WriteLine();
         }
