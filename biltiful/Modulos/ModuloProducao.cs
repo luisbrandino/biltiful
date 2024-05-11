@@ -51,7 +51,7 @@ namespace biltiful.Modulos
                 Produto p = new Produto();
                 do
                 {
-                    Console.WriteLine("Insira o código de barras do produto a ser produzido: ");
+                    Console.WriteLine("\nInsira o código de barras do produto a ser produzido: ");
                     produto = Console.ReadLine();
 
 
@@ -68,12 +68,12 @@ namespace biltiful.Modulos
 
                     }
                     if (continua)
-                        Console.WriteLine("Cosmético não encontrado ou inativo\nInsira novamente por favor.");
+                        Console.WriteLine("\nCosmético não encontrado ou inativo\nInsira novamente por favor.");
                 } while (continua);
 
                 do
                 {
-                    Console.WriteLine($"Insira a quantidade de {p.Nome} a ser produzida");
+                    Console.WriteLine($"\nInsira a quantidade de {p.Nome} a ser produzida");
                     Console.WriteLine("Quantidade máxima: 999,99");
                     quantidade = double.Parse(Console.ReadLine());
                     if (quantidade > 999.99)
@@ -113,32 +113,32 @@ namespace biltiful.Modulos
                 MPrima materia = new();
                 do
                 {
-                    Console.WriteLine("Digite o identificador da matéria prima: ");
+                    Console.WriteLine("\nDigite o identificador da matéria prima: ");
                     materiaPrima = Console.ReadLine().ToUpper();
                     foreach (var item in listaMaterias)
                     {
                         if (item.Id == materiaPrima && item.Situacao == 'A')
                         {
                             materia = item;
-                            Console.WriteLine("Materia prima encontrada e disponível");
+                            Console.WriteLine("\nMateria prima encontrada e disponível");
                             continua = false;
                             break;
                         }
                     }
                     if (continua)
-                        Console.WriteLine("Materia prima não encontrada ou inativa\nInsira novamente por favor.");
+                        Console.WriteLine("\nMateria prima não encontrada ou inativa\nInsira novamente por favor.");
 
 
                 } while (continua);
 
                 do
                 {
-                    Console.WriteLine($"Insira a quantidade de {materia.Nome} a ser utilizada");
+                    Console.WriteLine($"znInsira a quantidade de {materia.Nome} a ser utilizada");
                     Console.WriteLine("Quantidade máxima: 999,99");
                     quantidade = double.Parse(Console.ReadLine());
                     if (quantidade > 999.99)
                     {
-                        Console.WriteLine("Valor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
+                        Console.WriteLine("\nValor ultrapassa o quantidade máxima de caracteres...\nTente novamente.");
                     }
                     else
                         break;
@@ -163,11 +163,10 @@ namespace biltiful.Modulos
                 return new();
             }
 
-            void ImprimirLocalizado()
+            void Imprimir(Producao p)
             {
                 try
                 {
-                    Producao p = Localicar();
 
                     foreach (var item in listaCosmeticos)
                     {
@@ -201,12 +200,72 @@ namespace biltiful.Modulos
 
                 }
             }
+
+            void Navegar()
+            {
+                int indice = 0, opc = 0;
+                do
+                {
+
+                    Console.WriteLine("[1] <- Retroceder | Avançar -> [2]");
+                    Console.WriteLine("[3] <- Primeiro | Ultimo -> [4]");
+                    Console.WriteLine("|[0] Sair|");
+                    opc = int.Parse(Console.ReadLine());
+
+                    switch (opc)
+                    {
+
+                        case 1:
+                            indice--;
+                            if (indice >= 0)
+                                Imprimir(listaProducao[indice]);
+                            else
+                            {
+                                Console.WriteLine("Não é possível retroceder mais...");
+                                indice++;
+                            }
+                            break;
+                        case 2:
+                            indice++;
+                            if (indice <= listaProducao.Count() - 1)
+                            {
+                                Imprimir(listaProducao[indice]);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Não é possível avançar mais...");
+                                indice--;
+                            }
+                            break;
+                        case 3:
+                            Imprimir(listaProducao.First());
+                            break;
+                        case 4:
+                            Imprimir(listaProducao.Last());
+                            break;
+                        case 0:
+                            Console.WriteLine("Saindo...");
+                            break;
+                        default:
+                            Console.WriteLine("Opção não exisente");
+                            break;
+
+                    }
+
+                    Console.ReadLine();
+                    Console.Clear();
+                } while (opc != 0);
+            }
             #endregion
 
 
 
-            //arqProducao.Inserir(CadastrarProducao());
-            ImprimirLocalizado();
+            arqProducao.Inserir(CadastrarProducao());
+            //Imprimir(Localicar());
+            Console.Clear();
+
+            Navegar();
+
             Console.WriteLine();
         }
 
