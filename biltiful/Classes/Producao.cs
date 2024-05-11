@@ -10,10 +10,10 @@ namespace biltiful.Classes
 {
     internal class Producao : IEntidade
     {
-        public int Id { get; set; }
-        public DateOnly DataProducao { get; set; }
-        public string Produto { get; set; }
-        public double Quantidade { get; set; }
+        public int Id { get; private set; }
+        public DateOnly DataProducao { get; private set; }
+        public string Produto { get; private set; }
+        public double Quantidade { get; private set; }
 
         public Producao() { }
 
