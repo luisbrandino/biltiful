@@ -29,12 +29,12 @@
         protected List<Regra<T>> regras = new List<Regra<T>>();
         protected string mensagemValorInvalido = "Valor inválido, tente novamente: ";
 
-        public void AdicionarRegra(Func<T?, bool> validacao)
+        public void AdicionarRegra(Func<T, bool> validacao)
         {
             regras.Add(new(validacao));
         }
 
-        public void AdicionarRegra(Func<T?, bool> validacao, string mensagemDeErro)
+        public void AdicionarRegra(Func<T, bool> validacao, string mensagemDeErro)
         {
             regras.Add(new(validacao, mensagemDeErro));
         }
@@ -56,12 +56,12 @@
             Console.Write(mensagemValorInvalido);
         }
 
-        protected virtual T Formatar(string valor)
+        protected virtual T? Formatar(string valor)
         {
             return (T?)Convert.ChangeType(valor, typeof(T));
         }
 
-        public T? Pegar()
+        public T Pegar()
         {
             while (true)
             {

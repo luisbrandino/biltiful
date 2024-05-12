@@ -36,7 +36,7 @@ namespace biltiful.Modulos.Operacoes
             Console.Write("Informe o CPF que deseja localizar: ");
             string cpf = EntradaCpf();
 
-            Cliente? cliente = arquivo.Ler().Find(c => c.CPF == cpf);
+            Cliente? cliente = arquivo.Ler().Where(cliente => cliente.Situacao == 'A').ToList().Find(c => c.CPF == cpf);
 
             Console.WriteLine(cliente);
 

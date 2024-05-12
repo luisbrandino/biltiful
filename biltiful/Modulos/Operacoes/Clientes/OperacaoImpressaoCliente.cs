@@ -14,7 +14,7 @@ namespace biltiful.Modulos.Operacoes
         public void Executar()
         {
             Console.Clear();
-            List<Cliente> clientes = arquivo.Ler();
+            List<Cliente> clientes = arquivo.Ler().Where(cliente => cliente.Situacao == 'A').ToList();
 
             if (clientes.Count == 0)
             {

@@ -35,7 +35,7 @@ namespace biltiful.Modulos.Operacoes
 
             entrada.AdicionarRegra(
                 (string? nome) => nome?.Length >= 1 && nome?.Length <= Constantes.TAMANHO_NOME_CLIENTE,
-                "Nome precisa ter entre 1 e 50 caracteres"
+                $"Nome precisa ter entre 1 e {Constantes.TAMANHO_NOME_CLIENTE} caracteres"
             );
 
             return entrada.Pegar();

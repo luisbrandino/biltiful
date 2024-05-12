@@ -66,6 +66,18 @@ namespace biltiful.Modulos.Operacoes
             return entrada.Pegar();
         }
 
+        char EntradaSituacao()
+        {
+            EntradaChar entrada = new();
+
+            entrada.AdicionarRegra(
+                (char situacao) => char.ToUpper(situacao) == 'A' || char.ToUpper(situacao) == 'I',
+                "Situação inválida. Uso: A/I"
+            );
+
+            return entrada.Pegar();
+        }
+
         public void Executar()
         {
             Console.Write("Informe o CPF da pessoa a ser alterada: ");
@@ -81,8 +93,11 @@ namespace biltiful.Modulos.Operacoes
             Console.Write("Informe a data de nascimento: ");
             cliente.DataNascimento = EntradaDataNascimento();
 
-            Console.Write("Informe o sexo: ");
+            Console.Write("Informe o sexo (M/F): ");
             cliente.Sexo = EntradaSexo();
+
+            Console.Write("Informe a situação (A/I): ");
+            cliente.Situacao = EntradaSituacao();
 
             arquivo.Sobrescrever(clientes);
 
