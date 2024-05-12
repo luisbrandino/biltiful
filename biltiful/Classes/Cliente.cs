@@ -114,16 +114,19 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CPF}{Nome.PadRight(50)}{FormatarData(DataNascimento)}{char.ToUpper(Sexo)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{CPF}{Nome.PadRight(Constantes.TAMANHO_NOME_CLIENTE)}{FormatarData(DataNascimento)}{char.ToUpper(Sexo)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{char.ToUpper(Situacao)}";
         }
 
+        /**
+         *  Esse método constrói o objeto a partir da linha vinda do arquivo
+         */
         public void LinhaParaObjeto(string linha)
         {
             if (linha.Length != 87)
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
 
             CPF = linha.Substring(0, 11);
-            Nome = linha.Substring(11, 50).Trim().ToUpper();
+            Nome = linha.Substring(11, Constantes.TAMANHO_NOME_CLIENTE).Trim().ToUpper();
 
             int dia = int.Parse(linha.Substring(61, 2));
             int mes = int.Parse(linha.Substring(63, 2));
@@ -146,6 +149,11 @@
             DataCadastro = new DateOnly(ano, mes, dia);
 
             Situacao = linha.Substring(86, 1).First();
+        }
+
+        public override string ToString()
+        {
+            return $"CPF: {CPF}\nNome: {Nome}";
         }
     }
 }
