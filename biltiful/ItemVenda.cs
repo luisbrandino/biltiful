@@ -68,10 +68,11 @@ namespace biltiful
             return new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem);
         }
 
+
         // Método para ler as informações do produto do arquivo Cosmetico.dat
         private static ProdutoInfo LerProdutoDoArquivo(string codigoBarras)
         {
-            string arquivo = @"C:\Biltiful\Cosmetico.dat";
+            string arquivo = "Cosmetico.dat";
 
             if (File.Exists(arquivo))
             {
