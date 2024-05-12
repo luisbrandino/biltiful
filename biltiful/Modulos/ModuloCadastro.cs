@@ -1,5 +1,6 @@
 ﻿using biltiful.Modulos.Operacoes;
 using biltiful.Modulos.Operacoes.Fornecedores;
+using biltiful.Modulos.Operacoes.Inadimplentes;
 using biltiful.Modulos.Operacoes.MPrimas;
 using biltiful.Modulos.Operacoes.Produtos;
 
@@ -116,14 +117,22 @@ namespace biltiful.Modulos
 
         void Inadimplentes()
         {
-            Menu menu = CriarMenuDeOperacao("Inadimplentes");
+            Menu menu = CriarMenuDeOperacaoDeRestritos("Inadimplentes");
 
-            
+            while (true)
+            {
+                switch (menu.Perguntar())
+                {
+                    case 1:
+                        new OperacaoCadastroInadimplente().Executar();
+                        break;
+                }
+            }
         }
 
         void Bloqueados()
         {
-            Menu menu = CriarMenuDeOperacao("Bloqueados");
+            Menu menu = CriarMenuDeOperacaoDeRestritos("Bloqueados");
 
             menu.Perguntar();
         }
@@ -131,6 +140,15 @@ namespace biltiful.Modulos
         Menu CriarMenuDeOperacao(string entidade)
         {
             Menu menu = new("Cadastrar", "Localizar", "Editar", "Impressão por registro", "Voltar");
+            menu.LimparAposImpressao(true);
+            menu.DefinirTitulo($">> {entidade.ToUpper()} <<");
+
+            return menu;
+        }
+
+        Menu CriarMenuDeOperacaoDeRestritos(string entidade)
+        {
+            Menu menu = new("Cadastrar", "Localizar", "Remover", "Voltar");
             menu.LimparAposImpressao(true);
             menu.DefinirTitulo($">> {entidade.ToUpper()} <<");
 

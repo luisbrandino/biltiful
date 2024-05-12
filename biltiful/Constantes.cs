@@ -17,5 +17,6 @@
         public const string PRODUTO_ARQUIVO = "Cosmetico.dat";
         public const string FORNECEDOR_ARQUIVO = "Fornecedor.dat";
         public const string MPRIMA_ARQUIVO = "Materia.dat";
+        public const string INADIMPLENTE_ARQUIVO = "Risco.dat";
     }
 }
