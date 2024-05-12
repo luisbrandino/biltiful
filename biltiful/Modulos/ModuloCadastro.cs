@@ -1,4 +1,5 @@
 ﻿using biltiful.Modulos.Operacoes;
+using biltiful.Modulos.Operacoes.Produtos;
 
 namespace biltiful.Modulos
 {
@@ -19,9 +20,11 @@ namespace biltiful.Modulos
                 case 3:
                     new OperacaoEditarCliente().Executar();
                     break;
-                default:
+                case 4:
                     new OperacaoImpressaoCliente().Executar();
                     break;
+                default:
+                    return;
             }
         }
 
@@ -29,7 +32,15 @@ namespace biltiful.Modulos
         {
             Menu menu = CriarMenuDeOperacao("Produtos");
 
-            menu.Perguntar();
+            switch (menu.Perguntar())
+            {
+                case 1:
+                    new OperacaoCadastroProduto().Executar();
+                    break;
+                case 3:
+                    new OperacaoEditarProduto().Executar();
+                    break;
+            }
         }
 
         void MateriasPrima()

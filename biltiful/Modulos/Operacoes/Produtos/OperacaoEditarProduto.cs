@@ -3,11 +3,11 @@ using biltiful.Modulos.Operacoes.Entradas;
 
 namespace biltiful.Modulos.Operacoes.Produtos
 {
-    internal class OperacaoCadastroProduto
+    internal class OperacaoEditarProduto
     {
         Arquivo<Produto> arquivo;
 
-        public OperacaoCadastroProduto()
+        public OperacaoEditarProduto()
         {
             arquivo = new Arquivo<Produto>(Constantes.DIRETORIO, Constantes.PRODUTO_ARQUIVO);
         }
@@ -22,8 +22,8 @@ namespace biltiful.Modulos.Operacoes.Produtos
             );
 
             entrada.AdicionarRegra(
-                (string codigoDeBarras) => arquivo.Ler().Find(produto => produto.CodigoBarras == codigoDeBarras) == null,
-                "Código de barras já registrado"
+                (string codigoDeBarras) => arquivo.Ler().Find(produto => produto.CodigoBarras == codigoDeBarras) != null,
+                "Código de barras não registrado"
             );
 
             return entrada.Pegar();
@@ -53,21 +53,39 @@ namespace biltiful.Modulos.Operacoes.Produtos
             return entrada.Pegar();
         }
 
+        char EntradaSituacao()
+        {
+            EntradaChar entrada = new();
+
+            entrada.AdicionarRegra(
+                (char situacao) => char.ToUpper(situacao) == 'A' || char.ToUpper(situacao) == 'I',
+                "Situação inválida. Uso: A/I"
+            );
+
+            return entrada.Pegar();
+        }
+
         public void Executar()
         {
-            Console.Write("Informe o código de barras: ");
+            Console.Write("Informe o código de barras do produto a ser alterado: ");
             string codigoDeBarras = EntradaCodigoDeBarras();
 
+            List<Produto> produtos = arquivo.Ler();
+
+            Produto? produto = produtos.Find(p => p.CodigoBarras == codigoDeBarras);
+
             Console.Write("Informe o nome: ");
-            string nome = EntradaNome();
+            produto.Nome = EntradaNome();
 
             Console.Write("Informe o valor de venda: ");
-            float valorDeVenda = EntradaValorDeVenda();
+            produto.ValorVenda = EntradaValorDeVenda();
 
-            arquivo.Inserir(new Produto(codigoDeBarras, nome, valorDeVenda));
+            Console.Write("Informe a situação (A/I): ");
+            produto.Situacao = EntradaSituacao();
 
-            Console.WriteLine("Produto cadastrado!");
-            Console.ReadKey();
+            arquivo.Sobrescrever(produtos);
+
+            Console.WriteLine("Produto alterado!");
         }
     }
 }

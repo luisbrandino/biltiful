@@ -1,4 +1,6 @@
-﻿namespace biltiful.Modulos.Operacoes.Entradas
+﻿using System.Globalization;
+
+namespace biltiful.Modulos.Operacoes.Entradas
 {
     internal class Regra<T>
     {
@@ -58,7 +60,7 @@
 
         protected virtual T? Formatar(string valor)
         {
-            return (T?)Convert.ChangeType(valor, typeof(T));
+            return (T?)Convert.ChangeType(valor, typeof(T), CultureInfo.InvariantCulture);
         }
 
         public T Pegar()

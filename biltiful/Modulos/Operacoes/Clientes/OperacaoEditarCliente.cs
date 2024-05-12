@@ -101,7 +101,7 @@ namespace biltiful.Modulos.Operacoes
 
             arquivo.Sobrescrever(clientes);
 
-            Console.WriteLine("Usuário editado!");
+            Console.WriteLine("Cliente editado!");
 
             Console.ReadKey();
         }
