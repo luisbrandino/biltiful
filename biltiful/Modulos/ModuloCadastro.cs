@@ -151,6 +151,7 @@ namespace biltiful.Modulos
                         new OperacaoCadastroBloqueado().Executar();
                         break;
                     case 2:
+                        new OperacaoLocalizarBloqueado().Executar();
                         break;
                     case 3:
                         new OperacaoRemoverBloqueado().Executar();
