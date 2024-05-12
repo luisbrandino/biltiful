@@ -12,7 +12,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             arquivo = new Arquivo<MPrima>(Constantes.DIRETORIO, Constantes.MPRIMA_ARQUIVO);
         }
 
-        public string EntradaId()
+        string EntradaId()
         {
             Entrada<string> entrada = new Entrada<string>();
 
@@ -29,7 +29,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             return entrada.Pegar().ToUpper();
         }
 
-        public string EntradaNome()
+        string EntradaNome()
         {
             Entrada<string> entrada = new Entrada<string>();
 

@@ -42,7 +42,7 @@ namespace biltiful.Modulos.Operacoes.Fornecedores
                 return;
             }
 
-            Console.Write("Informe o código de barras: ");
+            Console.Write("Informe o CNPJ: ");
             string cnpj = EntradaCnpj();
 
             Fornecedor? fornecedor = fornecedores.Find(f => f.CNPJ == cnpj);

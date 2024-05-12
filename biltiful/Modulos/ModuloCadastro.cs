@@ -73,6 +73,7 @@ namespace biltiful.Modulos
                         new OperacaoCadastroMPrima().Executar();
                         break;
                     case 2:
+                        new OperacaoLocalizarMPrima().Executar();
                         break;
                     case 3:
                         new OperacaoEditarMPrima().Executar();

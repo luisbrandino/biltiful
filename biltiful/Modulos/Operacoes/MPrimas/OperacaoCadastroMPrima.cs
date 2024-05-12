@@ -12,7 +12,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             arquivo = new Arquivo<MPrima>(Constantes.DIRETORIO, Constantes.MPRIMA_ARQUIVO);
         }
 
-        public string EntradaId()
+        string EntradaId()
         {
             Entrada<string> entrada = new Entrada<string>();
 
@@ -22,14 +22,14 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             );
 
             entrada.AdicionarRegra(
-                (string id) => arquivo.Ler().Find(m => m.Id == id) == null,
+                (string id) => arquivo.Ler().Find(m => m.Id.ToUpper() == id.ToUpper()) == null,
                 "ID já cadastrado"
             );
 
             return entrada.Pegar();
         }
 
-        public string EntradaNome()
+        string EntradaNome()
         {
             Entrada<string> entrada = new Entrada<string>();
 
