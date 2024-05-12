@@ -22,7 +22,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             );
 
             entrada.AdicionarRegra(
-                (string id) => arquivo.Ler().Find(m => m.Id.ToUpper() == id.ToUpper()) != null,
+                (string id) => arquivo.Ler().Find(m => m.Id.ToUpper() == id.ToUpper() && m.Situacao == 'A') != null,
                 "ID não cadastrado"
             );
 

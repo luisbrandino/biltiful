@@ -12,23 +12,6 @@ namespace biltiful.Modulos.Operacoes.Fornecedores
             arquivo = new Arquivo<Fornecedor>(Constantes.DIRETORIO, Constantes.FORNECEDOR_ARQUIVO);
         }
 
-        public string EntradaCnpj()
-        {
-            Entrada<string> entrada = new();
-
-            entrada.AdicionarRegra(
-                (string cnpj) => Fornecedor.VerificarCNPJ(cnpj),
-                "CNPJ inválido"
-            );
-
-            entrada.AdicionarRegra(
-                (string cnpj) => arquivo.Ler().Find(f => f.CNPJ == cnpj) != null,
-                "CNPJ não registrado"
-            );
-
-            return entrada.Pegar();
-        }
-
         public void Executar()
         {
             Console.Clear();
