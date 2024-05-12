@@ -10,46 +10,54 @@ namespace biltiful.Modulos
         {
             Menu menu = CriarMenuDeOperacao("Clientes");
 
-            switch (menu.Perguntar())
+            while (true)
             {
-                case 1:
-                    new OperacaoCadastroCliente().Executar();
-                    break;
-                case 2:
-                    new OperacaoLocalizarCliente().Executar();
-                    break;
-                case 3:
-                    new OperacaoEditarCliente().Executar();
-                    break;
-                case 4:
-                    new OperacaoImpressaoCliente().Executar();
-                    break;
-                default:
-                    return;
+                switch (menu.Perguntar())
+                {
+                    case 1:
+                        new OperacaoCadastroCliente().Executar();
+                        break;
+                    case 2:
+                        new OperacaoLocalizarCliente().Executar();
+                        break;
+                    case 3:
+                        new OperacaoEditarCliente().Executar();
+                        break;
+                    case 4:
+                        new OperacaoImpressaoCliente().Executar();
+                        break;
+                    default:
+                        return;
+                }
             }
+            
         }
 
         void Produtos()
         {
             Menu menu = CriarMenuDeOperacao("Produtos");
 
-            switch (menu.Perguntar())
+            while (true)
             {
-                case 1:
-                    new OperacaoCadastroProduto().Executar();
-                    break;
-                case 2:
-                    new OperacaoLocalizarProduto().Executar();
-                    break;
-                case 3:
-                    new OperacaoEditarProduto().Executar();
-                    break;
-                case 4:
-                    new OperacaoImpressaoProduto().Executar();
-                    break;
-                default:
-                    return;
+                switch (menu.Perguntar())
+                {
+                    case 1:
+                        new OperacaoCadastroProduto().Executar();
+                        break;
+                    case 2:
+                        new OperacaoLocalizarProduto().Executar();
+                        break;
+                    case 3:
+                        new OperacaoEditarProduto().Executar();
+                        break;
+                    case 4:
+                        new OperacaoImpressaoProduto().Executar();
+                        break;
+                    default:
+                        return;
+                }
             }
+            
         }
 
         void MateriasPrima()
@@ -63,18 +71,22 @@ namespace biltiful.Modulos
         {
             Menu menu = CriarMenuDeOperacao("Fornecedores");
 
-            switch (menu.Perguntar())
+            while (true)
             {
-                case 1:
-                    new OperacaoCadastrarFornecedor().Executar();
-                    break;
-                case 2:
-                    new OperacaoLocalizarFornecedor().Executar();
-                    break;
-                case 3:
-                    new OperacaoEditarFornecedor().Executar();
-                    break;
+                switch (menu.Perguntar())
+                {
+                    case 1:
+                        new OperacaoCadastrarFornecedor().Executar();
+                        break;
+                    case 2:
+                        new OperacaoLocalizarFornecedor().Executar();
+                        break;
+                    case 3:
+                        new OperacaoEditarFornecedor().Executar();
+                        break;
+                }
             }
+            
         }
 
         void Inadimplentes()
