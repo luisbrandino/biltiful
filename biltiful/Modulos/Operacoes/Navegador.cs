@@ -11,12 +11,6 @@
             this.elementos = elementos;
         }
 
-        public Navegador(string nomeDoElemento, List<T> elementos)
-        {
-            this.nomeDoElemento = nomeDoElemento;
-            this.elementos = elementos;
-        }
-
         void MostrarListagemAtual()
         {
             Console.Clear();
