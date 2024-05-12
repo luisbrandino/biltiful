@@ -65,6 +65,8 @@ namespace biltiful
          */
         public void Sobrescrever(List<T> entidades)
         {
+            File.WriteAllText(CaminhoFinal, string.Empty);
+
             StreamWriter escritor = new StreamWriter(CaminhoFinal);
 
             foreach (T entidade in entidades)
