@@ -80,10 +80,18 @@ namespace biltiful.Modulos.Operacoes
 
         public void Executar()
         {
+            Console.Clear();
+            List<Cliente> clientes = arquivo.Ler();
+
+            if (clientes.Count <= 0)
+            {
+                Console.WriteLine("Nenhum cliente cadastrado");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Informe o CPF da pessoa a ser alterada: ");
             string cpf = EntradaCpf();
-
-            List<Cliente> clientes = arquivo.Ler();
             
             Cliente? cliente = clientes.Find(c => c.CPF == cpf);
 

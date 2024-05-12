@@ -68,10 +68,18 @@ namespace biltiful.Modulos.Operacoes.Produtos
         public void Executar()
         {
             Console.Clear();
+            List<Produto> produtos = arquivo.Ler();
+
+            if (produtos.Count <= 0)
+            {
+                Console.WriteLine("Nenhum produto cadastrado");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Informe o código de barras do produto a ser alterado: ");
             string codigoDeBarras = EntradaCodigoDeBarras();
 
-            List<Produto> produtos = arquivo.Ler();
 
             Produto? produto = produtos.Find(p => p.CodigoBarras == codigoDeBarras);
 
