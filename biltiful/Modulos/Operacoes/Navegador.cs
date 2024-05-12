@@ -32,6 +32,7 @@
 
         void PegarAcaoDoUsuario()
         {
+            Console.Write("\n\nUtilize as setas do teclado para navegar");
             Console.Write("\nAperte 0 para sair, 1 para voltar ao início da listagem e 2 para ir ao final da listagem\n");
 
             while (true)
