@@ -12,6 +12,7 @@ namespace biltiful
         public decimal ValorUnitario { get; set; }
         public decimal TotalItem { get; set; }
 
+        private static string arquivo = @"C:\Biltiful\ItemVenda.dat";
         public ItemVenda()
         {
         }
@@ -70,7 +71,7 @@ namespace biltiful
         // Método para ler as informações do produto do arquivo Cosmetico.dat
         private static ProdutoInfo LerProdutoDoArquivo(string codigoBarras)
         {
-            string arquivo = "Cosmetico.dat";
+            string arquivo = @"C:\Biltiful\Cosmetico.dat";
 
             if (File.Exists(arquivo))
             {
@@ -81,10 +82,10 @@ namespace biltiful
                     {
                         if (linha.StartsWith(codigoBarras))
                         {
-                            if (linha.Length >= 38 && linha[37] == 'A') // Verifica se a linha tem tamanho suficiente e se o status é 'A' (ativo)
+                            if (linha.Last() == 'A') // Verifica se a linha tem tamanho suficiente e se o status é 'A' (ativo)
                             {
-                                string nome = linha.Substring(1, 20).Trim();
-                                decimal valorVenda = decimal.Parse(linha.Substring(21, 6)) / 100m; // Dividido por 100 para converter centavos
+                                string nome = linha.Substring(13, 20).Trim();
+                                decimal valorVenda = (decimal)decimal.Parse(linha.Substring(33, 5)) / 100m; // Dividido por 100 para converter centavos
                                 return new ProdutoInfo { Nome = nome, ValorVenda = valorVenda };
                             }
                         }
@@ -98,42 +99,61 @@ namespace biltiful
         // Método para salvar os itens de venda em um arquivo
         public static void SalvarItensVenda(List<ItemVenda> itensVenda)
         {
-            string arquivo = @"C:\Local\Disco\Biltiful\ItemVenda.dat";
-
-            using (StreamWriter sw = new StreamWriter(arquivo))
+            try
             {
-                foreach (var item in itensVenda)
+                // Verifica se o arquivo não existe antes de tentar criar
+                if (!File.Exists(arquivo))
                 {
-                    sw.WriteLine($"{item.IdVenda},{item.Produto},{item.Quantidade},{item.ValorUnitario},{item.TotalItem}");
+                    // Cria o arquivo se não existir
+                    using (File.Create(arquivo)) { }
                 }
-            }
 
-            Console.WriteLine("Itens de venda salvos com sucesso.");
+                // Escreve os itens no arquivo
+                using (StreamWriter sw = new StreamWriter(arquivo))
+                {
+                    foreach (var item in itensVenda)
+                    {
+                        sw.WriteLine($"{item.IdVenda},{item.Produto},{item.Quantidade},{item.ValorUnitario},{item.TotalItem}");
+                    }
+                }
+
+                Console.WriteLine("Itens de venda salvos com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao salvar itens de venda: {ex.Message}");
+            }
         }
 
         // Método para carregar os itens de venda de um arquivo
         public static List<ItemVenda> CarregarItensVenda()
         {
             List<ItemVenda> itensVenda = new List<ItemVenda>();
-            string arquivo = @"C:\Local\Disco\Biltiful\ItemVenda.dat";
 
             if (File.Exists(arquivo))
             {
-                using (StreamReader sr = new StreamReader(arquivo))
+                try
                 {
-                    string linha;
-                    while ((linha = sr.ReadLine()) != null)
+                    using (StreamReader sr = new StreamReader(arquivo))
                     {
-                        string[] dados = linha.Split(',');
+                        string linha;
+                        while ((linha = sr.ReadLine()) != null)
+                        {
+                            string[] dados = linha.Split(',');
 
-                        int idVenda = int.Parse(dados[0]);
-                        string produto = dados[1];
-                        int quantidade = int.Parse(dados[2]);
-                        decimal valorUnitario = decimal.Parse(dados[3]);
-                        decimal totalItem = decimal.Parse(dados[4]);
+                            int idVenda = int.Parse(dados[0]);
+                            string produto = dados[1];
+                            int quantidade = int.Parse(dados[2]);
+                            decimal valorUnitario = decimal.Parse(dados[3]);
+                            decimal totalItem = decimal.Parse(dados[4]);
 
-                        itensVenda.Add(new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem));
+                            itensVenda.Add(new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem));
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao carregar itens de venda: {ex.Message}");
                 }
             }
 

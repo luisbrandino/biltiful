@@ -11,12 +11,14 @@ namespace biltiful
 
             while (true)
             {
-                Console.WriteLine("\n==== MENU VENDA ====");
-                Console.WriteLine("1. Cadastrar nova venda");
-                Console.WriteLine("2. Excluir venda");
-                Console.WriteLine("3. Listar vendas");
-                Console.WriteLine("4. Sair");
-                Console.Write("Escolha uma opção: ");
+                Console.Clear();
+                Console.WriteLine("\n---- MENU VENDA ----\n");
+                Console.WriteLine("|1| - Cadastrar Nova Venda");
+                Console.WriteLine("|2| - Excluir Venda");
+                Console.WriteLine("|3| - Listar Vendas");
+                Console.WriteLine("|4| - Procurar Venda");
+                Console.WriteLine("|5| -  Sair");
+                Console.Write("\n|Escolha uma opção: ");
 
                 string opcao = Console.ReadLine();
 
@@ -25,6 +27,7 @@ namespace biltiful
                     case "1":
                         Console.Clear();
                         Venda.CadastrarVenda();
+                        Console.ReadLine();
                         break;
                     case "2":
                         Console.Clear();
@@ -36,20 +39,34 @@ namespace biltiful
                         else
                         {
                             Console.WriteLine("ID inválido.");
+
                         }
+                        Console.ReadLine();
                         break;
+
                     case "3":
                         Console.Clear();
                         Console.WriteLine("\n==== LISTA DE VENDAS ====");
                         Venda.ImprimirVendas();
+                        Console.ReadLine();
                         break;
+
                     case "4":
                         Console.Clear();
+                        Venda.ProcurarEImprimirVendaPorId();
+                        Console.ReadLine();
+                        break;
+
+                    case "5":
+                        Console.Clear();
                         Console.WriteLine("Saindo...");
+                        Console.ReadLine();
                         return;
+
                     default:
                         Console.Clear();
                         Console.WriteLine("Opção inválida. Escolha novamente.");
+                        Console.ReadLine();
                         break;
                 }
             }
