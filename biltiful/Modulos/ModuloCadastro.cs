@@ -1,4 +1,5 @@
 ﻿using biltiful.Modulos.Operacoes;
+using biltiful.Modulos.Operacoes.Bloqueados;
 using biltiful.Modulos.Operacoes.Fornecedores;
 using biltiful.Modulos.Operacoes.Inadimplentes;
 using biltiful.Modulos.Operacoes.MPrimas;
@@ -132,6 +133,8 @@ namespace biltiful.Modulos
                     case 3:
                         new OperacaoRemoverInadimplente().Executar();
                         break;
+                    default:
+                        return;
                 }
             }
         }
@@ -140,7 +143,18 @@ namespace biltiful.Modulos
         {
             Menu menu = CriarMenuDeOperacaoDeRestritos("Bloqueados");
 
-            menu.Perguntar();
+            switch (menu.Perguntar())
+            {
+                case 1:
+                    new OperacaoCadastroBloqueado().Executar();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    return;
+            }
         }
 
         Menu CriarMenuDeOperacao(string entidade)
