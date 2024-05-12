@@ -27,77 +27,81 @@ namespace biltiful
         }
 
         public static Venda CadastrarVenda()
-{
-    Venda novaVenda = new Venda();
-
-    // Definindo a data da venda como a data atual
-    novaVenda.DataVenda = DateTime.Now;
-
-    // Solicitando e validando o CPF do cliente
-    Console.WriteLine("Digite o CPF do cliente:");
-    novaVenda.Cliente = Console.ReadLine();
-
-    // Verificando se o cliente existe e está ativo
-    if (!VerificarCliente(novaVenda.Cliente))
-    {
-        Console.WriteLine("Cliente não encontrado, inativo, ou na lista de alto risco.");
-        return null;
-    }
-
-    // Solicitando e validando os itens da venda
-    novaVenda.ItensVenda = new List<ItemVenda>();
-    while (true)
-    {
-        // Criando novo item de venda
-        ItemVenda novoItem = ItemVenda.CriarItemVenda(novaVenda.Id);
-        if (novoItem == null)
         {
-            // Se o item não puder ser criado, encerra a venda
-            if (novaVenda.ItensVenda.Count == 0)
+            Venda novaVenda = new Venda();
+
+            // Definindo a data da venda como a data atual
+            novaVenda.DataVenda = DateTime.Now;
+
+            // Solicitando e validando o CPF do cliente
+            Console.WriteLine("Digite o CPF do cliente:");
+            novaVenda.Cliente = Console.ReadLine();
+
+            // Verificando se o cliente existe e está ativo
+            if (!VerificarCliente(novaVenda.Cliente))
             {
-                Console.WriteLine("Não foi possível adicionar nenhum item à venda. Venda cancelada.");
+                Console.WriteLine("Cliente não encontrado, inativo, ou na lista de alto risco.");
                 return null;
             }
-            else
+
+            // Solicitando e validando os itens da venda
+            novaVenda.ItensVenda = new List<ItemVenda>();
+            while (true)
             {
-                // Se já existirem itens na venda, encerra a adição de itens
-                break;
+                // Criando novo item de venda
+                ItemVenda novoItem = ItemVenda.CriarItemVenda(novaVenda.Id);
+
+                if (novoItem == null)
+                {
+                    // Se o item não puder ser criado, encerra a venda
+                    if (novaVenda.ItensVenda.Count == 0)
+                    {
+                        Console.WriteLine("Não foi possível adicionar nenhum item à venda. Venda cancelada.");
+                        return null;
+                    }
+                    else
+                    {
+                        // Se já existirem itens na venda, encerra a adição de itens
+                        break;
+                    }
+                }
+
+                // Adicionando o novo item à lista de itens da venda
+                novaVenda.ItensVenda.Add(novoItem);
+
+                // Verifica se atingiu o limite máximo de itens por venda (03)
+                if (novaVenda.ItensVenda.Count >= 3)
+                {
+                    Console.WriteLine("Limite máximo de itens por venda atingido.");
+                    break;
+                }
+
+                // Pergunta se deseja adicionar mais um item à venda
+                Console.WriteLine("Deseja adicionar mais um item à venda? (S/N)");
+                string continuar = Console.ReadLine();
+                if (continuar.ToUpper() != "S")
+                    break;
             }
+
+            // Calcula o valor total da venda
+            novaVenda.ValorTotal = novaVenda.ItensVenda.Sum(item => item.TotalItem);
+
+            // Verifica se o valor total excede 9999.99
+            if (novaVenda.ValorTotal > 99999.99m)
+            {
+                Console.WriteLine("O valor total da venda não pode exceder 9999.99.");
+                return null;
+            }
+
+            // Chama a função para salvar os itens de venda no arquivo
+            ItemVenda.SalvarItensVenda(novaVenda.ItensVenda);
+
+            // Adiciona a venda à lista de vendas apenas se a venda for concluída com sucesso
+            vendas.Add(novaVenda);
+            SalvarVendas();
+
+            return novaVenda;
         }
-
-        // Adicionando o novo item à lista de itens da venda
-        novaVenda.ItensVenda.Add(novoItem);
-
-        // Verifica se atingiu o limite máximo de itens por venda (03)
-        if (novaVenda.ItensVenda.Count >= 3)
-        {
-            Console.WriteLine("Limite máximo de itens por venda atingido.");
-            break;
-        }
-
-        // Pergunta se deseja adicionar mais um item à venda
-        Console.WriteLine("Deseja adicionar mais um item à venda? (S/N)");
-        string continuar = Console.ReadLine();
-        if (continuar.ToUpper() != "S")
-            break;
-    }
-
-    // Calcula o valor total da venda
-    novaVenda.ValorTotal = novaVenda.ItensVenda.Sum(item => item.TotalItem);
-
-    // Verifica se o valor total excede 9999.99
-    if (novaVenda.ValorTotal > 99999.99m)
-    {
-        Console.WriteLine("O valor total da venda não pode exceder 9999.99.");
-        return null;
-    }
-
-    // Adiciona a venda à lista de vendas apenas se a venda for concluída com sucesso
-    vendas.Add(novaVenda);
-    SalvarVendas();
-
-    return novaVenda;
-}
 
 
         private static bool VerificarCliente(string cpf)
@@ -215,24 +219,21 @@ namespace biltiful
             var venda = LocalizarVenda(Id);
             if (venda != null)
             {
-                Console.WriteLine($"ID: {Id}, Data da Venda: {DataVenda}, Cliente: {Cliente}, Valor Total: {ValorTotal}");
-                if (ItensVenda != null && ItensVenda.Any())
+                Console.WriteLine($"ID: {venda.Id}, Data da Venda: {venda.DataVenda}, Cliente: {venda.Cliente}, Valor Total: {venda.ValorTotal}");
+                if (venda.ItensVenda != null && venda.ItensVenda.Any())
                 {
-                    foreach (var item in ItensVenda)
+                    foreach (var item in venda.ItensVenda)
                     {
                         Console.WriteLine($"   Item ID: {item.IdVenda}, Produto: {item.Produto}, Quantidade: {item.Quantidade}, Preço: {item.ValorUnitario}, Total Item: {item.TotalItem}");
                     }
                 }
             }
+        
             else
             {
                 Console.WriteLine("Venda não encontrada.");
             }
         }
-
-
-
-
 
 
         public static void ProcurarEImprimirVendaPorId()
@@ -262,46 +263,73 @@ namespace biltiful
 
 
 
-        private static void SalvarVendas()
+        public static void SalvarVendas()
         {
-            using (StreamWriter writer = new StreamWriter(arquivoVendas))
+            try
             {
-                foreach (var venda in vendas)
+                using (StreamWriter writer = new StreamWriter(arquivoVendas))
                 {
-                    writer.WriteLine($"{venda.Id:D5}{venda.DataVenda:yyyyMMdd}{venda.Cliente.PadRight(11)}{venda.ValorTotal.ToString("00,000.00").Replace(",", "").Replace(".", "").Substring(0, 7)}");
+                    foreach (var venda in vendas)
+                    {
+                        string linha = $"{venda.Id:D5}{venda.DataVenda:yyyyMMdd}{venda.Cliente,-11}{venda.ValorTotal:00000.00}";
+                        foreach (var item in venda.ItensVenda)
+                        {
+                            linha += $"{item.IdVenda:D5}{item.Produto,-20}{item.Quantidade:D3}{item.ValorUnitario:0000.00}{item.TotalItem:00000.00}";
+                        }
+                        writer.WriteLine(linha);
+                    }
                 }
+                Console.WriteLine("Vendas salvas com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao salvar vendas: {ex.Message}");
             }
         }
 
         public static void CarregarVendas()
         {
-            if (File.Exists(arquivoVendas))
+            try
             {
-                using (StreamReader reader = new StreamReader(arquivoVendas))
+                if (File.Exists(arquivoVendas))
                 {
-                    string linha;
-                    while ((linha = reader.ReadLine()) != null)
+                    using (StreamReader reader = new StreamReader(arquivoVendas))
                     {
-                        int Id = int.Parse(linha.Substring(0, 5));
-                        DateTime DataVenda = DateTime.ParseExact(linha.Substring(5, 8), "yyyyMMdd", null);
-                        string Cliente = linha.Substring(13, 11).Trim();
-                        decimal ValorTotal = decimal.Parse(linha.Substring(23, 6).Insert(4, ","));
-
-                        Venda venda = new Venda(Id, DataVenda, Cliente, ValorTotal);
-
-                        // Adicionei essa verificação para garantir que não haja IDs duplicados
-                        if (vendas.All(v => v.Id != venda.Id))
+                        string linha;
+                        while ((linha = reader.ReadLine()) != null)
                         {
-                            vendas.Add(venda);
-                            if (venda.Id > ultimoId)
+                            int id = int.Parse(linha.Substring(0, 5));
+                            DateTime dataVenda = DateTime.ParseExact(linha.Substring(5, 8), "yyyyMMdd", null);
+                            string cliente = linha.Substring(13, 11).Trim();
+                            decimal valorTotal = decimal.Parse(linha.Substring(24, 7));
+
+                            var venda = new Venda(id, dataVenda, cliente, valorTotal);
+
+                            int posicao = 31;
+                            while (posicao < linha.Length)
                             {
-                                ultimoId = venda.Id;
+                                int idVendaItem = int.Parse(linha.Substring(posicao, 5));
+                                string produto = linha.Substring(posicao + 5, 20).Trim();
+                                int quantidade = int.Parse(linha.Substring(posicao + 25, 3));
+                                decimal valorUnitario = decimal.Parse(linha.Substring(posicao + 28, 6));
+                                decimal totalItem = decimal.Parse(linha.Substring(posicao + 34, 7));
+
+                                venda.ItensVenda.Add(new ItemVenda(idVendaItem, produto, quantidade, valorUnitario, totalItem));
+
+                                posicao += 41;
                             }
+
+                            vendas.Add(venda);
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao carregar vendas: {ex.Message}");
+            }
         }
+
 
     }
 }

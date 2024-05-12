@@ -8,6 +8,7 @@ namespace biltiful
         {
             // Carrega as vendas do arquivo ao iniciar o programa
             Venda.CarregarVendas();
+            ItemVenda.CarregarItensVenda();
 
             while (true)
             {

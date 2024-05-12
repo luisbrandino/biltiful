@@ -65,14 +65,14 @@ namespace biltiful
             }
 
             // O ID da venda será o mesmo que o ID da venda
-            return new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem);
+            return  new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem);
         }
 
 
         // Método para ler as informações do produto do arquivo Cosmetico.dat
         private static ProdutoInfo LerProdutoDoArquivo(string codigoBarras)
         {
-            string arquivo = "Cosmetico.dat";
+            string arquivo = @"C:\Biltiful\Cosmetico.dat";
 
             if (File.Exists(arquivo))
             {
@@ -106,7 +106,10 @@ namespace biltiful
                 if (!File.Exists(arquivo))
                 {
                     // Cria o arquivo se não existir
-                    using (File.Create(arquivo)) { }
+                    using (File.Create(arquivo)) 
+                    { 
+                    
+                    }
                 }
 
                 // Escreve os itens no arquivo
@@ -140,13 +143,17 @@ namespace biltiful
                         string linha;
                         while ((linha = sr.ReadLine()) != null)
                         {
-                            string[] dados = linha.Split(',');
+                            if (linha.Length < 48)
+                            {
+                                Console.WriteLine("Linha inválida: " + linha);
+                                continue;
+                            }
 
-                            int idVenda = int.Parse(dados[0]);
-                            string produto = dados[1];
-                            int quantidade = int.Parse(dados[2]);
-                            decimal valorUnitario = decimal.Parse(dados[3]);
-                            decimal totalItem = decimal.Parse(dados[4]);
+                            int idVenda = int.Parse(linha.Substring(0, 5));
+                            string produto = linha.Substring(5, 13).Trim();
+                            int quantidade = int.Parse(linha.Substring(18, 3));
+                            decimal valorUnitario = decimal.Parse(linha.Substring(21, 5)) / 100m; // dividido por 100 para considerar os centavos
+                            decimal totalItem = decimal.Parse(linha.Substring(26, 6)) / 100m; // dividido por 100 para considerar os centavos
 
                             itensVenda.Add(new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem));
                         }
@@ -160,6 +167,7 @@ namespace biltiful
 
             return itensVenda;
         }
+
     }
 
     internal class ProdutoInfo
