@@ -3,7 +3,6 @@
     internal class Navegador<T>
     {
         List<T> elementos;
-        string? nomeDoElemento;
         int indiceAtual = 0;
         bool navegando = false;
 
