@@ -143,17 +143,21 @@ namespace biltiful.Modulos
         {
             Menu menu = CriarMenuDeOperacaoDeRestritos("Bloqueados");
 
-            switch (menu.Perguntar())
+            while (true)
             {
-                case 1:
-                    new OperacaoCadastroBloqueado().Executar();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                default:
-                    return;
+                switch (menu.Perguntar())
+                {
+                    case 1:
+                        new OperacaoCadastroBloqueado().Executar();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        new OperacaoRemoverBloqueado().Executar();
+                        break;
+                    default:
+                        return;
+                }
             }
         }
 
