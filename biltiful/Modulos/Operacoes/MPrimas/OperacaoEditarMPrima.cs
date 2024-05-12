@@ -73,7 +73,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             Console.Write("Informe o nome: ");
             mPrima.Nome = EntradaNome();
 
-            Console.Write("Informe a situação: ");
+            Console.Write("Informe a situação (A/I): ");
             mPrima.Situacao = EntradaSituacao();
 
             arquivo.Sobrescrever(mPrimas);

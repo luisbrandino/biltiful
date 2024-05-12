@@ -22,7 +22,7 @@ namespace biltiful.Modulos.Operacoes.Produtos
             );
 
             entrada.AdicionarRegra(
-                (string codigoDeBarras) => arquivo.Ler().Find(produto => produto.CodigoBarras == codigoDeBarras) != null,
+                (string codigoDeBarras) => arquivo.Ler().Find(produto => produto.CodigoBarras == codigoDeBarras && produto.Situacao == 'A') != null,
                 "Código de barras não registrado"
             );
 

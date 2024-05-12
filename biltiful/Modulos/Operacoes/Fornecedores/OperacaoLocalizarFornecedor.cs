@@ -22,7 +22,7 @@ namespace biltiful.Modulos.Operacoes.Fornecedores
             );
 
             entrada.AdicionarRegra(
-                (string cnpj) => arquivo.Ler().Find(f => f.CNPJ == cnpj) != null,
+                (string cnpj) => arquivo.Ler().Find(f => f.CNPJ == cnpj && f.Situacao == 'A') != null,
                 "CNPJ não registrado"
             );
 
