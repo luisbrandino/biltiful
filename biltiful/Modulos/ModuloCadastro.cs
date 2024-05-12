@@ -1,5 +1,6 @@
 ﻿using biltiful.Modulos.Operacoes;
 using biltiful.Modulos.Operacoes.Fornecedores;
+using biltiful.Modulos.Operacoes.MPrimas;
 using biltiful.Modulos.Operacoes.Produtos;
 
 namespace biltiful.Modulos
@@ -64,7 +65,23 @@ namespace biltiful.Modulos
         {
             Menu menu = CriarMenuDeOperacao("Matérias-prima");
 
-            menu.Perguntar();
+            while (true)
+            {
+                switch (menu.Perguntar())
+                {
+                    case 1:
+                        new OperacaoCadastroMPrima().Executar();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
 
         void Fornecedores()
