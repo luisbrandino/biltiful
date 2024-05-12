@@ -126,6 +126,9 @@ namespace biltiful.Modulos
                     case 1:
                         new OperacaoCadastroInadimplente().Executar();
                         break;
+                    case 2:
+                        new OperacaoLocalizarInadimplente().Executar();
+                        break;
                 }
             }
         }
