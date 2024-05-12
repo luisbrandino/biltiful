@@ -1,4 +1,5 @@
-﻿using System;
+﻿using biltiful.Modulos.Operacoes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,6 +59,11 @@ namespace biltiful.Classes
             return $"{l}{lDia}{lMes}{lAno}{this.CnpjFornecedor}{(this.ValorTotal * 100).ToString("0000000")}";
         }
 
+        int DiferencaEmMeses(DateOnly data1, DateOnly data2)
+        {
+            return Math.Abs((data1.Month - data2.Month) + 12 * (data1.Year - data2.Year));
+        }
+
         public void CadastrarCompra()
         {
             Arquivo<Compra> comp = new("C:\\biltiful\\", "Compra.dat");
@@ -82,50 +88,90 @@ namespace biltiful.Classes
             DataCompra = DateOnly.FromDateTime(DateTime.Now);
             Console.Write($"\nData: {DataCompra}");
 
-            Arquivo<Fornecedor> fornecedor = new Arquivo<Fornecedor>("C:\\biltiful\\","Fornecedor.dat");
+            Arquivo<Fornecedor> fornecedor = new Arquivo<Fornecedor>("C:\\biltiful\\", "Fornecedor.dat");
             List<Fornecedor> listFornecedores = fornecedor.Ler();
 
             while (true)
             {
                 while (true)
                 {
-
-                    Console.Write("\nCNPJ: ");
-                    CnpjFornecedor = Console.ReadLine();
-
                     while (true)
                     {
 
-                        if (Fornecedor.VerificarCNPJ(CnpjFornecedor) == true)
+
+                        while (true)
+                        {
+                            Console.Write("\nCNPJ: ");
+                            CnpjFornecedor = Console.ReadLine();
+                            if (Fornecedor.VerificarCNPJ(CnpjFornecedor) == true)
+                            {
+                                break;
+                            }
+                            else
+                                Console.WriteLine("Insira um CNPJ válido!\n");
+                        }
+
+                        bool achou = false;
+
+                        foreach (var f in listFornecedores)
+                        {
+                            if (f.CNPJ == CnpjFornecedor)
+                            {
+                                achou = true;
+                                break;
+                            }
+                        }
+
+                        if (achou == true)
                         {
                             break;
                         }
                         else
-                            Console.WriteLine("Insira um CNPJ válido!\n");
+                            Console.WriteLine("\n CNPJ não está cadastrado! \n");
                     }
 
-                    bool achou = false;
+                    Arquivo<Bloqueado> cnpjBloqueados = new Arquivo<Bloqueado>("C:\\biltiful\\", "Bloqueado.dat");
+                    List<Bloqueado> listBloqueados = cnpjBloqueados.Ler();
 
-                    foreach (var f in listFornecedores)
+                    bool bloqueado = false;
+                    foreach (var cnpj in listBloqueados)
                     {
-                        if (f.CNPJ == CnpjFornecedor)
+                        if (cnpj.CNPJ == CnpjFornecedor)
                         {
-                            achou = true;
+                            bloqueado = true;
                             break;
                         }
                     }
 
-                    if (achou == true)
-                    {
-                        break;
-                    }
+                    if (bloqueado == true)
+                        Console.WriteLine("\nCNPJ bloqueado!\n");
                     else
-                        Console.WriteLine("\n CNPJ não está cadastrado! \n");
+                        break;
                 }
 
-                
+                Fornecedor fornecedorF = null;
+
+                foreach (var f in listFornecedores)
+                {
+                    if (f.CNPJ == CnpjFornecedor)
+                    {
+                        fornecedorF = f;
+                        break;
+                    }
+                }
+
+
+
+                if (DiferencaEmMeses(DateOnly.FromDateTime(DateTime.Now), fornecedorF.DataAbertura) < 6)
+                {
+                    Console.WriteLine("\nFornecedor possui menos de seis meses!\n");
+                }
+                else
+                    break;
 
             }
+
+
 
             do
             {
@@ -149,10 +195,46 @@ namespace biltiful.Classes
             for (int i = 0; i < qtdItem; i++)
             {
                 Console.WriteLine($"ID: {item.Id = this.Id}");
-                Console.WriteLine($"ID: {item.DataCompra = this.DataCompra}")
-                    ;
-                Console.Write("Insira a matéria prima: ");
-                item.MateriaPrima = Console.ReadLine();
+                Console.WriteLine($"ID: {item.DataCompra = this.DataCompra}");
+
+                while (true)
+                {
+                    Arquivo<MPrima> arqMP = new Arquivo<MPrima>("C:\\biltiful\\", "Materia.dat");
+
+                    while (true)
+                    {
+
+                        Console.Write("\nInsira a matéria prima: ");
+                        item.MateriaPrima = Console.ReadLine().ToUpper();
+
+                        if (MPrima.VerificarId(item.MateriaPrima))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nID inválido!");
+                            Console.WriteLine("Uso: MP0000\n");
+                        }
+                    }
+
+                    List<MPrima> listMP = arqMP.Ler();
+                    bool encontrado = false;
+
+                    foreach (var mp in listMP)
+                    {
+                        if (mp.Id == item.MateriaPrima)
+                        {
+                            encontrado = true;
+                            break;
+                        }
+                    }
+
+                    if (encontrado == true)
+                        break;
+                    else
+                        Console.WriteLine("\nMateria Prima não encontrada!\n");
+                }
 
                 do
                 {
@@ -200,6 +282,139 @@ namespace biltiful.Classes
             }
 
             comp.Inserir(this);
+        }
+
+        public void ExcluirCompra()
+        {
+            int idExcluir;
+            Arquivo<Compra> arqCompra = new Arquivo<Compra>("C:\\biltiful\\", "Compra.dat");
+            Arquivo<ItemCompra> arqItemCompra = new Arquivo<ItemCompra>("C:\\biltiful\\", "ItemCompra.dat");
+            List<Compra> listCompra = arqCompra.Ler();
+            bool achou = false;
+
+            Console.WriteLine("Informe o ID da compra que deseja excluir");
+            idExcluir = int.Parse(Console.ReadLine());
+
+            foreach (var c in listCompra)
+            {
+                if (c.Id == idExcluir)
+                {
+                    listCompra.Remove(c);
+                    achou = true;
+                    break;
+                }
+            }
+
+            if (achou == false)
+            {
+                Console.WriteLine("\nID não encontrado!\n");
+                return;
+            }
+
+            List<ItemCompra> listItemCompra = arqItemCompra.Ler();
+            List<ItemCompra> itensDelete = new List<ItemCompra>();
+
+            foreach (var item in listItemCompra)
+            {
+                if (item.Id == idExcluir)
+                    itensDelete.Add(item);
+            }
+
+            foreach (var item in itensDelete)
+            {
+                listItemCompra.Remove(item);
+            }
+
+            arqCompra.Sobrescrever(listCompra);
+            arqItemCompra.Sobrescrever(listItemCompra);
+
+            Console.WriteLine("\nCompra e itens excluídos!\n");
+        }
+
+        public void LocalizarCompra()
+        {
+            Arquivo<Compra> arqCompra = new Arquivo<Compra>("C:\\biltiful\\", "Compra.dat");
+            List<Compra> listCompra = arqCompra.Ler();
+            Arquivo<ItemCompra> arqItemCompra = new Arquivo<ItemCompra>("C:\\biltiful\\", "ItemCompra.dat");
+            List<ItemCompra> listItemCompra = arqItemCompra.Ler();
+            int idLocalizar;
+
+            Console.Write("\nInsira o ID da compra que você quer localizar: ");
+            idLocalizar = int.Parse(Console.ReadLine());
+
+            Compra compLocalizada = null;
+
+            foreach (var compra in listCompra)
+            {
+                if (compra.Id == idLocalizar)
+                {
+                    compLocalizada = compra;
+                    break;
+                }
+            }
+
+            if (compLocalizada == null)
+            {
+                Console.WriteLine("\nId não encontrado!\n");
+                return;
+            }
+
+            List<ItemCompra> itensLocalizados = new List<ItemCompra>();
+
+            foreach (var item in listItemCompra)
+            {
+                if (item.Id == compLocalizada.Id)
+                {
+                    itensLocalizados.Add(item);
+                }
+            }
+
+            Console.WriteLine($"\nID da compra: {compLocalizada.Id} \nData da Compra: {compLocalizada.DataCompra} \nCNPJ Fornecedor: {compLocalizada.CnpjFornecedor} \nValor Total: {compLocalizada.ValorTotal}");
+
+            Console.WriteLine("Itens: ");
+
+            foreach (var item in itensLocalizados)
+            {
+                Console.WriteLine($"\nID do Item: {item.Id} \nData da Compra: {item.DataCompra} \nID Materia Prima: {item.MateriaPrima} \nQuantidade Matéria Prima: {item.Quantidade} \nValor Unitario Item: {item.ValorUnitario} \nValor total item: {item.TotalItem}");
+                Console.WriteLine();
+            }
+        }
+
+        public void ImpressaoPorRegistro()
+        {
+            Arquivo<Compra> arqCompra = new Arquivo<Compra>("C:\\biltiful\\", "Compra.dat");
+            Arquivo<ItemCompra> arqItemCompra = new Arquivo<ItemCompra>("C:\\biltiful\\", "ItemCompra.dat");
+            List<Compra> listCompra = arqCompra.Ler();
+
+            if (listCompra.Count == 0)
+            {
+                Console.WriteLine("\nLista de Compras Vazia!\n");
+                return;
+            }
+
+            new Navegador<Compra>(listCompra).Iniciar();
+        }
+
+        public override string? ToString()
+        {
+            Arquivo<ItemCompra> arqItemCompra = new Arquivo<ItemCompra>("C:\\biltiful\\", "ItemCompra.dat");
+            List<ItemCompra> listItemCompra = arqItemCompra.Ler();
+
+            string infoItemCompra = "";
+
+            foreach (var item in listItemCompra)
+            {
+                if (item.Id == this.Id)
+                {
+                    infoItemCompra += $"\nID do Item: {item.Id} \nData da Compra: {item.DataCompra} \nID Materia Prima: {item.MateriaPrima} \nQuantidade Matéria Prima: {item.Quantidade} \nValor Unitario Item: {item.ValorUnitario} \nValor total item: {item.TotalItem}";
+                    infoItemCompra += "\n";
+                }
+            }
+
+            string infoCompra = $"\nID da compra: {this.Id} \nData da Compra: {this.DataCompra} \nCNPJ Fornecedor: {this.CnpjFornecedor} \nValor Total: {this.ValorTotal}";
+
+
+            return infoCompra + "\nItens:\n" + infoItemCompra;
         }
     }
 }
