@@ -43,6 +43,11 @@ namespace biltiful.Modulos
                 case 3:
                     new OperacaoEditarProduto().Executar();
                     break;
+                case 4:
+                    new OperacaoImpressaoProduto().Executar();
+                    break;
+                default:
+                    return;
             }
         }
 
