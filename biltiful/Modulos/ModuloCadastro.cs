@@ -68,6 +68,9 @@ namespace biltiful.Modulos
                 case 1:
                     new OperacaoCadastrarFornecedor().Executar();
                     break;
+                case 2:
+                    new OperacaoLocalizarFornecedor().Executar();
+                    break;
                 case 3:
                     new OperacaoEditarFornecedor().Executar();
                     break;
