@@ -101,7 +101,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CNPJ}{RazaoSocial.PadRight(Constantes.TAMANHO_NOME_FORNECEDOR)}{FormatarData(DataAbertura)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{CNPJ}{RazaoSocial.PadRight(Constantes.TAMANHO_NOME_FORNECEDOR)}{FormatarData(DataAbertura)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{char.ToUpper(Situacao)}";
         }
 
         public void LinhaParaObjeto(string linha)

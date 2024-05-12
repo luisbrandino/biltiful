@@ -67,6 +67,7 @@ namespace biltiful.Modulos.Operacoes.Produtos
 
         public void Executar()
         {
+            Console.Clear();
             Console.Write("Informe o código de barras do produto a ser alterado: ");
             string codigoDeBarras = EntradaCodigoDeBarras();
 

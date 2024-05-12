@@ -1,4 +1,5 @@
 ﻿using biltiful.Modulos.Operacoes;
+using biltiful.Modulos.Operacoes.Fornecedores;
 using biltiful.Modulos.Operacoes.Produtos;
 
 namespace biltiful.Modulos
@@ -62,14 +63,19 @@ namespace biltiful.Modulos
         {
             Menu menu = CriarMenuDeOperacao("Fornecedores");
 
-            menu.Perguntar();
+            switch (menu.Perguntar())
+            {
+                case 1:
+                    new OperacaoCadastrarFornecedor().Executar();
+                    break;
+            }
         }
 
         void Inadimplentes()
         {
             Menu menu = CriarMenuDeOperacao("Inadimplentes");
 
-            menu.Perguntar();
+            
         }
 
         void Bloqueados()
