@@ -19,6 +19,9 @@ namespace biltiful.Modulos
                 case 3:
                     new OperacaoEditarCliente().Executar();
                     break;
+                default:
+                    new OperacaoImpressaoCliente().Executar();
+                    break;
             }
         }
 
