@@ -37,13 +37,24 @@
             if (!VerificarDataDeNascimento(dataNascimento))
                 throw new ArgumentException("Data de nascimento não pode ser posterior à data atual");
 
+            if (!VerificarSexo(sexo))
+                throw new ArgumentException("Sexo inválido");
+
             CPF = cpf;
             Nome = nome.ToUpper();
-            Sexo = sexo;
+            Sexo = char.ToUpper(sexo);
             DataNascimento = dataNascimento;
             UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
             Situacao = 'A';
+        }
+
+        /**
+         *  Esse método verifica se o sexo é válido
+         */
+        public static bool VerificarSexo(char sexo)
+        {
+            return char.ToUpper(sexo) == 'F' || char.ToUpper(sexo) == 'M';
         }
 
         /**
@@ -103,7 +114,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CPF}{Nome.PadRight(50)}{FormatarData(DataNascimento)}{Sexo}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{CPF}{Nome.PadRight(50)}{FormatarData(DataNascimento)}{char.ToUpper(Sexo)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
         }
 
         public void LinhaParaObjeto(string linha)
