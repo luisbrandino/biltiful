@@ -84,6 +84,11 @@ namespace biltiful.Modulos
                     case 3:
                         new OperacaoEditarFornecedor().Executar();
                         break;
+                    case 4:
+                        new OperacaoImpressaoFornecedor().Executar();
+                        break;
+                    default:
+                        return;
                 }
             }
             
