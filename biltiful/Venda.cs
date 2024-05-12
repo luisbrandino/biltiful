@@ -14,12 +14,20 @@ namespace biltiful
         public List<ItemVenda> ItensVenda { get; set; }
 
         private static List<Venda> vendas = new List<Venda>();
-        private static string arquivoVendas = @"C:\Local\Disco\Biltiful\Venda.dat";
+        private static string arquivoVendas = @"C:\Biltiful\Venda.dat";
         private static int ultimoId = 0;
 
         public Venda()
         {
             Id = ++ultimoId;
+        }
+
+        public Venda(int id, DateTime dataVenda, string cliente, decimal valorTotal)
+        {
+            Id = id;
+            DataVenda = dataVenda;
+            Cliente = cliente;
+            ValorTotal = valorTotal;
         }
 
         public static Venda CadastrarVenda()
@@ -199,7 +207,7 @@ namespace biltiful
             {
                 foreach (var venda in vendas)
                 {
-                    writer.WriteLine($"{venda.Id:D5}{venda.DataVenda:yyyyMMdd}{venda.Cliente.PadRight(11)}{venda.ValorTotal:F2}".Replace(".", ""));
+                    writer.WriteLine($"{venda.Id:D5}{venda.DataVenda:yyyyMMdd}{venda.Cliente.PadRight(11)}{venda.ValorTotal.ToString("00,000.00").Replace(",", "").Replace(".", "").Substring(0, 7)}");
                 }
             }
         }
@@ -213,13 +221,14 @@ namespace biltiful
                     string linha;
                     while ((linha = reader.ReadLine()) != null)
                     {
-                        Venda venda = new Venda
-                        {
-                            Id = int.Parse(linha.Substring(0, 5)),
-                            DataVenda = DateTime.ParseExact(linha.Substring(5, 8), "yyyyMMdd", null),
-                            Cliente = linha.Substring(13, 11).Trim(),
-                            ValorTotal = decimal.Parse(linha.Substring(24, 7))
-                        };
+
+                        int Id = int.Parse(linha.Substring(0, 5));
+                        DateTime DataVenda = DateTime.ParseExact(linha.Substring(5, 8), "yyyyMMdd", null);
+                        string Cliente = linha.Substring(13, 11).Trim();
+                        decimal ValorTotal = decimal.Parse(linha.Substring(23, 6).Insert(4, ","));
+
+                        Venda venda = new Venda(Id, DataVenda, Cliente, ValorTotal);
+
                         vendas.Add(venda);
                         if (venda.Id > ultimoId)
                         {

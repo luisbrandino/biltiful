@@ -70,7 +70,7 @@ namespace biltiful
         // Método para ler as informações do produto do arquivo Cosmetico.dat
         private static ProdutoInfo LerProdutoDoArquivo(string codigoBarras)
         {
-            string arquivo = "Cosmetico.dat";
+            string arquivo = @"C:\Biltiful\Cosmetico.dat";
 
             if (File.Exists(arquivo))
             {
@@ -81,10 +81,10 @@ namespace biltiful
                     {
                         if (linha.StartsWith(codigoBarras))
                         {
-                            if (linha.Length >= 38 && linha[37] == 'A') // Verifica se a linha tem tamanho suficiente e se o status é 'A' (ativo)
+                            if (linha.Last() == 'A') // Verifica se a linha tem tamanho suficiente e se o status é 'A' (ativo)
                             {
-                                string nome = linha.Substring(1, 20).Trim();
-                                decimal valorVenda = decimal.Parse(linha.Substring(21, 6)) / 100m; // Dividido por 100 para converter centavos
+                                string nome = linha.Substring(13, 20).Trim();
+                                decimal valorVenda = (decimal) decimal.Parse(linha.Substring(33, 5)) / 100m; // Dividido por 100 para converter centavos
                                 return new ProdutoInfo { Nome = nome, ValorVenda = valorVenda };
                             }
                         }
