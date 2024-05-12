@@ -1,92 +1,149 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace biltiful
 {
-    internal class ItemVenda
+    public class ItemVenda
     {
-        public int Id { get; set; }
+        public int IdVenda { get; set; }
         public string Produto { get; set; }
         public int Quantidade { get; set; }
-        public int ValorUnitario { get; set; }
-        public int TotalItem { get; set; }
+        public decimal ValorUnitario { get; set; }
+        public decimal TotalItem { get; set; }
 
-        public ItemVenda(int id, string produto, int quantidade, int valorUnitario, int totalItem)
+        public ItemVenda()
         {
-            Id = id;
+        }
+
+        public ItemVenda(int idVenda, string produto, int quantidade, decimal valorUnitario, decimal totalItem)
+        {
+            IdVenda = idVenda;
             Produto = produto;
             Quantidade = quantidade;
             ValorUnitario = valorUnitario;
             TotalItem = totalItem;
         }
 
-        public ItemVenda()
+        // Método para criar um novo item de venda
+        public static ItemVenda CriarItemVenda(int idVenda)
         {
+            Console.WriteLine("Digite o código de barras do produto:");
+            string codigoBarras = Console.ReadLine();
 
+            // Verificar se o produto existe e está ativo no arquivo Cosmetico.dat
+            var produtoInfo = LerProdutoDoArquivo(codigoBarras);
+            if (produtoInfo == null)
+            {
+                Console.WriteLine("Produto não encontrado ou inativo.");
+                return null;
+            }
+
+            string produto = produtoInfo.Nome;
+            decimal valorUnitario = produtoInfo.ValorVenda;
+
+            Console.WriteLine($"Produto: {produto}, Valor unitário: {valorUnitario}");
+
+            // Solicita e valida a quantidade do produto
+            Console.WriteLine("Digite a quantidade do produto:");
+            int quantidade;
+            if (!int.TryParse(Console.ReadLine(), out quantidade) || quantidade <= 0 || quantidade > 999)
+            {
+                Console.WriteLine("Quantidade inválida.");
+                return null;
+            }
+
+            // Calcula o valor total do item
+            decimal totalItem = quantidade * valorUnitario;
+
+            // Verifica se o valor total do item excede o limite máximo
+            if (totalItem > 9999.99m)
+            {
+                Console.WriteLine("O valor total do item não pode exceder 9.999,99.");
+                return null;
+            }
+
+            // O ID da venda será o mesmo que o ID da venda
+            return new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem);
         }
 
-        public List<ItemVenda> CadastrarItemVenda(int id)
+        // Método para ler as informações do produto do arquivo Cosmetico.dat
+        private static ProdutoInfo LerProdutoDoArquivo(string codigoBarras)
         {
-            List<ItemVenda> itensVenda = new List<ItemVenda>();
+            string arquivo = "Cosmetico.dat";
 
-            Console.WriteLine("\n  ---- CADASTRAR VENDA ----");
-
-            Console.WriteLine("\n| Atenção! São permitidos apenas 3 tipos de produtos por venda!|");
-            Console.WriteLine("| A escolha não pode ser alterada.");
-            Console.WriteLine("\n| Digite |SAIR| a qualquer momento para cancelar a venda"); //TALVEZ   
-            Console.Write("\n\n| Pressione qualquer tecla para continuar: ");
-            Console.ReadLine();
-            Console.Clear();
-
-            Console.Write("|Informe quantos produtos fazem parte da venda: ");
-            int qtdItens = int.Parse(Console.ReadLine());
-            Console.Clear();
-            if (qtdItens <= 3)
+            if (File.Exists(arquivo))
             {
-                for (int i = 0; i < qtdItens; i++)
+                using (StreamReader sr = new StreamReader(arquivo))
                 {
-
-                    Console.WriteLine($"\nVENDA - CÓDIGO (ID): {id + 1}");
-
-                    Console.Write("\n|Informe o ID (Código de Barras) do produto: ");
-                    string produto = Console.ReadLine();
-
-                    Console.Write("|Informe a quantidade de produtos (máximo 999): ");
-                    int quantidadeItem = int.Parse(Console.ReadLine());
-
-                    if (quantidadeItem <= 999)
+                    string linha;
+                    while ((linha = sr.ReadLine()) != null)
                     {
-                        Console.Write("|Informe o valor da unidade do produto (Centavos): ");
-                        int valorUnitario = int.Parse(Console.ReadLine());
-
-                        int totalProduto = quantidadeItem * valorUnitario; // Calcula o valor total do item
-
-                        if (totalProduto > 9999)
+                        if (linha.StartsWith(codigoBarras))
                         {
-                            Console.WriteLine("\n| O valor total do item excede o limite permitido (9.999).");
-                            Console.WriteLine("| A venda foi cancelada.");
-                            Console.ReadLine() ;
-                            return new List<ItemVenda>(); // Retorna uma lista vazia indicando que a venda foi cancelada
+                            if (linha.Length >= 38 && linha[37] == 'A') // Verifica se a linha tem tamanho suficiente e se o status é 'A' (ativo)
+                            {
+                                string nome = linha.Substring(1, 20).Trim();
+                                decimal valorVenda = decimal.Parse(linha.Substring(21, 6)) / 100m; // Dividido por 100 para converter centavos
+                                return new ProdutoInfo { Nome = nome, ValorVenda = valorVenda };
+                            }
                         }
-
-                        itensVenda.Add(new ItemVenda(id, produto, quantidadeItem, valorUnitario, totalProduto));
-                    }
-                    else
-                    {
-                        Console.WriteLine("\n| A quantidade de produtos excede o limite permitido (999).");
-                        Console.WriteLine("| A venda foi cancelada.");
-                        return new List<ItemVenda>(); // Retorna uma lista vazia indicando que a venda foi cancelada
                     }
                 }
             }
-            else
+
+            return null;
+        }
+
+        // Método para salvar os itens de venda em um arquivo
+        public static void SalvarItensVenda(List<ItemVenda> itensVenda)
+        {
+            string arquivo = @"C:\Local\Disco\Biltiful\ItemVenda.dat";
+
+            using (StreamWriter sw = new StreamWriter(arquivo))
             {
-                Console.WriteLine("\n|A quantidade de produtos excede o limite permitido.");
-                Console.WriteLine("\n|A venda foi cancelada.");
-                Console.ReadKey();
+                foreach (var item in itensVenda)
+                {
+                    sw.WriteLine($"{item.IdVenda},{item.Produto},{item.Quantidade},{item.ValorUnitario},{item.TotalItem}");
+                }
+            }
+
+            Console.WriteLine("Itens de venda salvos com sucesso.");
+        }
+
+        // Método para carregar os itens de venda de um arquivo
+        public static List<ItemVenda> CarregarItensVenda()
+        {
+            List<ItemVenda> itensVenda = new List<ItemVenda>();
+            string arquivo = @"C:\Local\Disco\Biltiful\ItemVenda.dat";
+
+            if (File.Exists(arquivo))
+            {
+                using (StreamReader sr = new StreamReader(arquivo))
+                {
+                    string linha;
+                    while ((linha = sr.ReadLine()) != null)
+                    {
+                        string[] dados = linha.Split(',');
+
+                        int idVenda = int.Parse(dados[0]);
+                        string produto = dados[1];
+                        int quantidade = int.Parse(dados[2]);
+                        decimal valorUnitario = decimal.Parse(dados[3]);
+                        decimal totalItem = decimal.Parse(dados[4]);
+
+                        itensVenda.Add(new ItemVenda(idVenda, produto, quantidade, valorUnitario, totalItem));
+                    }
+                }
             }
 
             return itensVenda;
         }
+    }
+
+    internal class ProdutoInfo
+    {
+        public string Nome { get; set; }
+        public decimal ValorVenda { get; set; }
     }
 }
