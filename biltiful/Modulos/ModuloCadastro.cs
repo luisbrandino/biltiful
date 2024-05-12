@@ -129,6 +129,9 @@ namespace biltiful.Modulos
                     case 2:
                         new OperacaoLocalizarInadimplente().Executar();
                         break;
+                    case 3:
+                        new OperacaoRemoverInadimplente().Executar();
+                        break;
                 }
             }
         }
