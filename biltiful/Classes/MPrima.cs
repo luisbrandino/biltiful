@@ -46,6 +46,8 @@
          */
         public static bool VerificarId(string id)
         {
+            id = id.ToUpper();
+
             if (id.Length != 6)
                 return false;
 

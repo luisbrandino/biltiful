@@ -75,6 +75,7 @@ namespace biltiful.Modulos
                     case 2:
                         break;
                     case 3:
+                        new OperacaoEditarMPrima().Executar();
                         break;
                     case 4:
                         break;
