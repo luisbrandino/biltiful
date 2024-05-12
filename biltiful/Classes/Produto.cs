@@ -119,5 +119,10 @@ namespace biltiful.Classes
 
             Situacao = linha.Substring(54, 1).ToUpper().First();
         }
+
+        public override string ToString()
+        {
+            return $"Código de barras: {CodigoBarras}\nNome: {Nome}";
+        }
     }
 }

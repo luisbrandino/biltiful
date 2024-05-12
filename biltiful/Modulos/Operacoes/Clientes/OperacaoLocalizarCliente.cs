@@ -23,7 +23,7 @@ namespace biltiful.Modulos.Operacoes
 
             /// Isso acaba por pesquisar o mesmo valor duas vezes no arquivo
             entrada.AdicionarRegra(
-                (string cpf) => arquivo.Ler().Find(c => c.CPF == cpf) != null,
+                (string cpf) => arquivo.Ler().Find(c => c.CPF == cpf && c.Situacao == 'A') != null,
                 "CPF não encontrado"
             );
 
@@ -33,10 +33,20 @@ namespace biltiful.Modulos.Operacoes
         public void Executar()
         {
             Console.Clear();
+
+            List<Cliente> clientes = arquivo.Ler().Where(cliente => cliente.Situacao == 'A').ToList();
+
+            if (clientes.Count <= 0)
+            {
+                Console.WriteLine("Nenhum cliente cadastrado");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Informe o CPF que deseja localizar: ");
             string cpf = EntradaCpf();
 
-            Cliente? cliente = arquivo.Ler().Where(cliente => cliente.Situacao == 'A').ToList().Find(c => c.CPF == cpf);
+            Cliente? cliente = clientes.Find(c => c.CPF == cpf);
 
             Console.WriteLine(cliente);
 

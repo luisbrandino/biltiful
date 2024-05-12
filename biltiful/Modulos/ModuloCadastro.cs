@@ -37,6 +37,9 @@ namespace biltiful.Modulos
                 case 1:
                     new OperacaoCadastroProduto().Executar();
                     break;
+                case 2:
+                    new OperacaoLocalizarProduto().Executar();
+                    break;
                 case 3:
                     new OperacaoEditarProduto().Executar();
                     break;
