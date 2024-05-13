@@ -31,9 +31,14 @@ namespace biltiful.Classes
             this.Id = int.Parse(linha.Substring(0, 5).Trim());
             this.Produto = linha.Substring(5, 13).Trim();
             this.Quantidade = int.Parse(linha.Substring(18, 3).Trim());
-            this.ValorUnitario = float.Parse(linha.Substring(21, 5).Trim());
-            this.TotalItem = float.Parse(linha.Substring(26, 6).Trim());
+            this.ValorUnitario = float.Parse(linha.Substring(21, 5).Trim()) / 100;
+            this.TotalItem = float.Parse(linha.Substring(26, 6).Trim()) / 100;
 
+        }
+
+        public override string ToString()
+        {
+            return $"ID: {Id.ToString("00000")}\nProduto: {Produto}\nQuantidade: {Quantidade}\nValor unitário: {ValorUnitario}\nTotal: {TotalItem}";
         }
     }
 }
