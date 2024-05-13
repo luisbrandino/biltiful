@@ -292,43 +292,53 @@ namespace biltiful.Classes
             List<Compra> listCompra = arqCompra.Ler();
             bool achou = false;
 
-            Console.WriteLine("Informe o ID da compra que deseja excluir");
-            idExcluir = int.Parse(Console.ReadLine());
-
-            foreach (var c in listCompra)
+            if (listCompra.Count == 0)
             {
-                if (c.Id == idExcluir)
-                {
-                    listCompra.Remove(c);
-                    achou = true;
-                    break;
-                }
-            }
-
-            if (achou == false)
-            {
-                Console.WriteLine("\nID não encontrado!\n");
+                Console.WriteLine("\nLista de Compras Vazia!\n");
                 return;
             }
-
-            List<ItemCompra> listItemCompra = arqItemCompra.Ler();
-            List<ItemCompra> itensDelete = new List<ItemCompra>();
-
-            foreach (var item in listItemCompra)
+            else
             {
-                if (item.Id == idExcluir)
-                    itensDelete.Add(item);
+
+                Console.Write("Informe o ID da compra que deseja excluir: ");
+                idExcluir = int.Parse(Console.ReadLine());
+
+                foreach (var c in listCompra)
+                {
+                    if (c.Id == idExcluir)
+                    {
+                        listCompra.Remove(c);
+                        achou = true;
+                        break;
+                    }
+                }
+
+                if (achou == false)
+                {
+                    Console.WriteLine("\nID não encontrado!\n");
+                    return;
+                }
+
+                List<ItemCompra> listItemCompra = arqItemCompra.Ler();
+                List<ItemCompra> itensDelete = new List<ItemCompra>();
+
+                foreach (var item in listItemCompra)
+                {
+                    if (item.Id == idExcluir)
+                        itensDelete.Add(item);
+                }
+
+                foreach (var item in itensDelete)
+                {
+                    listItemCompra.Remove(item);
+                }
+
+                arqCompra.Sobrescrever(listCompra);
+                arqItemCompra.Sobrescrever(listItemCompra);
+
+                Console.WriteLine("\nCompra e itens excluídos!\n");
+
             }
-
-            foreach (var item in itensDelete)
-            {
-                listItemCompra.Remove(item);
-            }
-
-            arqCompra.Sobrescrever(listCompra);
-            arqItemCompra.Sobrescrever(listItemCompra);
-
-            Console.WriteLine("\nCompra e itens excluídos!\n");
         }
 
         public void LocalizarCompra()
@@ -339,44 +349,53 @@ namespace biltiful.Classes
             List<ItemCompra> listItemCompra = arqItemCompra.Ler();
             int idLocalizar;
 
-            Console.Write("\nInsira o ID da compra que você quer localizar: ");
-            idLocalizar = int.Parse(Console.ReadLine());
-
-            Compra compLocalizada = null;
-
-            foreach (var compra in listCompra)
+            if (listCompra.Count == 0)
             {
-                if (compra.Id == idLocalizar)
-                {
-                    compLocalizada = compra;
-                    break;
-                }
-            }
-
-            if (compLocalizada == null)
-            {
-                Console.WriteLine("\nId não encontrado!\n");
+                Console.WriteLine("\nLista de Compras Vazia!\n");
                 return;
             }
-
-            List<ItemCompra> itensLocalizados = new List<ItemCompra>();
-
-            foreach (var item in listItemCompra)
+            else
             {
-                if (item.Id == compLocalizada.Id)
+
+                Console.Write("\nInsira o ID da compra que você quer localizar: ");
+                idLocalizar = int.Parse(Console.ReadLine());
+
+                Compra compLocalizada = null;
+
+                foreach (var compra in listCompra)
                 {
-                    itensLocalizados.Add(item);
+                    if (compra.Id == idLocalizar)
+                    {
+                        compLocalizada = compra;
+                        break;
+                    }
                 }
-            }
 
-            Console.WriteLine($"\nID da compra: {compLocalizada.Id} \nData da Compra: {compLocalizada.DataCompra} \nCNPJ Fornecedor: {compLocalizada.CnpjFornecedor} \nValor Total: {compLocalizada.ValorTotal}");
+                if (compLocalizada == null)
+                {
+                    Console.WriteLine("\nId não encontrado!\n");
+                    return;
+                }
 
-            Console.WriteLine("Itens: ");
+                List<ItemCompra> itensLocalizados = new List<ItemCompra>();
 
-            foreach (var item in itensLocalizados)
-            {
-                Console.WriteLine($"\nID do Item: {item.Id} \nData da Compra: {item.DataCompra} \nID Materia Prima: {item.MateriaPrima} \nQuantidade Matéria Prima: {item.Quantidade} \nValor Unitario Item: {item.ValorUnitario} \nValor total item: {item.TotalItem}");
-                Console.WriteLine();
+                foreach (var item in listItemCompra)
+                {
+                    if (item.Id == compLocalizada.Id)
+                    {
+                        itensLocalizados.Add(item);
+                    }
+                }
+
+                Console.WriteLine($"\nID da compra: {compLocalizada.Id} \nData da Compra: {compLocalizada.DataCompra} \nCNPJ Fornecedor: {compLocalizada.CnpjFornecedor} \nValor Total: {compLocalizada.ValorTotal}");
+
+                Console.WriteLine("Itens: ");
+
+                foreach (var item in itensLocalizados)
+                {
+                    Console.WriteLine($"\nID do Item: {item.Id} \nData da Compra: {item.DataCompra} \nID Materia Prima: {item.MateriaPrima} \nQuantidade Matéria Prima: {item.Quantidade} \nValor Unitario Item: {item.ValorUnitario} \nValor total item: {item.TotalItem}");
+                    Console.WriteLine();
+                }
             }
         }
 
