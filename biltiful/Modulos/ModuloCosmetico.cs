@@ -11,6 +11,7 @@ namespace biltiful.Modulos
 
             int Menu()
             {
+                Console.Clear();
                 Console.WriteLine(">>> Menu <<<<");
                 Console.WriteLine("Selecione a opção desejada: ");
                 Console.WriteLine("1 - Comprar a Matéria Prima");
@@ -53,9 +54,7 @@ namespace biltiful.Modulos
                         break;
 
                     case 5:
-                        Console.WriteLine("\nSaindo...");
-                        Environment.Exit(0);
-                        break;
+                        return;
 
                     default:
                         Console.WriteLine("\nOpção Inválida!");
