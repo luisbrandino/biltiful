@@ -43,7 +43,7 @@
         {
             Arquivo<Produto> arquivoProduto = new Arquivo<Produto>(Constantes.DIRETORIO, Constantes.PRODUTO_ARQUIVO);
             Produto produto = arquivoProduto.Ler().Find(p => p.CodigoBarras == this.Produto);
-            return $"ID: {Id.ToString("00000")}\nCódigo de barras: {Produto}\nNome do produto: {produto.Nome}\nQuantidade: {Quantidade}\nValor unitário: {ValorUnitario}\nTotal: {TotalItem}";
+            return $"ID: {Id.ToString("00000")}\nCódigo de barras: {Produto}\t\tNome do produto: {produto.Nome}\nQuantidade: {Quantidade}\tValor unitário: {ValorUnitario.ToString("0.00")}\tTotal: {TotalItem.ToString("0.00")}";
         }
     }
 }

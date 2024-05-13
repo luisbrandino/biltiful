@@ -65,7 +65,7 @@ namespace biltiful.Classes
             Arquivo<ItemVenda> arquivoItemCompra = new Arquivo<ItemVenda>(Constantes.DIRETORIO, Constantes.ITEM_VENDA_ARQUIVO);
             List<ItemVenda> itensVenda = arquivoItemCompra.Ler();
 
-            string result = $"ID: {Id.ToString("00000")}\nData: {DataVenda.Day}/{DataVenda.Month}/{DataVenda.Year}\nCPF do cliente: {Cliente}\nValor total: {ValorTotal}\n";
+            string result = $"ID: {Id.ToString("00000")}\nData: {DataVenda.Day}/{DataVenda.Month}/{DataVenda.Year}\nCPF do cliente: {Cliente}\nValor total: {ValorTotal.ToString("0.00")}\n";
 
             result += "\nItens:\n\n";
 
