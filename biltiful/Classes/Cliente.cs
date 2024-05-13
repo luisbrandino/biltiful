@@ -153,7 +153,7 @@
 
         public override string ToString()
         {
-            return $"CPF: {CPF}\nNome: {Nome}";
+            return $"CPF: {CPF}\nNome: {Nome}\nSexo: {Sexo}\nUltima compra: {UltimaCompra.Day.ToString("00")}/{UltimaCompra.Month.ToString("00")}/{UltimaCompra.Year.ToString("00")}";
         }
     }
 }
