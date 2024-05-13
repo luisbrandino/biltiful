@@ -66,6 +66,7 @@ namespace biltiful.Classes
 
         public void CadastrarCompra()
         {
+            Console.Clear();
             Arquivo<Compra> comp = new("C:\\biltiful\\", "Compra.dat");
             Arquivo<ItemCompra> arqItem = new("C:\\biltiful\\", "ItemCompra.dat");
             ItemCompra item = new();
@@ -286,6 +287,7 @@ namespace biltiful.Classes
 
         public void ExcluirCompra()
         {
+            Console.Clear();
             int idExcluir;
             Arquivo<Compra> arqCompra = new Arquivo<Compra>("C:\\biltiful\\", "Compra.dat");
             Arquivo<ItemCompra> arqItemCompra = new Arquivo<ItemCompra>("C:\\biltiful\\", "ItemCompra.dat");
@@ -343,6 +345,7 @@ namespace biltiful.Classes
 
         public void LocalizarCompra()
         {
+            Console.Clear();
             Arquivo<Compra> arqCompra = new Arquivo<Compra>("C:\\biltiful\\", "Compra.dat");
             List<Compra> listCompra = arqCompra.Ler();
             Arquivo<ItemCompra> arqItemCompra = new Arquivo<ItemCompra>("C:\\biltiful\\", "ItemCompra.dat");
@@ -401,6 +404,7 @@ namespace biltiful.Classes
 
         public void ImpressaoPorRegistro()
         {
+            Console.Clear();
             Arquivo<Compra> arqCompra = new Arquivo<Compra>("C:\\biltiful\\", "Compra.dat");
             Arquivo<ItemCompra> arqItemCompra = new Arquivo<ItemCompra>("C:\\biltiful\\", "ItemCompra.dat");
             List<Compra> listCompra = arqCompra.Ler();

@@ -60,6 +60,8 @@ namespace biltiful.Modulos
                         Console.WriteLine("\nOpção Inválida!");
                         break;
                 }
+                Console.WriteLine("Aperte qualquer tecla para continuar");
+                Console.ReadKey();
                 Console.WriteLine();
             } while (true);
 
