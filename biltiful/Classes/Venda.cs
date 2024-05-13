@@ -12,6 +12,7 @@ namespace biltiful.Classes
         public DateOnly DataVenda { get; set; }
         public string Cliente { get; set; }
         public float ValorTotal { get; set; }
+        public List<ItemVenda> ItensVenda { get; set; }
 
         public Venda() { }
 
