@@ -122,7 +122,7 @@ namespace biltiful.Classes
 
         public override string ToString()
         {
-            return $"Código de barras: {CodigoBarras}\nNome: {Nome}";
+            return $"Código de barras: {CodigoBarras}\nNome: {Nome}\nValor de venda: {ValorVenda}";
         }
     }
 }

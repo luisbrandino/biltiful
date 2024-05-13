@@ -67,7 +67,7 @@ namespace biltiful.Classes
 
             string result = $"ID: {Id.ToString("00000")}\nData: {DataVenda.Day}/{DataVenda.Month}/{DataVenda.Year}\nCPF do cliente: {Cliente}\nValor total: {ValorTotal}\n";
 
-            result += "\nItems:\n\n";
+            result += "\nItens:\n\n";
 
             foreach (ItemVenda item in itensVenda)
                 if (item.Id == Id)
