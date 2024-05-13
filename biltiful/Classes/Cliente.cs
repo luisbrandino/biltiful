@@ -37,13 +37,24 @@
             if (!VerificarDataDeNascimento(dataNascimento))
                 throw new ArgumentException("Data de nascimento não pode ser posterior à data atual");
 
+            if (!VerificarSexo(sexo))
+                throw new ArgumentException("Sexo inválido");
+
             CPF = cpf;
             Nome = nome.ToUpper();
-            Sexo = sexo;
+            Sexo = char.ToUpper(sexo);
             DataNascimento = dataNascimento;
             UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
             Situacao = 'A';
+        }
+
+        /**
+         *  Esse método verifica se o sexo é válido
+         */
+        public static bool VerificarSexo(char sexo)
+        {
+            return char.ToUpper(sexo) == 'F' || char.ToUpper(sexo) == 'M';
         }
 
         /**
@@ -103,16 +114,19 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CPF}{Nome.PadRight(50)}{FormatarData(DataNascimento)}{Sexo}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{CPF}{Nome.PadRight(Constantes.TAMANHO_NOME_CLIENTE)}{FormatarData(DataNascimento)}{char.ToUpper(Sexo)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{char.ToUpper(Situacao)}";
         }
 
+        /**
+         *  Esse método constrói o objeto a partir da linha vinda do arquivo
+         */
         public void LinhaParaObjeto(string linha)
         {
             if (linha.Length != 87)
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade Cliente");
 
             CPF = linha.Substring(0, 11);
-            Nome = linha.Substring(11, 50).Trim().ToUpper();
+            Nome = linha.Substring(11, Constantes.TAMANHO_NOME_CLIENTE).Trim().ToUpper();
 
             int dia = int.Parse(linha.Substring(61, 2));
             int mes = int.Parse(linha.Substring(63, 2));
@@ -135,6 +149,11 @@
             DataCadastro = new DateOnly(ano, mes, dia);
 
             Situacao = linha.Substring(86, 1).First();
+        }
+
+        public override string ToString()
+        {
+            return $"CPF: {CPF}\nNome: {Nome}";
         }
     }
 }
