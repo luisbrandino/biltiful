@@ -50,8 +50,8 @@ namespace biltiful.Modulos
             );
 
             entrada.AdicionarRegra(
-                (string cpf) => arquivoCliente.Ler().Exists(c => c.CPF == cpf),
-                "CPF não cadastrado"
+                (string cpf) => arquivoCliente.Ler().Exists(c => c.CPF == cpf && c.Situacao == 'A'),
+                "CPF não cadastrado ou inativo"
             );
 
             return entrada.Pegar();
@@ -125,24 +125,37 @@ namespace biltiful.Modulos
             int id = vendas.Count > 0 ? vendas.Last().Id + 1 : 1;
             float valorTotal = 0;
             string cpf;
-            
 
             List<Cliente> clientes = arquivoClientes.Ler();
             Cliente? cliente;
 
             while (true)
             {
-                Console.Write("Informe o CPF: ");
-                cpf = EntradaCpf();
+                while (true)
+                {
+                    Console.Write("Informe o CPF: ");
+                    cpf = EntradaCpf();
 
-                cliente = clientes.Find(c => c.CPF == cpf && DateTime.Now.Year - c.DataNascimento.Year >= 18);
+                    cliente = clientes.Find(c => c.CPF == cpf && DateTime.Now.Year - c.DataNascimento.Year >= 18);
 
-                if (cliente != null)
+                    if (cliente != null)
+                        break;
+
+                    Console.WriteLine("Cliente menor de idade, tente novamente.");
+                }
+
+                Arquivo<Inadimplente> arquivoInadimplentes = new Arquivo<Inadimplente>(Constantes.DIRETORIO, Constantes.INADIMPLENTE_ARQUIVO);
+
+                List<Inadimplente> inadimplentes = arquivoInadimplentes.Ler();
+
+            
+                bool ehInadimplente = inadimplentes.Exists(i => i.CPF == cliente.CPF);
+
+                if (!ehInadimplente)
                     break;
 
-                Console.WriteLine("Cliente menor de idade, tente novamente.");
+                Console.WriteLine("Cliente inadimplente, tente outro CPF");
             }
-            
 
             Console.Write("Informe quantos produtos deseja comprar: ");
             int quantidadeDeProdutos = EntradaQuantidadeProdutos();
