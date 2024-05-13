@@ -33,7 +33,7 @@
 
             Console.WriteLine(this.titulo);
             for (int i = 0; i < opcoes.Count; i++)
-                Console.WriteLine($"[ {i + 1} ] {opcoes[i]}");
+                Console.WriteLine($"{i + 1} - {opcoes[i]}");
         }
 
         public int Perguntar()
