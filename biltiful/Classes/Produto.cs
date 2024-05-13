@@ -69,23 +69,7 @@ namespace biltiful.Classes
                 if (!char.IsDigit(caracter))
                     return false;
 
-            int somaPares = 0;
-            int somaImpares = 0;
-
-            for (int i = 0; i < 12; i++)
-            {
-                int digito = int.Parse(codigoDeBarras[i].ToString());
-
-                if (i % 2 == 0)
-                    somaPares += digito;
-                else
-                    somaImpares += digito * 3;
-            }
-
-            int total = somaPares + somaImpares;
-            int digitoVerificador = (10 - (total % 10)) % 10;
-
-            return digitoVerificador == int.Parse(codigoDeBarras[12].ToString());
+            return true;
         }
 
         /**

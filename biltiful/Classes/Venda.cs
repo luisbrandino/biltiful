@@ -43,7 +43,7 @@ namespace biltiful.Classes
             string id, data, valorTotal;
             id = this.Id.ToString("00000");
             data = FormatarData(DataVenda);
-            valorTotal = this.ValorTotal.ToString("00,000.00").Replace(",", "").Replace(".", "").Substring(0, 7);
+            valorTotal = this.ValorTotal.ToString("N2").Replace(",", "").PadLeft(7, '0');
 
             return id + data + this.Cliente + valorTotal;
         }

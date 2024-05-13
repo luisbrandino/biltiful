@@ -83,8 +83,8 @@ namespace biltiful.Modulos
 
         float EntradaValorUnitario()
         {
-            Entrada<float> entrada = new();
-
+            EntradaDecimal<float> entrada = new();
+            
             entrada.AdicionarRegra(
                 (float quantidade) => quantidade >= 1 && quantidade <= 999.99,
                 "Quantidade tem que ser maior ou igual à 1 e menor ou igual à 999.99"
