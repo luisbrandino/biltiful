@@ -36,11 +36,16 @@ namespace biltiful.Classes
         }
 
 
+        public string FormatarData(DateOnly data)
+        {
+            return $"{data.Day.ToString("00")}{data.Month.ToString("00")}{data.Year.ToString("0000")}";
+        }
+
         public string FormatarParaArquivo()
         {
             string id, data, valorTotal;
             id = this.Id.ToString().PadLeft(5, '0');
-            data = this.DataVenda.ToString().Replace("/", "");
+            data = FormatarData(DataVenda);
             valorTotal = this.ValorTotal.ToString().Replace(",", "").PadLeft(7, '0');
 
             return id + data + this.Cliente + valorTotal;
@@ -55,6 +60,23 @@ namespace biltiful.Classes
             this.DataVenda = new DateOnly(ano, mes, dia);
             this.Cliente = linha.Substring(13, 11).Trim();
             this.ValorTotal = float.Parse(linha.Substring(24, 7).Insert(5, ","));
+        }
+
+        public override string ToString()
+        {
+            /// A fim de economizar tempo
+            Arquivo<ItemVenda> arquivoItemCompra = new Arquivo<ItemVenda>(Constantes.DIRETORIO, Constantes.ITEM_VENDA_ARQUIVO);
+            List<ItemVenda> itensVenda = arquivoItemCompra.Ler();
+
+            string result = $"ID: {Id.ToString("00000")}\nData: {DataVenda.Day}/{DataVenda.Month}/{DataVenda.Year}\nCPF do cliente: {Cliente}\nValor total: {ValorTotal}\n";
+
+            result += "\nItems:\n\n";
+
+            foreach (ItemVenda item in itensVenda)
+                if (item.Id == Id)
+                    result += item.ToString();
+
+            return result;
         }
     }
 }
