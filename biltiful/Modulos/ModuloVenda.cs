@@ -1,6 +1,7 @@
 ﻿using biltiful.Classes;
 using biltiful.Modulos.Operacoes;
 using biltiful.Modulos.Operacoes.Produtos;
+using System.Threading.Channels;
 
 namespace biltiful.Modulos
 {
@@ -147,53 +148,68 @@ namespace biltiful.Modulos
             {
                 try
                 {
+                    int id;
                     int opc = 0;
-                    int id = vendas.Last().Id + 1;
+
+                    if (vendas.Count == 0)
+                        id = 1;
+                    else
+                        id = vendas.Last().Id + 1;
+
                     float valorTotal = 0;
                     DateOnly data = DateOnly.FromDateTime(DateTime.Now);
                     Console.WriteLine("Insira o CPF do cliente: ");
                     string CPF = Console.ReadLine();
                     Cliente cliente = LocalizarCliente(CPF);
-                    if (cliente != null && VerificarInadimplencia(CPF))
+                    if (cliente.Situacao != 'I')
                     {
-                        DadosCliente(cliente);
-                        Console.WriteLine("Continuar?");
-                        Console.WriteLine("1 - Sim | 2 - Não");
-                        opc = int.Parse(Console.ReadLine());
-                        if (opc != 1)
-                            return false;
-
-                        int idade = DateTime.Now.Year - cliente.DataNascimento.Year;
-                        if (idade < 18)
+                        if (cliente != null && !VerificarInadimplencia(CPF))
                         {
-                            Console.WriteLine("Venda não autorizada para menores de 18 anos.");
-                            return false;
-                        }
-                        List<ItemVenda> itens = new List<ItemVenda>();
-
-
-                        while (itens.Count < 3 && opc != 1)
-                        {
-                            itens.Add(CadastrarItemVenda(id));
-                            valorTotal += itens[itens.Count - 1].TotalItem;
-                            if (valorTotal > 99999.99)
-                            {
-                                Console.WriteLine("Limite de valor para venda atingido!");
-                                break;
-                            }
-                            Console.WriteLine("Deseja Adicionar mais um item?");
+                            DadosCliente(cliente);
+                            Console.WriteLine("Continuar?");
                             Console.WriteLine("1 - Sim | 2 - Não");
                             opc = int.Parse(Console.ReadLine());
-                        }
+                            if (opc != 1)
+                                return false;
 
-                        Venda novaVenda = new(id, data, cliente.CPF, valorTotal, itens);
-                        arquivoVendas.Inserir(novaVenda);
-                        foreach (var item in itens)
-                        {
-                            arquivoItemVendas.Inserir(item);
+                            int idade = DateTime.Now.Year - cliente.DataNascimento.Year;
+                            if (idade < 18)
+                            {
+                                Console.WriteLine("Venda não autorizada para menores de 18 anos.");
+                                return false;
+                            }
+                            List<ItemVenda> itens = new List<ItemVenda>();
+
+                            opc = 0;
+                            while (itens.Count < 3 && opc == 1)
+                            {
+                                itens.Add(CadastrarItemVenda(id));
+                                valorTotal += itens[itens.Count - 1].TotalItem;
+                                if (valorTotal > 99999.99)
+                                {
+                                    Console.WriteLine("Limite de valor para venda atingido!");
+                                    break;
+                                }
+                                Console.WriteLine("Deseja Adicionar mais um item?");
+                                Console.WriteLine("1 - Sim | 2 - Não");
+                                opc = int.Parse(Console.ReadLine());
+                            }
+
+                            Venda novaVenda = new(id, data, cliente.CPF, valorTotal, itens);
+                            arquivoVendas.Inserir(novaVenda);
+                            foreach (var item in itens)
+                            {
+                                arquivoItemVendas.Inserir(item);
+                            }
+                            return true;
                         }
-                        return true;
                     }
+                    else
+                    {
+                        Console.WriteLine("Cliente inativo");
+                        return false;
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -211,6 +227,7 @@ namespace biltiful.Modulos
                 switch (menu.Perguntar())
                 {
                     case 1:
+                        //Console.WriteLine(CadastrarVenda() ? "Venda realizada" : "Não foi possível realizar a venda");
                         break;
                     case 2:
                         break;
@@ -222,6 +239,8 @@ namespace biltiful.Modulos
                     default:
                         return;
                 }
+
+                Console.ReadLine();
             }
         }
 
