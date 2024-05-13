@@ -124,9 +124,25 @@ namespace biltiful.Modulos
 
             int id = vendas.Count > 0 ? vendas.Last().Id + 1 : 1;
             float valorTotal = 0;
+            string cpf;
+            
 
-            Console.Write("Informe o CPF: ");
-            string cpf = EntradaCpf();
+            List<Cliente> clientes = arquivoClientes.Ler();
+            Cliente? cliente;
+
+            while (true)
+            {
+                Console.Write("Informe o CPF: ");
+                cpf = EntradaCpf();
+
+                cliente = clientes.Find(c => c.CPF == cpf && DateTime.Now.Year - c.DataNascimento.Year >= 18);
+
+                if (cliente != null)
+                    break;
+
+                Console.WriteLine("Cliente menor de idade, tente novamente.");
+            }
+            
 
             Console.Write("Informe quantos produtos deseja comprar: ");
             int quantidadeDeProdutos = EntradaQuantidadeProdutos();
@@ -158,9 +174,7 @@ namespace biltiful.Modulos
                 }
             }
 
-            List<Cliente> clientes = arquivoClientes.Ler();
-
-            Cliente cliente = clientes.Find(c => c.CPF == cpf);
+            
 
             cliente.UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
 
