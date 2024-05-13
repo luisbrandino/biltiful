@@ -9,7 +9,13 @@ namespace biltiful.Modulos
 
         void Excluir()
         {
+            Arquivo<Venda> arquivoVendas = new Arquivo<Venda>(Constantes.DIRETORIO, Constantes.VENDA_ARQUIVO);
+            List<Venda> vendas = arquivoVendas.Ler();
 
+            Arquivo<ItemVenda> arquivoItemVendas = new Arquivo<ItemVenda>(Constantes.DIRETORIO, Constantes.ITEM_VENDA_ARQUIVO);
+            List<ItemVenda> itemVendas = arquivoItemVendas.Ler(); ;
+
+            List<ItemVenda> itensParaExcluir = new List<ItemVenda>();
         }
 
         void ImpressaoPorRegistro()

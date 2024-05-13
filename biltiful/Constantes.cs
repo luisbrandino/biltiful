@@ -20,5 +20,6 @@
         public const string INADIMPLENTE_ARQUIVO = "Risco.dat";
         public const string BLOQUEADO_ARQUIVO = "Bloqueado.dat";
         public const string VENDA_ARQUIVO = "Venda.dat";
+        public const string ITEM_VENDA_ARQUIVO = "ItemVenda.dat";
     }
 }
