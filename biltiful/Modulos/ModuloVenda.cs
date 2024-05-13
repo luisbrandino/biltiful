@@ -8,6 +8,9 @@ namespace biltiful.Modulos
 {
     internal class ModuloVenda
     {
+        Arquivo<Cliente> arquivoCliente = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
+        Arquivo<Produto> arquivoProduto = new Arquivo<Produto>(Constantes.DIRETORIO, Constantes.PRODUTO_ARQUIVO);
+
 
         Arquivo<ItemVenda> arquivoItemVendas = new Arquivo<ItemVenda>(Constantes.DIRETORIO, Constantes.ITEM_VENDA_ARQUIVO);
         List<ItemVenda> itemVendas;
@@ -35,6 +38,137 @@ namespace biltiful.Modulos
             );
 
             return entrada.Pegar();
+        }
+
+        string EntradaCpf()
+        {
+            Entrada<string> entrada = new();
+
+            entrada.AdicionarRegra(
+                (string cpf) => Cliente.VerificarCPF(cpf),
+                "CPF não é válido"
+            );
+
+            entrada.AdicionarRegra(
+                (string cpf) => arquivoCliente.Ler().Exists(c => c.CPF == cpf),
+                "CPF não cadastrado"
+            );
+
+            return entrada.Pegar();
+        }
+
+        int EntradaQuantidadeProdutos()
+        {
+            Entrada<int> entrada = new();
+
+            entrada.AdicionarRegra(
+                (int quantidade) => quantidade >= 1 && quantidade <= 3,
+                "Quantidade tem que ser maior ou igual à um e menor ou igual à três"
+            );
+
+            return entrada.Pegar();
+        }
+
+        int EntradaQuantidade()
+        {
+            Entrada<int> entrada = new();
+
+            entrada.AdicionarRegra(
+                (int quantidade) => quantidade >= 1 && quantidade <= 999,
+                "Quantidade tem que ser maior ou igual à 1 e menor ou igual à 999"
+            );
+
+            return entrada.Pegar();
+        }
+
+        float EntradaValorUnitario()
+        {
+            Entrada<float> entrada = new();
+
+            entrada.AdicionarRegra(
+                (float quantidade) => quantidade >= 1 && quantidade <= 999.99,
+                "Quantidade tem que ser maior ou igual à 1 e menor ou igual à 999.99"
+            );
+
+            return entrada.Pegar();
+        }
+
+        public string EntradaCodigoDeBarras()
+        {
+            Entrada<string> entrada = new Entrada<string>();
+
+            entrada.AdicionarRegra(
+                (string codigoDeBarras) => Produto.VerificarCodigoDeBarras(codigoDeBarras),
+                "Código de barras não segue o padrão EAN-13"
+            );
+
+            entrada.AdicionarRegra(
+                (string codigoDeBarras) => arquivoProduto.Ler().Find(produto => produto.CodigoBarras == codigoDeBarras) != null,
+                "Código de barras não registrado"
+            );
+
+            return entrada.Pegar();
+        }
+
+        void Cadastrar()
+        {
+            Console.Clear();
+
+            Arquivo<Venda> arquivo = new Arquivo<Venda>(Constantes.DIRETORIO, Constantes.VENDA_ARQUIVO);
+            List<Venda> vendas = arquivo.Ler();
+
+            Arquivo<ItemVenda> arquivoItensVenda = new Arquivo<ItemVenda>(Constantes.DIRETORIO, Constantes.ITEM_VENDA_ARQUIVO);
+            List<ItemVenda> itensVenda = arquivoItensVenda.Ler();
+
+            Arquivo<Cliente> arquivoClientes = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
+
+            int id = vendas.Count > 0 ? vendas.Count + 1 : 1;
+            float valorTotal = 0;
+
+            Console.Write("Informe o CPF: ");
+            string cpf = EntradaCpf();
+
+            Console.Write("Informe quantos produtos deseja comprar: ");
+            int quantidadeDeProdutos = EntradaQuantidadeProdutos();
+
+            for (int i = 0; i < quantidadeDeProdutos; i++)
+            {
+                Console.Write("Informe o código de barras do produto: ");
+                string codigoDeBarras = EntradaCodigoDeBarras();
+
+                Console.Write("Informe a quantidade do produto (1 até 999): ");
+                int quantidade = EntradaQuantidade();
+
+                while (true)
+                {
+                    Console.Write("Informe o valor unitário do produto: ");
+                    float valorUnitario = EntradaValorUnitario();
+
+                    float totalItem = valorUnitario * quantidade;
+
+                    if (valorTotal + totalItem > 99999.99)
+                    {
+                        Console.WriteLine("Valor total da venda excede o limite, tente novamente: ");
+                        continue;
+                    }
+
+                    valorTotal += totalItem;
+                    itensVenda.Add(new ItemVenda(id, codigoDeBarras, quantidade, valorUnitario, totalItem));
+                    break;
+                }
+            }
+
+            List<Cliente> clientes = arquivoClientes.Ler();
+
+            Cliente cliente = clientes.Find(c => c.CPF == cpf);
+
+            cliente.UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
+
+            vendas.Add(new(id, DateOnly.FromDateTime(DateTime.Now), cpf, valorTotal));
+
+            arquivoClientes.Sobrescrever(clientes);
+            arquivoItensVenda.Sobrescrever(itensVenda);
+            arquivo.Sobrescrever(vendas);
         }
 
         void LocalizarVenda()
@@ -147,17 +281,6 @@ namespace biltiful.Modulos
             Arquivo<Produto> arquivoProdutos = new Arquivo<Produto>(Constantes.DIRETORIO, Constantes.PRODUTO_ARQUIVO);
             List<Produto> produtos = arquivoProdutos.Ler();
 
-            foreach (var venda in vendas)
-            {
-                foreach (var item in itemVendas)
-                {
-                    if (item.Id == venda.Id)
-                        venda.ItensVenda.Add(item);
-                }
-            }
-
-
-
             Cliente LocalizarCliente(string cpf)
             {
                 try
@@ -193,7 +316,7 @@ namespace biltiful.Modulos
                 Console.WriteLine("Data Nascimento: " + cliente.DataNascimento);
             }
 
-            ItemVenda CadastrarItemVenda(int id)
+            ItemVenda? CadastrarItemVenda(int id)
             {
                 Console.WriteLine("Insira o código de barras do produto: ");
                 string codigoBarras = Console.ReadLine();
@@ -237,7 +360,8 @@ namespace biltiful.Modulos
                 {
                     int id;
                     int opc = 0;
-
+                    Console.WriteLine(vendas.Count);
+                    Console.WriteLine(vendas.Last().Id);
                     if (vendas.Count == 0)
                         id = 1;
                     else
@@ -267,10 +391,17 @@ namespace biltiful.Modulos
                             }
                             List<ItemVenda> itens = new List<ItemVenda>();
 
-                            opc = 0;
                             while (itens.Count < 3 && opc == 1)
                             {
-                                itens.Add(CadastrarItemVenda(id));
+                                ItemVenda? item = CadastrarItemVenda(id);
+
+                                if (item == null)
+                                {
+                                    Console.WriteLine("Item inativo ou não cadastrado");
+                                    continue;
+                                }
+
+                                itens.Add(item);
                                 valorTotal += itens[itens.Count - 1].TotalItem;
                                 if (valorTotal > 99999.99)
                                 {
@@ -305,7 +436,6 @@ namespace biltiful.Modulos
                 return false;
             }
 
-            Menu menu = new Menu(" ", " ", " ", "Impressão por registo", "Sair");
             Menu menu = new Menu("Cadastrar", "Localizar", "Excluir", "Impressão por registo", "Sair");
             menu.LimparAposImpressao(true);
             menu.DefinirTitulo(">> VENDAS <<");
@@ -316,7 +446,7 @@ namespace biltiful.Modulos
                 switch (menu.Perguntar())
                 {
                     case 1:
-                        //Console.WriteLine(CadastrarVenda() ? "Venda realizada" : "Não foi possível realizar a venda");
+                        Cadastrar();
                         break;
                     case 2:
                         LocalizarVenda();

@@ -21,9 +21,9 @@
         {
             string id, quantidade, valorUnitario, totalItem;
             id = this.Id.ToString().PadLeft(5, '0');
-            quantidade = this.Quantidade.ToString();
-            valorUnitario = this.ValorUnitario.ToString().Replace(",", "").PadLeft(5, '0');
-            totalItem = this.TotalItem.ToString().Replace(",", "").PadLeft(7, '0');
+            quantidade = this.Quantidade.ToString("000");
+            valorUnitario = (this.ValorUnitario*100).ToString("00000");
+            totalItem = (this.TotalItem * 100).ToString("000000");
 
             return id + this.Produto + quantidade + valorUnitario + totalItem;
 

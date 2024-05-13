@@ -41,9 +41,9 @@ namespace biltiful.Classes
         public string FormatarParaArquivo()
         {
             string id, data, valorTotal;
-            id = this.Id.ToString().PadLeft(5, '0');
+            id = this.Id.ToString("00000");
             data = FormatarData(DataVenda);
-            valorTotal = this.ValorTotal.ToString().Replace(",", "").PadLeft(7, '0');
+            valorTotal = this.ValorTotal.ToString("00,000.00").Replace(",", "").Replace(".", "").Substring(0, 7);
 
             return id + data + this.Cliente + valorTotal;
         }
@@ -56,7 +56,7 @@ namespace biltiful.Classes
             int ano = int.Parse(linha.Substring(9, 4).Trim());
             this.DataVenda = new DateOnly(ano, mes, dia);
             this.Cliente = linha.Substring(13, 11).Trim();
-            this.ValorTotal = float.Parse(linha.Substring(24, 7).Insert(5, ","));
+            this.ValorTotal = float.Parse(linha.Substring(24, 7)) / 100;
         }
 
         public override string ToString()
@@ -71,7 +71,7 @@ namespace biltiful.Classes
 
             foreach (ItemVenda item in itensVenda)
                 if (item.Id == Id)
-                    result += item.ToString();
+                    result += item.ToString() + "\n\n";
 
             return result;
         }
