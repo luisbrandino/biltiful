@@ -23,11 +23,16 @@ namespace biltiful.Classes
             ValorTotal = valorTotal;
         }
 
+        public string FormatarData(DateOnly data)
+        {
+            return $"{data.Day.ToString("00")}{data.Month.ToString("00")}{data.Year.ToString("0000")}";
+        }
+
         public string FormatarParaArquivo()
         {
             string id, data, valorTotal;
             id = this.Id.ToString().PadLeft(5, '0');
-            data = this.DataVenda.ToString().Replace("/", "");
+            data = FormatarData(DataVenda);
             valorTotal = this.ValorTotal.ToString().Replace(",", "").PadLeft(7, '0');
 
             return id + data + this.Cliente + valorTotal;
