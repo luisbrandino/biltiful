@@ -122,7 +122,7 @@ namespace biltiful.Modulos
 
             Arquivo<Cliente> arquivoClientes = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
 
-            int id = vendas.Count > 0 ? vendas.Count + 1 : 1;
+            int id = vendas.Count > 0 ? vendas.Last().Id + 1 : 1;
             float valorTotal = 0;
 
             Console.Write("Informe o CPF: ");
