@@ -122,6 +122,16 @@ namespace biltiful.Modulos
 
             Arquivo<Cliente> arquivoClientes = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
 
+            List<Produto> produtos = this.arquivoProduto.Ler();
+
+            if (produtos.Count <= 0)
+            {
+                Console.WriteLine("Não há produtos cadastrados");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
+                Console.ReadKey();
+                return;
+            }
+
             int id = vendas.Count > 0 ? vendas.Last().Id + 1 : 1;
             float valorTotal = 0;
             string cpf;
@@ -159,6 +169,10 @@ namespace biltiful.Modulos
 
             Console.Write("Informe quantos produtos deseja comprar: ");
             int quantidadeDeProdutos = EntradaQuantidadeProdutos();
+
+            Console.WriteLine("Produtos disponiveis: ");
+            for (int i = 0; i < produtos.Count; i++)
+                Console.WriteLine($"{i+1} - {produtos[i].CodigoBarras}");
 
             for (int i = 0; i < quantidadeDeProdutos; i++)
             {
