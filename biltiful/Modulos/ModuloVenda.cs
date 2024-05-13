@@ -59,6 +59,15 @@ namespace biltiful.Modulos
             Arquivo<Produto> arquivoProdutos = new Arquivo<Produto>(Constantes.DIRETORIO, Constantes.PRODUTO_ARQUIVO);
             List<Produto> produtos = arquivoProdutos.Ler();
 
+            foreach (var venda in vendas)
+            {
+                foreach (var item in itemVendas)
+                {
+                    if (item.Id == venda.Id)
+                        venda.ItensVenda.Add(item);
+                }
+            }
+
 
 
             Cliente LocalizarCliente(string cpf)
