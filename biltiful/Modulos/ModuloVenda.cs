@@ -36,6 +36,7 @@ namespace biltiful.Modulos
 
         void LocalizarVenda()
         {
+            Console.Clear();
             if (vendas.Count <= 0)
             {
                 Console.WriteLine("Nenhuma venda cadastrada!");
@@ -58,6 +59,7 @@ namespace biltiful.Modulos
 
         void Excluir()
         {
+            Console.Clear();
             if (vendas.Count <= 0)
             {
                 Console.WriteLine("Nenhuma venda cadastrada!");
@@ -100,6 +102,8 @@ namespace biltiful.Modulos
 
         void ImpressaoPorRegistro()
         {
+            Console.Clear();
+
             Arquivo<Venda> arquivo = new Arquivo<Venda>(Constantes.DIRETORIO, Constantes.VENDA_ARQUIVO);
             List<Venda> vendas = arquivo.Ler();
 
