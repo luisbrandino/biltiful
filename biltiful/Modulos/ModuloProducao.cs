@@ -1,6 +1,7 @@
 ﻿using biltiful.Classes;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
@@ -183,11 +184,13 @@ namespace biltiful.Modulos
                 {
                     Console.WriteLine("Erro: Não foi possível localizar a produção");
                 }
-                return new();
+                return null;
             }
 
             void Imprimir(Producao p)
             {
+                if (p == null)
+                    return;
                 try
                 {
 
@@ -285,6 +288,8 @@ namespace biltiful.Modulos
                 {
                     Console.WriteLine("EXCLUIR");
                     Producao p = Localicar();
+                    if (p == null)
+                        return false;
                     Imprimir(p);
                     Console.WriteLine("\nDeseja excluir esta produção?");
                     Console.WriteLine("1 - Sim | 2 - Não");
