@@ -115,7 +115,7 @@ namespace biltiful.Modulos
 
         public void Executar()
         {
-            Menu menu = new Menu(" ", " ", " ", "Impressão por registo", "Sair");
+            Menu menu = new Menu("Cadastrar", "Localizar", "Excluir", "Impressão por registo", "Sair");
             menu.LimparAposImpressao(true);
             menu.DefinirTitulo(">> VENDAS <<");
 
@@ -127,6 +127,7 @@ namespace biltiful.Modulos
                     case 1:
                         break;
                     case 2:
+                        LocalizarVenda();
                         break;
                     case 3:
                         Excluir();
