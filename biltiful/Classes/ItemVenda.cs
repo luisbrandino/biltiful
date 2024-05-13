@@ -14,6 +14,15 @@ namespace biltiful.Classes
         public float ValorUnitario { get; set; }
         public float TotalItem { get; set; }
 
+        public ItemVenda() { }
+        public ItemVenda(int id, string produto, int quantidade, float valorUnitario, float totalItem)
+        {
+            Id = id;
+            Produto = produto;
+            Quantidade = quantidade;
+            ValorUnitario = valorUnitario;
+            TotalItem = totalItem;
+        }
         public string FormatarParaArquivo()
         {
             string id, quantidade, valorUnitario, totalItem;

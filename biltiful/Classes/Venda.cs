@@ -23,6 +23,15 @@ namespace biltiful.Classes
             Cliente = cliente;
             ValorTotal = valorTotal;
         }
+        public Venda(int id, DateOnly dataVenda, string cliente, float valorTotal, List<ItemVenda> itensVenda)
+        {
+            Id = id;
+            DataVenda = dataVenda;
+            Cliente = cliente;
+            ValorTotal = valorTotal;
+            ItensVenda = itensVenda;
+        }
+
 
         public string FormatarParaArquivo()
         {
