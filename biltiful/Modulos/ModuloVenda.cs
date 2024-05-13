@@ -172,7 +172,7 @@ namespace biltiful.Modulos
 
             Console.WriteLine("Produtos disponiveis: ");
             for (int i = 0; i < produtos.Count; i++)
-                Console.WriteLine($"{i+1} - {produtos[i].CodigoBarras}");
+                Console.WriteLine($"-> {produtos[i].CodigoBarras} - {produtos[i].Nome}");
 
             for (int i = 0; i < quantidadeDeProdutos; i++)
             {
