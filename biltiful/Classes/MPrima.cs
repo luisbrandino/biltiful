@@ -34,8 +34,8 @@
             if (!VerificarId(id))
                 throw new ArgumentException("ID informado inválido");
 
-            Id = id;
-            Nome = nome;
+            Id = id.ToUpper();
+            Nome = nome.ToUpper();
             UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
             Situacao = 'A';
@@ -46,8 +46,14 @@
          */
         public static bool VerificarId(string id)
         {
+            id = id.ToUpper();
+
             if (id.Length != 6)
                 return false;
+
+            foreach (char caracter in id.Substring(2, 4))
+                if (!char.IsDigit(caracter))
+                    return false;
 
             return id.StartsWith("MP");
         }
@@ -65,7 +71,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{Id.ToUpper()}{Nome.PadRight(20)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{Id.ToUpper()}{Nome.PadRight(Constantes.TAMANHO_NOME_MPRIMA).ToUpper()}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{char.ToUpper(Situacao)}";
         }
 
         public void LinhaParaObjeto(string linha)
@@ -73,11 +79,16 @@
             if (linha.Length != 43)
                 throw new ArgumentException("Linha não possui o tamanho padrão para a entidade MPrima");
 
-            Id = linha.Substring(0, 6);
+            Id = linha.Substring(0, 6).ToUpper();
             Nome = linha.Substring(6, Constantes.TAMANHO_NOME_MPRIMA).Trim();
             UltimaCompra = DateOnly.ParseExact(linha.Substring(26, 8), "ddMMyyyy");
             DataCadastro = DateOnly.ParseExact(linha.Substring(34, 8), "ddMMyyyy");
             Situacao = linha.Substring(42, 1).First();
+        }
+
+        public override string ToString()
+        {
+            return $"ID: {Id}\nNome: {Nome.ToUpper()}";
         }
     }
 }

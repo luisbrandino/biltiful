@@ -1,4 +1,6 @@
-﻿namespace biltiful.Classes
+﻿using System.Globalization;
+
+namespace biltiful.Classes
 {
     internal class Produto : IEntidade
     {
@@ -34,19 +36,22 @@
                 throw new Exception("Código de barras não segue o padrão EAN-13");
 
             if (!VerificarValorDeVenda(valorVenda))
-                throw new Exception("Valor de venda deve ser menor ou igual à R$999,99");
+                throw new Exception($"Valor de venda não pode ser zerado e deve ser menor ou igual à R${Constantes.VALOR_VENDA_MAXIMO}");
 
             CodigoBarras = codigoBarras;
             Nome = nome;
             ValorVenda = valorVenda;
+            UltimaVenda = DateOnly.FromDateTime(DateTime.Now);
+            DataCadastro = DateOnly.FromDateTime(DateTime.Now);
+            Situacao = 'A';
         }
 
         /**
          *  Esse método verifica se o valor de venda cumpre seus requerimentos
          */
-        static bool VerificarValorDeVenda(float valorVenda)
+        public static bool VerificarValorDeVenda(float valorVenda)
         {
-            return valorVenda < 1000;
+            return valorVenda > 0 && valorVenda <= Constantes.VALOR_VENDA_MAXIMO;
         }
 
         /**
@@ -96,7 +101,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CodigoBarras}{Nome.PadRight(20)}{ValorVenda * 100}{FormatarData(UltimaVenda)}{FormatarData(DataCadastro)}{Situacao}"; ;
+            return $"{CodigoBarras}{Nome.PadRight(Constantes.TAMANHO_NOME_PRODUTO).ToUpper()}{(ValorVenda * 100).ToString("00000")}{FormatarData(UltimaVenda)}{FormatarData(DataCadastro)}{char.ToUpper(Situacao)}"; ;
         }
 
         public void LinhaParaObjeto(string linha)
@@ -112,7 +117,12 @@
 
             DataCadastro = DataCadastro = DateOnly.ParseExact(linha.Substring(46, 8), "ddMMyyyy", null);
 
-            Situacao = linha.Substring(54, 1).First();
+            Situacao = linha.Substring(54, 1).ToUpper().First();
+        }
+
+        public override string ToString()
+        {
+            return $"Código de barras: {CodigoBarras}\nNome: {Nome}";
         }
     }
 }

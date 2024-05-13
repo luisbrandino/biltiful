@@ -101,7 +101,7 @@
          */
         public string FormatarParaArquivo()
         {
-            return $"{CNPJ}{RazaoSocial.PadRight(50)}{FormatarData(DataAbertura)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{CNPJ}{RazaoSocial.PadRight(Constantes.TAMANHO_NOME_FORNECEDOR).ToUpper()}{FormatarData(DataAbertura)}{FormatarData(UltimaCompra)}{FormatarData(DataCadastro)}{char.ToUpper(Situacao)}";
         }
 
         public void LinhaParaObjeto(string linha)
@@ -124,13 +124,18 @@
 
             UltimaCompra = new DateOnly(ano, mes, dia);
 
-            dia = int.Parse(linha   .Substring(80, 2));
+            dia = int.Parse(linha.Substring(80, 2));
             mes = int.Parse(linha.Substring(82, 2));
             ano = int.Parse(linha.Substring(84, 4));
 
             DataCadastro = new DateOnly(ano, mes, dia);
 
             Situacao = linha.Substring(88, 1).First();
+        }
+
+        public override string ToString()
+        {
+            return $"CNPJ: {CNPJ}\nRazão social: {RazaoSocial}";
         }
 
     }
