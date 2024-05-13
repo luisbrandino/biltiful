@@ -7,6 +7,11 @@ namespace biltiful.Modulos
     {
         
 
+        void Excluir()
+        {
+
+        }
+
         void ImpressaoPorRegistro()
         {
             Arquivo<Venda> arquivo = new Arquivo<Venda>(Constantes.DIRETORIO, Constantes.VENDA_ARQUIVO);
