@@ -73,6 +73,7 @@ namespace biltiful.Modulos.Operacoes.Produtos
             if (produtos.Count <= 0)
             {
                 Console.WriteLine("Nenhum produto cadastrado");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
                 return;
             }
@@ -95,6 +96,9 @@ namespace biltiful.Modulos.Operacoes.Produtos
             arquivo.Sobrescrever(produtos);
 
             Console.WriteLine("Produto alterado!");
+
+            Console.WriteLine("Aperte qualquer tecla para continuar");
+            Console.ReadKey();
         }
     }
 }

@@ -39,6 +39,7 @@ namespace biltiful.Modulos.Operacoes.Inadimplentes
 
             Console.WriteLine("Inadimplente cadastrado!");
 
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

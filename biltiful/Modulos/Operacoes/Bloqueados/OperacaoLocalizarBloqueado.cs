@@ -33,6 +33,7 @@ namespace biltiful.Modulos.Operacoes.Bloqueados
             bool cnpjBloqueado = arquivo.Ler().Exists(f => f.CNPJ == cnpj);
 
             Console.WriteLine(cnpjBloqueado ? "CNPJ cadastrado como bloqueado" : "CNPJ não bloqueado");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

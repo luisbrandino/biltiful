@@ -20,6 +20,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             if (mPrimas.Count == 0)
             {
                 Console.WriteLine("Não há fornecedores cadastrados!");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
 
                 return;

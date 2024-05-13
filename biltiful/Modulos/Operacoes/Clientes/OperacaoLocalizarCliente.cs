@@ -39,6 +39,7 @@ namespace biltiful.Modulos.Operacoes
             if (clientes.Count <= 0)
             {
                 Console.WriteLine("Nenhum cliente cadastrado");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
                 return;
             }
@@ -50,6 +51,7 @@ namespace biltiful.Modulos.Operacoes
 
             Console.WriteLine(cliente);
 
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

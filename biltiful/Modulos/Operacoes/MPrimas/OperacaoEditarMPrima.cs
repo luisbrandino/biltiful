@@ -61,6 +61,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             if (mPrimas.Count <= 0)
             {
                 Console.WriteLine("Nenhuma matéria-prima cadastrada");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
                 return;
             }
@@ -68,7 +69,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             Console.Write("Informe o ID: ");
             string id = EntradaId();
 
-            MPrima? mPrima = mPrimas.Find(mp => mp.Id == id);
+            MPrima mPrima = mPrimas.Find(mp => mp.Id == id);
 
             Console.Write("Informe o nome: ");
             mPrima.Nome = EntradaNome();
@@ -79,6 +80,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             arquivo.Sobrescrever(mPrimas);
 
             Console.WriteLine("Matéria-prima alterada!");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

@@ -33,6 +33,7 @@ namespace biltiful.Modulos.Operacoes.Inadimplentes
             bool cpfInadimplente = arquivo.Ler().Exists(c => c.CPF == cpf);
 
             Console.WriteLine(cpfInadimplente ? "CPF cadastrado como inadimplente" : "CPF não inadimplente");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

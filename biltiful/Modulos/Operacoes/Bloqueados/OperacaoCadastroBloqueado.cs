@@ -39,6 +39,7 @@ namespace biltiful.Modulos.Operacoes.Bloqueados
 
             Console.WriteLine("CNPJ bloqueado cadastrado!");
 
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

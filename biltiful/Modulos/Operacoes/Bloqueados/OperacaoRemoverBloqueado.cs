@@ -50,6 +50,7 @@ namespace biltiful.Modulos.Operacoes.Bloqueados
             arquivo.Sobrescrever(bloqueados);
 
             Console.WriteLine("CNPJ removido!");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

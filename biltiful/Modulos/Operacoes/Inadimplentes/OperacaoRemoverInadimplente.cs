@@ -38,6 +38,7 @@ namespace biltiful.Modulos.Operacoes.Inadimplentes
             if (inadimplentes.Count <= 0)
             {
                 Console.WriteLine("Não há inadimplentes cadastrados");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
                 return;
             }
@@ -50,6 +51,7 @@ namespace biltiful.Modulos.Operacoes.Inadimplentes
             arquivo.Sobrescrever(inadimplentes);
 
             Console.WriteLine("CPF removido!");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

@@ -19,6 +19,7 @@ namespace biltiful.Modulos.Operacoes.Produtos
             if (produtos.Count == 0)
             {
                 Console.WriteLine("Não há produtos cadastrados!");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
 
                 return;

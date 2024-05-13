@@ -68,6 +68,7 @@ namespace biltiful.Modulos.Operacoes.Produtos
             arquivo.Inserir(new Produto(codigoDeBarras, nome, valorDeVenda));
 
             Console.WriteLine("Produto cadastrado!");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

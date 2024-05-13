@@ -85,6 +85,7 @@ namespace biltiful.Modulos.Operacoes
 
             Console.WriteLine("Usuário cadastrado!");
 
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
 

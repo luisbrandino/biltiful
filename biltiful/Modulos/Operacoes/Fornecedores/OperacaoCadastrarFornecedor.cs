@@ -69,6 +69,7 @@ namespace biltiful.Modulos.Operacoes.Fornecedores
             arquivo.Inserir(new Fornecedor(cnpj, razaoSocial, dataAbertura));
 
             Console.WriteLine("Fornecedor cadastrado!");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
 

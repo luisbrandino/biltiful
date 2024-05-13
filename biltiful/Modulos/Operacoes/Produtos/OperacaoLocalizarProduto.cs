@@ -38,6 +38,7 @@ namespace biltiful.Modulos.Operacoes.Produtos
             if (produtos.Count == 0)
             {
                 Console.WriteLine("Nenhum produto registrado");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
                 return;
             }
@@ -49,6 +50,7 @@ namespace biltiful.Modulos.Operacoes.Produtos
 
             Console.WriteLine(produto);
 
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
 

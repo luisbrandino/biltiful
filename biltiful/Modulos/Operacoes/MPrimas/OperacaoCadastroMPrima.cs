@@ -50,6 +50,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             if (mPrimas.Count >= Constantes.LIMITE_CADASTRO_MPRIMAS)
             {
                 Console.WriteLine("Não é possível cadastrar mais matérias-primas!");
+                Console.WriteLine("Aperte qualquer tecla para continuar");
                 Console.ReadKey();
                 return;
             }
@@ -64,6 +65,7 @@ namespace biltiful.Modulos.Operacoes.MPrimas
             arquivo.Sobrescrever(mPrimas);
 
             Console.WriteLine("Matéria-prima cadastrada!");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
     }

@@ -95,6 +95,7 @@ namespace biltiful.Modulos.Operacoes.Fornecedores
             arquivo.Sobrescrever(fornecedores);
 
             Console.WriteLine("Fornecedor alterado!");
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
         }
 
