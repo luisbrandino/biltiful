@@ -34,6 +34,27 @@ namespace biltiful.Modulos
             return entrada.Pegar();
         }
 
+        void LocalizarVenda()
+        {
+            if (vendas.Count <= 0)
+            {
+                Console.WriteLine("Nenhuma venda cadastrada!");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.Write("Informe o ID da venda: ");
+            int id = EntradaId();
+
+            /**
+             *  venda nunca será nulo pois sua existência já foi verificada no EntradaId nesse ponto
+             */
+            Venda venda = vendas.Find(v => v.Id == id);
+
+            Console.WriteLine(venda);
+
+            Console.ReadKey();
+        }
 
         void Excluir()
         {
@@ -72,6 +93,9 @@ namespace biltiful.Modulos
              */
             arquivoItemVendas.Sobrescrever(itemVendas);
             arquivoVendas.Sobrescrever(vendas);
+
+            Console.WriteLine("Venda excluída!");
+            Console.ReadKey();
         }
 
         void ImpressaoPorRegistro()
