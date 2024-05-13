@@ -19,5 +19,6 @@
         public const string MPRIMA_ARQUIVO = "Materia.dat";
         public const string INADIMPLENTE_ARQUIVO = "Risco.dat";
         public const string BLOQUEADO_ARQUIVO = "Bloqueado.dat";
+        public const string VENDA_ARQUIVO = "Venda.dat";
     }
 }
