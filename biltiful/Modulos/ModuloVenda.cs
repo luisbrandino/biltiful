@@ -122,7 +122,7 @@ namespace biltiful.Modulos
 
             Arquivo<Cliente> arquivoClientes = new Arquivo<Cliente>(Constantes.DIRETORIO, Constantes.CLIENTE_ARQUIVO);
 
-            List<Produto> produtos = this.arquivoProduto.Ler();
+            List<Produto> produtos = this.arquivoProduto.Ler().Where(p => p.Situacao == 'A').ToList();
 
             if (produtos.Count <= 0)
             {
@@ -200,8 +200,6 @@ namespace biltiful.Modulos
                     break;
                 }
             }
-
-            
 
             cliente.UltimaCompra = DateOnly.FromDateTime(DateTime.Now);
 
