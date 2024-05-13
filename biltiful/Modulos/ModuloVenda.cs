@@ -147,6 +147,7 @@ namespace biltiful.Modulos
             {
                 try
                 {
+                    int opc = 0;
                     int id = vendas.Last().Id + 1;
                     float valorTotal = 0;
                     DateOnly data = DateOnly.FromDateTime(DateTime.Now);
@@ -156,6 +157,12 @@ namespace biltiful.Modulos
                     if (cliente != null && VerificarInadimplencia(CPF))
                     {
                         DadosCliente(cliente);
+                        Console.WriteLine("Continuar?");
+                        Console.WriteLine("1 - Sim | 2 - Não");
+                        opc = int.Parse(Console.ReadLine());
+                        if (opc != 1)
+                            return false;
+
                         int idade = DateTime.Now.Year - cliente.DataNascimento.Year;
                         if (idade < 18)
                         {
@@ -163,7 +170,7 @@ namespace biltiful.Modulos
                             return false;
                         }
                         List<ItemVenda> itens = new List<ItemVenda>();
-                        int opc = 0;
+
 
                         while (itens.Count < 3 && opc != 1)
                         {
