@@ -14,7 +14,10 @@ namespace biltiful.Classes
         public float ValorTotal { get; set; }
         public List<ItemVenda> ItensVenda { get; set; }
 
-        public Venda() { }
+        public Venda()
+        {
+            ItensVenda = new List<ItemVenda>();
+        }
 
         public Venda(int id, DateOnly dataVenda, string cliente, float valorTotal)
         {
@@ -45,7 +48,7 @@ namespace biltiful.Classes
 
         public void LinhaParaObjeto(string linha)
         {
-            this.Id= int.Parse(linha.Substring(0, 5).Trim());
+            this.Id = int.Parse(linha.Substring(0, 5).Trim());
             int dia = int.Parse(linha.Substring(5, 2).Trim());
             int mes = int.Parse(linha.Substring(7, 2).Trim());
             int ano = int.Parse(linha.Substring(9, 4).Trim());
